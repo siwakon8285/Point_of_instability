@@ -1,5 +1,34 @@
-<mat-toolbar color="primary">
-    <span>My App</span>
-    <span class="spancar"></span>
-    <button mat-button>Logout</button>
+<mat-toolbar class="navbar">
+    <!-- Home button -->
+    <span class="home-btn" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        The Convergence
+    </span>
+
+    <span class="spacer"></span>
+
+    @if (display_name() === undefined) {
+    <button mat-button routerLink="/login" routerLinkActive="active">
+        <span style="display: inline-flex; align-items: center; gap: 6px;">
+            <mat-icon>login</mat-icon>
+            Login
+        </span>
+    </button>
+    } @else {
+    <button mat-button [matMenuTriggerFor]="profileMenu" class="profile-btn">
+        <div class="profile-btn-content">
+            <img [src]="avatar_url()" class="avatar" [alt]="display_name() + ' avatar'">
+            <span class="display-name">{{display_name()}}</span>
+        </div>
+    </button>
+    <mat-menu #profileMenu="matMenu" class="profile-menu">
+        <button mat-menu-item type="button" routerLink="/profile">
+            <mat-icon>person</mat-icon>
+            <span>Profile</span>
+        </button>
+        <button mat-menu-item type="button" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+        </button>
+    </mat-menu>
+    }
 </mat-toolbar>

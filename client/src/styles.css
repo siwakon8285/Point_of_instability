@@ -3,15 +3,16 @@
 
 body {
     margin: 0;
-    font-family: 'Inter', sans-serif, "Roboto";
+    font-family: 'Inter', 'Roboto', sans-serif;
     background-color: #0a0a0a;
     background-image:
         radial-gradient(circle at 20% 20%, rgba(255, 61, 0, 0.05) 0%, transparent 40%),
         radial-gradient(circle at 80% 80%, rgba(41, 121, 255, 0.05) 0%, transparent 40%);
     background-attachment: fixed;
     min-height: 100vh;
+    color: #fff;
 }
 
-.spancar {
+.spacer {
     flex: 1 1 auto;
 }

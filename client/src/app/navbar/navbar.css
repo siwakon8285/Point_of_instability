@@ -1,0 +1,90 @@
+/* Navbar Container */
+.navbar {
+    background: #ffffff !important;
+    color: #333 !important;
+    border-bottom: 2px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    height: 64px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Home Button */
+.home-btn {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #333;
+    cursor: pointer;
+    letter-spacing: -0.5px;
+    transition: color 0.2s;
+}
+
+.home-btn:hover {
+    color: #8bc34a;
+}
+
+/* Spacer */
+.spacer {
+    flex: 1 1 auto;
+}
+
+/* Profile Button */
+.profile-btn {
+    color: #333 !important;
+    padding: 0 12px !important;
+    min-width: unset !important;
+    height: 44px !important;
+    border-radius: 22px !important;
+    transition: background 0.2s !important;
+}
+
+.profile-btn:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.profile-btn-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.display-name {
+    font-weight: 500;
+    font-size: 0.9rem;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Avatar */
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #ddd;
+}
+
+/* Menu Styles */
+::ng-deep .profile-menu {
+    margin-top: 8px;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+    min-width: 160px !important;
+    overflow: hidden !important;
+}
+
+::ng-deep .mat-mdc-menu-item {
+    padding: 0 16px !important;
+    min-height: 44px !important;
+}
+
+::ng-deep .mat-mdc-menu-item mat-icon {
+    margin-right: 8px !important;
+    color: #555;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}

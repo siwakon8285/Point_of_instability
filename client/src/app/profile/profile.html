@@ -1,1 +1,11 @@
-<p>profile works!</p>
+<div class="profile-container">
+    <div class="profile-card">
+        <img [src]="avatarUrl()" [alt]="displayName()" class="avatar">
+        <h1 class="name">{{displayName()}}</h1>
+        <p class="tagline">Welcome back!</p>
+
+        <div class="actions">
+            <button class="btn-secondary" (click)="logout()">Logout</button>
+        </div>
+    </div>
+</div>

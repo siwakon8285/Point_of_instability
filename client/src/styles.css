@@ -1,18 +1,89 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;800&display=swap');
+/* Soft Light High-Contrast Theme */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import "@angular/material/prebuilt-themes/azure-blue.css";
 
+:root {
+    --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+    --color-primary: #2563eb;
+    --color-bg: #f8fafc;
+    --color-text: #0f172a;
+    --color-error: #ef4444;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
 body {
     margin: 0;
-    font-family: 'Inter', 'Roboto', sans-serif;
-    background-color: #0a0a0a;
-    background-image:
-        radial-gradient(circle at 20% 20%, rgba(255, 61, 0, 0.05) 0%, transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(41, 121, 255, 0.05) 0%, transparent 40%);
-    background-attachment: fixed;
+    padding: 0;
     min-height: 100vh;
-    color: #fff;
+    background-color: var(--color-bg);
+}
+
+body {
+    font-family: var(--font-primary);
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
 }
 
 .spacer {
     flex: 1 1 auto;
+}
+
+/* 
+   BRUTE FORCE SNACKBAR OVERRIDES 
+   Targets both MDC (new) and Legacy Material Snackbars
+*/
+
+/* 1. Background (MDC & Legacy) */
+.mat-mdc-snack-bar-container .mdc-snackbar__surface,
+.mat-snack-bar-container {
+    background-color: #ef4444 !important;
+    /* Solid Red */
+    border-radius: 12px !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* 2. Text Color (MDC & Legacy) */
+.mat-mdc-snack-bar-container .mdc-snackbar__label,
+.mat-snack-bar-container span {
+    color: #ffffff !important;
+    /* Pure White */
+    font-weight: 700 !important;
+    font-size: 15px !important;
+}
+
+/* 3. Action Button (MDC & Legacy) */
+.mat-mdc-snack-bar-container .mat-mdc-snack-bar-action,
+.mat-snack-bar-container button {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+}
+
+/* 
+   FORCE POSITIONING 
+   Push all global overlays down by 100px to clear navbar (64px) + margin.
+*/
+.cdk-overlay-container {
+    z-index: 99999 !important;
+}
+
+/* Push the wrapper down */
+.cdk-global-overlay-wrapper {
+    padding-top: 100px !important;
+    pointer-events: none;
+}
+
+.cdk-overlay-pane {
+    pointer-events: auto;
+}
+
+/* Ensure navbar is below the overlays */
+.navbar {
+    z-index: 1000 !important;
 }

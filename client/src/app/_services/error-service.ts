@@ -14,6 +14,7 @@ export class ErrorService {
     duration: 5000,
     verticalPosition: 'top',
     horizontalPosition: 'end',
+    panelClass: ['error-snackbar']
   };
 
   handleError(error: any): Observable<never> {

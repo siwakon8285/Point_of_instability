@@ -1,0 +1,69 @@
+@username = menta
+@password = P@ssw0rd
+
+### login
+# @name login
+POST {{base_url}}/authentication/login
+Content-Type: application/json
+
+{
+    "username": "{{username}}",
+    "password": "{{password}}"
+}
+
+### extract token
+# @access_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzY2NzMxNDQ3LCJpYXQiOjE3NjY2NDUwNDd9.1LWoyDBp17PlVAw4uiCfIXnPUZg-IAHIeK0NH5GTwY0"
+
+
+### create new mission
+# @prompt mission_name Mission Name
+# @prompt description Mission Description
+POST {{base_url}}/mission-management
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+    "name": "{{mission_name}}",
+    "description": "{{description}}"
+}
+
+### update mission
+# @prompt mission_id Mission ID
+# @prompt mission_name Mission Name
+# @prompt description Mission Description
+PATCH {{base_url}}/mission-management/{{mission_id}}
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+    "name": "{{mission_name}}",
+    "description": "{{description}}"
+}
+
+### remove mission
+# @prompt mission_id Mission ID
+DELETE {{base_url}}/mission-management/{{mission_id}}
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+
+
+### set mission to in-progress
+# @prompt mission_id Mission ID to Set In-Progress
+PATCH  {{base_url}}/mission-operation/in-progress/{{mission_id}}
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+
+### set mission to completed
+# @prompt mission_id Mission ID to Set Completed
+PATCH  {{base_url}}/mission-operation/to-completed/{{mission_id}}
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+
+### set mission to failed
+# @prompt mission_id Mission ID to Set Failed
+PATCH  {{base_url}}/mission-operation/to-failed/{{mission_id}}
+Content-Type: application/json
+Authorization: Bearer {{access_token}}

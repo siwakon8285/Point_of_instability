@@ -10,12 +10,7 @@ import { guestGuard } from './_guard/guest.guard';
 export const routes: Routes = [
     { path: '', component: Home },
     { path: 'login', component: Login, canActivate: [guestGuard] },
-    {
-        path: 'profile',
-        component: Profile,
-        runGuardsAndResolvers: 'always',
-        canActivate: [authGuard]
-    },
+    {path: 'profile',component: Profile,canActivate: [authGuard],runGuardsAndResolvers: 'always'},
     { path: 'server-error', component: ServerError },
     { path: '**', component: NotFound },
 ]

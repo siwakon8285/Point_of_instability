@@ -29,6 +29,6 @@ export class Navbar {
 
   logout(): void {
     this._passportService.destroy()
-    this._router.navigate(['/'])
+    this._router.navigate(['/login'])
   }
 }

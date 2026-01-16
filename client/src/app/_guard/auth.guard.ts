@@ -8,6 +8,6 @@ export const authGuard: CanActivateFn = (route, state) => {
 
     if (passportService.data()?.access_token) return true
 
-    router.navigate(['/login'])
+    router.navigate(['/not-found'])
     return false
 }

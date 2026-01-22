@@ -9,9 +9,8 @@ use std::collections::BTreeMap;
 
 fn form_builder(option: UploadImageOptions, cloud_env: &CloudinaryEnv) -> Result<Form> {
     let mut form = Form::new();
-    let timestamp = Utc::now().timestamp().to_string(); // Use seconds for timestamp
+    let timestamp = Utc::now().timestamp().to_string();
 
-    // Use BTreeMap to automatically sort parameters by key
     let mut params_to_sign: BTreeMap<String, String> = BTreeMap::new();
     params_to_sign.insert("timestamp".to_string(), timestamp.clone());
 
@@ -25,19 +24,16 @@ fn form_builder(option: UploadImageOptions, cloud_env: &CloudinaryEnv) -> Result
         params_to_sign.insert("transformation".to_string(), transformation);
     }
 
-    // Build the string to sign: key1=val1&key2=val2...secret
     let mut to_sign = String::new();
     for (i, (key, value)) in params_to_sign.iter().enumerate() {
         if i > 0 {
             to_sign.push('&');
         }
         to_sign.push_str(&format!("{}={}", key, value));
-
-        // Also add to form
         form = form.text(key.clone(), value.clone());
     }
     to_sign.push_str(&cloud_env.api_secret);
-    // Generate SHA1 hex signature
+
     let mut hasher = Sha1::new();
     hasher.update(to_sign.as_bytes());
     let signature = format!("{:x}", hasher.finalize());
@@ -53,9 +49,8 @@ pub async fn upload(
     option: UploadImageOptions,
 ) -> Result<UploadedImage> {
     let cloud_env = get_cloudinary_env()?;
-
     let form = form_builder(option, &cloud_env)?;
-    // Add the image data as the 'file' field
+
     let file = Part::text(base64_image.into_inner());
     let multipart = form.part("file", file);
 
@@ -72,13 +67,27 @@ pub async fn upload(
         .await
         .context(format!("Failed to send request to {}", url))?;
 
+    let status = response.status();
     let text = response
         .text()
         .await
         .context("Failed to read response text")?;
 
-    let json: UploadedImage = serde_json::from_str(&text)
-        .with_context(|| format!("Failed to parse Cloudinary response: {}", text))?;
+    if !status.is_success() {
+        return Err(anyhow::anyhow!(
+            "Cloudinary upload failed ({}): {}",
+            status,
+            text
+        ));
+    }
+
+    let json: UploadedImage = serde_json::from_str(&text).map_err(|e| {
+        anyhow::anyhow!(
+            "Failed to parse Cloudinary response: {} | Error: {}",
+            text,
+            e
+        )
+    })?;
 
     Ok(json)
 }

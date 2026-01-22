@@ -1,1 +1,11 @@
-<p>server-error works!</p>
+<div class="server-error-container">
+    <h1>Server Error Details</h1>
+    @if(error){
+    <div class="error-content">
+        <pre>{{error | json}}</pre>
+    </div>
+    } @else {
+    <p>No error details available.</p>
+    }
+    <button routerLink="/">Back to Home</button>
+</div>

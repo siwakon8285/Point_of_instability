@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { LoginModel, Passport, RegisterModel } from '../_models/passport';
+import { getAvatar } from '../_helpers/avatar';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class PassportService {
   private _http = inject(HttpClient)
 
   data = signal<Passport | undefined>(undefined)
+  image = signal<string>('')
 
   constructor() {
     this.getPassportFromLocalStorage()
@@ -24,6 +26,7 @@ export class PassportService {
     try {
       const passport: Passport = JSON.parse(jsonStr) as Passport
       this.data.set(passport)
+      this.image.set(getAvatar(passport.avatar_url))
     } catch (error) {
       console.error(error)
     }
@@ -42,10 +45,10 @@ export class PassportService {
       const source: Observable<Passport> = this._http.post<Passport>(url, loginData)
       const passport: Passport = await firstValueFrom(source)
       this.data.set(passport)
+      this.image.set(getAvatar(passport.avatar_url))
       this.savePassportToLocalStorage()
     } catch (error: any) {
       console.error(error)
-      // Handle different error types
       if (error.error && typeof error.error === 'string') {
         return error.error
       } else if (error.message) {
@@ -61,16 +64,17 @@ export class PassportService {
   destroy(): void {
     localStorage.removeItem(this._storage_key)
     this.data.set(undefined)
+    this.image.set('')
   }
 
   async register(registerData: RegisterModel): Promise<string> {
     try {
       const url = this._api_url + '/brawlers/register'
 
-      // Challenge ! [เขียนโค้ด ที่นี่ เพื่อให้การทำงาน สมบูรณ์]
       const source: Observable<Passport> = this._http.post<Passport>(url, registerData)
       const passport: Passport = await firstValueFrom(source)
       this.data.set(passport)
+      this.image.set(getAvatar(passport.avatar_url))
 
       this.savePassportToLocalStorage()
     } catch (error: any) {
@@ -85,5 +89,25 @@ export class PassportService {
       return 'An error occurred during registration'
     }
     return ''
+  }
+
+  saveAvatarImage(url: string): void {
+    let passport = this.data()
+    if (passport) {
+      passport.avatar_url = url
+      this.data.set(passport)
+      this.image.set(getAvatar(url))
+      this.savePassportToLocalStorage()
+      console.log('Avatar updated:', url)
+    }
+  }
+
+  updateDisplayName(displayName: string): void {
+    let passport = this.data()
+    if (passport) {
+      passport.display_name = displayName
+      this.data.set(passport)
+      this.savePassportToLocalStorage()
+    }
   }
 }

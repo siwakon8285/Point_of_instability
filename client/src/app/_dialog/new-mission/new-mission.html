@@ -1,0 +1,9 @@
+<h4 mat-dialog-title>New Mission</h4>
+<mat-dialog-content>
+    <input type="text" [(ngModel)]="addMission.name" placeholder="Mission Name">
+    <textarea [(ngModel)]="addMission.description" placeholder="Mission Description"></textarea>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button (click)="onSubmit()" mat-stroked-button type="submit" [disabled]="!addMission.name">Create</button>
+</mat-dialog-actions>

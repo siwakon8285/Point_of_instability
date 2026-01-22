@@ -8,5 +8,4 @@ import { RouterLink } from '@angular/router';
   styleUrl: './home.css'
 })
 export class Home {
-
 }

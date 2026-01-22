@@ -1,0 +1,84 @@
+<div class="missions-container">
+    <div class="page-header">
+        <h1 class="page-title">Missions</h1>
+        <p class="page-subtitle">Search and browse available missions</p>
+    </div>
+
+    <mat-card class="filter-card">
+        <mat-card-header>
+            <mat-card-title>🔍 Search Missions</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="filter-form">
+                <mat-form-field appearance="outline">
+                    <mat-label>Mission Name</mat-label>
+                    <input matInput [(ngModel)]="filter.name" placeholder="Enter mission name">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Status</mat-label>
+                    <mat-select [(ngModel)]="filter.status">
+                        <mat-option [value]="undefined">-- All Status --</mat-option>
+                        <mat-option value="Open">Open</mat-option>
+                        <mat-option value="InProgress">In Progress</mat-option>
+                        <mat-option value="Completed">Completed</mat-option>
+                        <mat-option value="Failed">Failed</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div class="filter-actions">
+                    <button mat-raised-button color="primary" (click)="onSubmit()">
+                        <mat-icon>search</mat-icon>
+                        Search
+                    </button>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <div class="missions-list">
+        @for (mission of missions; track mission.id) {
+        <mat-card class="mission-card">
+            <mat-card-header>
+                <mat-card-title>{{ mission.name }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <span class="status-badge" [ngClass]="mission.status.toLowerCase()">
+                    @switch (mission.status) {
+                    @case ('Open') {
+                    <mat-icon class="status-icon">radio_button_unchecked</mat-icon>
+                    }
+                    @case ('InProgress') {
+                    <mat-icon class="status-icon">pending</mat-icon>
+                    }
+                    @case ('Completed') {
+                    <mat-icon class="status-icon">check_circle</mat-icon>
+                    }
+                    @case ('Failed') {
+                    <mat-icon class="status-icon">cancel</mat-icon>
+                    }
+                    }
+                    {{ mission.status }}
+                </span>
+                <p class="mission-description">{{ mission.description || 'No description available' }}</p>
+                <div class="card-footer">
+                    <div class="crew-info">
+                        <mat-icon>group</mat-icon>
+                        <span>{{ mission.crew_count }} members</span>
+                    </div>
+                    <button mat-stroked-button class="view-btn">
+                        <mat-icon>visibility</mat-icon>
+                        View
+                    </button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        } @empty {
+        <div class="no-missions">
+            <mat-icon>search_off</mat-icon>
+            <p class="no-missions-text">No missions found</p>
+            <p>Try a different search or create a new mission</p>
+        </div>
+        }
+    </div>
+</div>

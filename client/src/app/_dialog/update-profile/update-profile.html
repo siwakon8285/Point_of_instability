@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Edit Profile</h2>
+<mat-dialog-content>
+    <div class="form-container">
+        <mat-form-field appearance="outline">
+            <mat-label>Display Name</mat-label>
+            <input matInput [(ngModel)]="displayName" name="displayName" placeholder="Enter your display name">
+            <mat-hint>This is how other people will see you</mat-hint>
+        </mat-form-field>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="!displayName.trim()">
+        Save Changes
+    </button>
+</mat-dialog-actions>

@@ -4,5 +4,6 @@
             "base_url": "http://127.0.0.1:8000/api",
             "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzY2NzMxNDQ3LCJpYXQiOjE3NjY2NDUwNDd9.1LWoyDBp17PlVAw4uiCfIXnPUZg-IAHIeK0NH5GTwY0"
         }
-    }
+    },
+    "remote.autoForwardPortsFallback": 0
 }

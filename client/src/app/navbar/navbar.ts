@@ -6,7 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule } from '@angular/router';
 import { PassportService } from '../_services/passport-service';
-import { getAvatar } from '../_helpers/avatar';
 
 @Component({
   selector: 'app-navbar',
@@ -20,11 +19,18 @@ export class Navbar {
   private _router = inject(Router)
   private _passportService = inject(PassportService)
   display_name: Signal<string | undefined>
-  avatar_url: Signal<string | undefined>
+  avatar_url: Signal<string>
 
   constructor() {
     this.display_name = computed(() => this._passportService.data()?.display_name)
-    this.avatar_url = computed(() => getAvatar(this._passportService.data()?.avatar_url))
+    this.avatar_url = computed(() => {
+      const url = this._passportService.image();
+      // Add cache-busting timestamp to force image refresh
+      if (url && url !== '/assets/unnamed.jpg') {
+        return `${url}?t=${Date.now()}`;
+      }
+      return url;
+    })
   }
 
   logout(): void {

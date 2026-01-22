@@ -31,3 +31,8 @@ pub struct BrawlerModel {
     #[diesel(sql_type = BigInt)]
     pub mission_joined_count: i64,
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct UpdateBrawlerModel {
+    pub display_name: String,
+}

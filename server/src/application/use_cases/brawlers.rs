@@ -49,7 +49,7 @@ where
         let option = UploadImageOptions {
             folder: Some("brawlers_avatar".to_string()),
             public_id: Some(brawler_id.to_string()),
-            transformation: Some("c_scale, w_256".to_string()),
+            transformation: Some("c_scale,w_256".to_string()),
         };
         let base64_image = Base64Image::new(base64_image)?;
 
@@ -63,6 +63,12 @@ where
     pub async fn get_brawlers_by_mission_id(&self, mission_id: i32) -> Result<Vec<BrawlerEntity>> {
         self.brawler_repository
             .get_brawlers_by_mission_id(mission_id)
+            .await
+    }
+
+    pub async fn update_profile(&self, brawler_id: i32, display_name: String) -> Result<()> {
+        self.brawler_repository
+            .update_profile(brawler_id, display_name)
             .await
     }
 }

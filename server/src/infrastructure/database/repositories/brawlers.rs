@@ -86,4 +86,14 @@ impl BrawlerRepository for BrawlerPostgres {
 
         Ok(result)
     }
+
+    async fn update_profile(&self, brawler_id: i32, display_name: String) -> Result<()> {
+        let mut connection = Arc::clone(&self.db_pool).get()?;
+
+        diesel::update(brawlers::table.filter(brawlers::id.eq(brawler_id)))
+            .set(brawlers::display_name.eq(display_name))
+            .execute(&mut connection)?;
+
+        Ok(())
+    }
 }

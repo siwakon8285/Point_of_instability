@@ -3,7 +3,7 @@ use crate::{
     application::use_cases::brawlers::BrawlersUseCase,
     domain::{
         repositories::brawlers::BrawlerRepository,
-        value_objects::brawler_model::RegisterBrawlerModel,
+        value_objects::brawler_model::{RegisterBrawlerModel, UpdateBrawlerModel},
     },
     infrastructure::database::{
         postgresql_connection::PgPoolSquad, repositories::brawlers::BrawlerPostgres,
@@ -13,7 +13,7 @@ use axum::{
     Extension, Json, Router,
     extract::{Path, State},
     response::IntoResponse,
-    routing::post,
+    routing::{post, put},
 };
 use std::sync::Arc;
 
@@ -24,6 +24,7 @@ pub fn routes(db_pool: Arc<PgPoolSquad>) -> Router {
 
     let protected_routes = Router::new()
         .route("/avatar", post(upload_avatar))
+        .route("/update", put(update_profile))
         .route_layer(axum::middleware::from_fn(authorization));
 
     Router::new()
@@ -34,6 +35,23 @@ pub fn routes(db_pool: Arc<PgPoolSquad>) -> Router {
         )
         .merge(protected_routes)
         .with_state(state)
+}
+
+pub async fn update_profile<T>(
+    State(brawlers_use_case): State<Arc<BrawlersUseCase<T>>>,
+    Extension(brawler_id): Extension<i32>,
+    Json(update_model): Json<UpdateBrawlerModel>,
+) -> impl IntoResponse
+where
+    T: BrawlerRepository + Send + Sync,
+{
+    match brawlers_use_case
+        .update_profile(brawler_id, update_model.display_name)
+        .await
+    {
+        Ok(_) => axum::http::StatusCode::OK.into_response(),
+        Err(e) => (axum::http::StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+    }
 }
 
 pub async fn register<T>(

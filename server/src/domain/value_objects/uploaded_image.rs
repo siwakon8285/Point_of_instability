@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UploadedImage {
-    #[serde(alias = "secure_url")]
+    #[serde(rename(serialize = "url", deserialize = "secure_url"))]
     pub url: String,
     pub public_id: String,
 }

@@ -1,18 +1,230 @@
-<p>mission-manager works!</p>
-<div class="new-mission">
-<button mat-raised-button (click)="openDialog() "><mat-icon>add</mat-icon> new mission</button>
-</div>
-
-@for (mission of myMissions; track mission.id) {
-  @if(mission) {
-    <div>
-      <span style="padding-left: 1rem;">{{mission.id}}</span>
-      <span style="padding-left: 1rem;">{{mission.name}}</span>
-      <span style="padding-left: 1rem;">{{mission.description}}</span>
-      <span style="padding-left: 1rem;">{{mission.chief_id}}</span>
-      <span style="padding-left: 1rem;">{{mission.crew_count}}</span>
-      <span style="padding-left: 1rem;">{{mission.created_at | date: 'short'}}</span>
-      <span style="padding-left: 1rem;">{{mission.updated_at | date: 'short'}}</span>
+<div class="manager-container">
+    <div class="page-header">
+        <h1 class="page-title">My Missions</h1>
     </div>
-  }
-}
+
+    <!-- Status Summary -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-label">TOTAL MISSIONS</span>
+            <span class="stat-value">{{ stats().total }}</span>
+        </div>
+        <div class="stat-card leading">
+            <span class="stat-label">LEADING</span>
+            <span class="stat-value">{{ stats().leading }}</span>
+        </div>
+        <div class="stat-card joined">
+            <span class="stat-label">JOINED</span>
+            <span class="stat-value">{{ stats().joined }}</span>
+        </div>
+        <div class="stat-card open">
+            <span class="stat-label">OPEN JOBS</span>
+            <span class="stat-value">{{ stats().open }}</span>
+        </div>
+    </div>
+
+    <!-- Section 1: Missions You're Leading -->
+    <div class="section-container">
+        <h2 class="section-title">Missions You're Leading</h2>
+        <div class="mission-table-container">
+            @if(ownedMissions().length) {
+            <table class="mission-table">
+                <thead>
+                    <tr>
+                        <th>NAME</th>
+                        <th>DESCRIPTION</th>
+                        <th>STATUS</th>
+                        <th>CREW</th>
+                        <th class="action-header">ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (mission of ownedMissions(); track mission.id) {
+                    <tr>
+                        <td class="name-cell">{{ mission.name }}</td>
+                        <td class="description-cell">{{ mission.description || '-' }}</td>
+                        <td>
+                            <span class="status-badge" [ngClass]="mission.status.toLowerCase()">
+                                {{ mission.status.toUpperCase() }}
+                            </span>
+                        </td>
+                        <td>{{ mission.crew_count }} / 3</td>
+                        <td class="action-cell">
+                            <mat-icon class="action-icon" (click)="openEditDialog(mission)">edit</mat-icon>
+                            <mat-icon class="action-icon delete" (click)="openDeleteConfirm(mission)">delete</mat-icon>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+            } @else {
+            <div class="no-missions small">
+                <p>You aren't leading any missions. Create one to get started!</p>
+            </div>
+            }
+        </div>
+    </div>
+
+    <!-- Section 2: Joined Missions -->
+    <div class="section-container">
+        <h2 class="section-title">Joined Missions</h2>
+        <div class="mission-table-container">
+            @if(joinedMissions().length) {
+            <table class="mission-table">
+                <thead>
+                    <tr>
+                        <th>NAME</th>
+                        <th>DESCRIPTION</th>
+                        <th>CHIEF</th>
+                        <th>STATUS</th>
+                        <th>JOINED AT</th>
+                        <th class="action-header">ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (mission of joinedMissions(); track mission.id) {
+                    <tr>
+                        <td class="name-cell">{{ mission.name }}</td>
+                        <td class="description-cell">{{ mission.description || '-' }}</td>
+                        <td>{{ mission.chief_display_name }}</td>
+                        <td>
+                            <span class="status-badge" [ngClass]="mission.status.toLowerCase()">
+                                {{ mission.status.toUpperCase() }}
+                            </span>
+                        </td>
+                        <td>{{ mission.created_at | date:'MM/dd/yy, h:mm a' }}</td>
+                        <td class="action-cell">
+                            <a class="leave-link" (click)="onLeave(mission.id)">Leave</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+            } @else {
+            <div class="no-missions small">
+                <p>You haven't joined any missions yet. Visit the Missions page to find a team!</p>
+            </div>
+            }
+        </div>
+    </div>
+
+    <div class="fab-container">
+        <button mat-fab class="add-btn" (click)="openDialog()">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+
+    <!-- Create Mission Dialog -->
+    @if (showDialog()) {
+    <div class="dialog-overlay" (click)="closeDialog()">
+        <div class="dialog-container" (click)="$event.stopPropagation()">
+            <div class="dialog-header">
+                <h2>Create New Mission</h2>
+                <button mat-icon-button class="close-btn" (click)="closeDialog()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+            <div class="dialog-content">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Mission Name</mat-label>
+                    <input matInput [value]="newMissionName()" (input)="newMissionName.set($any($event.target).value)"
+                        placeholder="Enter mission name" maxlength="100">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput [value]="newMissionDescription()"
+                        (input)="newMissionDescription.set($any($event.target).value)"
+                        placeholder="Enter mission description (optional)" rows="4" maxlength="500"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="dialog-actions">
+                <button mat-button class="cancel-btn" (click)="closeDialog()" [disabled]="isSubmitting()">
+                    Cancel
+                </button>
+                <button mat-raised-button color="primary" class="submit-btn" (click)="submitNewMission()"
+                    [disabled]="isSubmitting() || !newMissionName().trim()">
+                    @if (isSubmitting()) {
+                    Creating...
+                    } @else {
+                    Create Mission
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
+    }
+
+    <!-- Edit Mission Dialog -->
+    @if (showEditDialog()) {
+    <div class="dialog-overlay" (click)="closeEditDialog()">
+        <div class="dialog-container" (click)="$event.stopPropagation()">
+            <div class="dialog-header edit">
+                <h2>Edit Mission</h2>
+                <button mat-icon-button class="close-btn" (click)="closeEditDialog()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+            <div class="dialog-content">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Mission Name</mat-label>
+                    <input matInput [value]="editMissionName()" (input)="editMissionName.set($any($event.target).value)"
+                        placeholder="Enter mission name" maxlength="100">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput [value]="editMissionDescription()"
+                        (input)="editMissionDescription.set($any($event.target).value)"
+                        placeholder="Enter mission description (optional)" rows="4" maxlength="500"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="dialog-actions">
+                <button mat-button class="cancel-btn" (click)="closeEditDialog()" [disabled]="isSubmitting()">
+                    Cancel
+                </button>
+                <button mat-raised-button color="primary" class="submit-btn edit-btn" (click)="submitEditMission()"
+                    [disabled]="isSubmitting() || !editMissionName().trim()">
+                    @if (isSubmitting()) {
+                    Saving...
+                    } @else {
+                    Save Changes
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
+    }
+
+    <!-- Delete Confirmation Dialog -->
+    @if (showDeleteConfirm()) {
+    <div class="dialog-overlay" (click)="closeDeleteConfirm()">
+        <div class="dialog-container delete-confirm" (click)="$event.stopPropagation()">
+            <div class="dialog-header delete">
+                <h2>Delete Mission</h2>
+                <button mat-icon-button class="close-btn" (click)="closeDeleteConfirm()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+            <div class="dialog-content">
+                <div class="delete-warning">
+                    <mat-icon class="warning-icon">warning</mat-icon>
+                    <p>Are you sure you want to delete <strong>"{{ deletingMission()?.name }}"</strong>?</p>
+                    <p class="warning-text">This action cannot be undone.</p>
+                </div>
+            </div>
+            <div class="dialog-actions">
+                <button mat-button class="cancel-btn" (click)="closeDeleteConfirm()" [disabled]="isSubmitting()">
+                    Cancel
+                </button>
+                <button mat-raised-button color="warn" class="delete-btn" (click)="confirmDelete()"
+                    [disabled]="isSubmitting()">
+                    @if (isSubmitting()) {
+                    Deleting...
+                    } @else {
+                    Delete Mission
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
+    }
+</div>

@@ -33,10 +33,17 @@ impl CrewOperationRepository for CrewOperationPostgres {
 
     async fn leave(&self, crew_member_ships: CrewMemberShips) -> Result<()> {
         let mut conn = Arc::clone(&self.db_pool).get()?;
-        delete(crew_memberships::table)
+        let affected_rows = delete(crew_memberships::table)
             .filter(crew_memberships::brawler_id.eq(crew_member_ships.brawler_id))
             .filter(crew_memberships::mission_id.eq(crew_member_ships.mission_id))
             .execute(&mut conn)?;
+
+        if affected_rows == 0 {
+            return Err(anyhow::anyhow!(
+                "You are not a member of this mission or mission not found"
+            ));
+        }
+
         Ok(())
     }
 }

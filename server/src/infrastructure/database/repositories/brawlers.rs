@@ -96,4 +96,53 @@ impl BrawlerRepository for BrawlerPostgres {
 
         Ok(())
     }
+
+    async fn crew_counting(&self, mission_id: i32) -> Result<u32> {
+        use crate::infrastructure::database::schema::crew_memberships;
+
+        let mut connection = Arc::clone(&self.db_pool).get()?;
+
+        let count = crew_memberships::table
+            .filter(crew_memberships::mission_id.eq(mission_id))
+            .count()
+            .get_result::<i64>(&mut connection)?;
+
+        Ok(count as u32)
+    }
+
+    async fn get_missions(
+        &self,
+        brawler_id: i32,
+    ) -> Result<Vec<crate::domain::value_objects::mission_model::MissionModel>> {
+        use crate::domain::value_objects::mission_model::MissionModel;
+        use diesel::sql_types::Int4;
+
+        let mut connection = Arc::clone(&self.db_pool).get()?;
+
+        let sql = r#"
+            SELECT 
+                m.id,
+                m.name,
+                m.description,
+                m.status,
+                m.chief_id,
+                b.display_name AS chief_display_name,
+                (SELECT COUNT(*) FROM crew_memberships cm WHERE cm.mission_id = m.id) AS crew_count,
+                m.created_at,
+                m.updated_at
+            FROM missions m
+            INNER JOIN brawlers b ON b.id = m.chief_id
+            WHERE (m.chief_id = $1 OR EXISTS (
+                SELECT 1 FROM crew_memberships cm_user
+                WHERE cm_user.mission_id = m.id AND cm_user.brawler_id = $1
+            )) AND m.deleted_at IS NULL
+            ORDER BY m.created_at DESC
+        "#;
+
+        let result = diesel::sql_query(sql)
+            .bind::<Int4, _>(brawler_id)
+            .load::<MissionModel>(&mut connection)?;
+
+        Ok(result)
+    }
 }

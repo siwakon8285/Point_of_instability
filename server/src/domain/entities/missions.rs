@@ -1,6 +1,4 @@
-use crate::{
-    domain::value_objects::mission_model::MissionModel, infrastructure::database::schema::missions,
-};
+use crate::infrastructure::database::schema::missions;
 use chrono::NaiveDateTime;
 use diesel::prelude::*;
 
@@ -18,21 +16,6 @@ pub struct MissionEntity {
     pub deleted_at: Option<NaiveDateTime>,
 }
 
-impl MissionEntity {
-    pub fn to_model(&self, crew_count: i64) -> MissionModel {
-        MissionModel {
-            id: self.id,
-            name: self.name.clone(),
-            description: self.description.clone(),
-            status: self.status.clone(),
-            chief_id: self.chief_id,
-            crew_count,
-            created_at: self.created_at,
-            updated_at: self.updated_at,
-        }
-    }
-}
-
 #[derive(Debug, Clone, Insertable)]
 #[diesel(table_name = missions)]
 pub struct AddMissionEntity {
@@ -47,5 +30,6 @@ pub struct AddMissionEntity {
 pub struct EditMissionEntity {
     pub chief_id: i32,
     pub name: Option<String>,
+    pub status: Option<String>,
     pub description: Option<String>,
 }

@@ -1,0 +1,36 @@
+@base_url = http://localhost:8000/api
+@username = siwakon
+@password = Siwakon8!
+
+### login
+# @name login
+POST {{base_url}}/authentication/login
+Content-Type: application/json
+
+{
+    "username": "{{username}}",
+    "password": "{{password}}"
+}
+
+### extract token and customer_id (assumed to be 1 for siwakon)
+@access_token = {{login.response.body.access_token}}
+@my_id = 1
+
+### 1. Get Available Missions (Exclude my owned and joined)
+# Expected: Missions where I am not chief and not crew
+GET {{base_url}}/mission-viewing?status=Open&exclude_owned_by={{my_id}}&exclude_joined_by={{my_id}}
+Content-Type: application/json
+
+### 2. Get My Owned Missions
+# Expected: Missions where I am the chief
+GET {{base_url}}/mission-viewing?owned_by={{my_id}}
+Content-Type: application/json
+
+### 3. Get Missions I Joined (My Working Missions)
+# Expected: Missions where I am a crew member
+GET {{base_url}}/mission-viewing?joined_by={{my_id}}
+Content-Type: application/json
+
+### 4. Search Available Missions by Name
+GET {{base_url}}/mission-viewing?status=Open&exclude_owned_by={{my_id}}&exclude_joined_by={{my_id}}&name=shopping
+Content-Type: application/json

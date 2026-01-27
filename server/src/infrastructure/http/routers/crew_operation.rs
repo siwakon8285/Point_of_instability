@@ -11,27 +11,31 @@ use std::sync::Arc;
 use crate::{
     application::use_cases::crew_operation::CrewOperationUseCase,
     domain::repositories::{
-        crew_operation::CrewOperationRepository, mission_viewing::MissionViewingRepository,
+        crew_operation::CrewOperationRepository, mission_management::MissionManagementRepository,
+        mission_viewing::MissionViewingRepository,
     },
     infrastructure::{
         database::{
             postgresql_connection::PgPoolSquad,
             repositories::{
-                crew_operation::CrewOperationPostgres, mission_viewing::MissionViewingPostgres,
+                crew_operation::CrewOperationPostgres,
+                mission_management::MissionManagementPostgres,
+                mission_viewing::MissionViewingPostgres,
             },
         },
         http::middleware::auth::authorization,
     },
 };
 
-pub async fn join<T1, T2>(
-    State(use_case): State<Arc<CrewOperationUseCase<T1, T2>>>,
+pub async fn join<T1, T2, T3>(
+    State(use_case): State<Arc<CrewOperationUseCase<T1, T2, T3>>>,
     Extension(user_id): Extension<i32>,
     Path(mission_id): Path<i32>,
 ) -> impl IntoResponse
 where
     T1: CrewOperationRepository + Send + Sync + 'static,
     T2: MissionViewingRepository + Send + Sync,
+    T3: MissionManagementRepository + Send + Sync,
 {
     match use_case.join(mission_id, user_id).await {
         Ok(_) => (
@@ -50,20 +54,21 @@ where
                     .into_response();
             }
 
-            // ถ้าเป็น Error อื่นๆ ก็ตอบ 500 ตามปกติ
-            (StatusCode::INTERNAL_SERVER_ERROR, error_msg).into_response()
+            // ถ้าเป็น Error อื่นๆ ก็ตอบ 400 (Bad Request) แทนที่จะเป็น 500
+            (StatusCode::BAD_REQUEST, error_msg).into_response()
         }
     }
 }
 
-pub async fn leave<T1, T2>(
-    State(use_case): State<Arc<CrewOperationUseCase<T1, T2>>>,
+pub async fn leave<T1, T2, T3>(
+    State(use_case): State<Arc<CrewOperationUseCase<T1, T2, T3>>>,
     Extension(user_id): Extension<i32>,
     Path(mission_id): Path<i32>,
 ) -> impl IntoResponse
 where
     T1: CrewOperationRepository + Send + Sync + 'static,
     T2: MissionViewingRepository + Send + Sync,
+    T3: MissionManagementRepository + Send + Sync,
 {
     match use_case.leave(mission_id, user_id).await {
         Ok(_) => (
@@ -77,8 +82,13 @@ where
 
 pub fn routes(db_pool: Arc<PgPoolSquad>) -> Router {
     let crew_repo = CrewOperationPostgres::new(db_pool.clone());
-    let viewing_repo = MissionViewingPostgres::new(db_pool);
-    let use_case = CrewOperationUseCase::new(Arc::new(crew_repo), Arc::new(viewing_repo));
+    let viewing_repo = MissionViewingPostgres::new(db_pool.clone());
+    let management_repo = MissionManagementPostgres::new(db_pool);
+    let use_case = CrewOperationUseCase::new(
+        Arc::new(crew_repo),
+        Arc::new(viewing_repo),
+        Arc::new(management_repo),
+    );
 
     Router::new()
         .route("/join/{mission_id}", post(join))

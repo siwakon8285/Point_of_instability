@@ -30,7 +30,10 @@ where
     }
 
     pub async fn in_progress(&self, mission_id: i32, chief_id: i32) -> Result<i32> {
-        let mission = self.mission_viewing_repository.get_one(mission_id).await?;
+        let mission = self
+            .mission_viewing_repository
+            .view_detail(mission_id)
+            .await?;
 
         let crew_count = self
             .mission_viewing_repository
@@ -73,7 +76,10 @@ where
     }
 
     pub async fn to_completed(&self, mission_id: i32, chief_id: i32) -> Result<i32> {
-        let mission = self.mission_viewing_repository.get_one(mission_id).await?;
+        let mission = self
+            .mission_viewing_repository
+            .view_detail(mission_id)
+            .await?;
 
         if mission.status != MissionStatuses::InProgress.to_string() {
             return Err(anyhow::anyhow!(
@@ -95,7 +101,10 @@ where
     }
 
     pub async fn to_failed(&self, mission_id: i32, chief_id: i32) -> Result<i32> {
-        let mission = self.mission_viewing_repository.get_one(mission_id).await?;
+        let mission = self
+            .mission_viewing_repository
+            .view_detail(mission_id)
+            .await?;
 
         if mission.status != MissionStatuses::InProgress.to_string() {
             return Err(anyhow::anyhow!("Mission must be In Progress to fail it"));

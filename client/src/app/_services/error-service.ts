@@ -20,13 +20,8 @@ export class ErrorService {
     if (error) {
       switch (error.status) {
         case 400:
-          if (error.error?.message) {
-            this._snackbar.open(error.error.message, 'ok', this.snackBarConfig);
-          } else if (error.message) {
-            this._snackbar.open(error.message, 'ok', this.snackBarConfig);
-          } else {
-            this._snackbar.open('Bad Request', 'ok', this.snackBarConfig);
-          }
+          const message = error.error?.message || error.error || error.message || 'Bad Request';
+          this._snackbar.open(message, 'ok', this.snackBarConfig);
           break;
 
         case 401:

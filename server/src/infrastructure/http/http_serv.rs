@@ -28,7 +28,7 @@ use crate::{
 };
 
 fn static_serve() -> Router {
-    let dir = "statics";
+    let dir = "frontend";
 
     let service = ServeDir::new(dir).not_found_service(ServeFile::new(format!("{dir}/index.html")));
 

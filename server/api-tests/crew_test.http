@@ -1,5 +1,6 @@
-@username = menta
-@password = P@ssw0rd
+@base_url = http://localhost:8000/api
+@username = siwakon
+@password = Siwakon8!
 
 ### login
 # @name login

@@ -1,6 +1,6 @@
 @base_url = http://localhost:8000/api
-@username = menta
-@password = P@ssw0rd
+@username = siwakon
+@password = Siwakon8!
 
 ### login
 # @name login
@@ -13,8 +13,7 @@ Content-Type: application/json
 }
 
 ### extract token
-@access_token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzY5Njg2NTE4LCJpYXQiOjE3NjkwODE3MTh9._xKOuYVRhvJdIsA2kfBtBnDRHT8PeBV5xtqx8zbvb9U
-
+@access_token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzcwMDQxNDY3LCJpYXQiOjE3Njk0MzY2Njd9.juZtjNOiF1yhrTRZiYDI_cxvSTd1fUjAP7dQkOlq5-o
 
 ### create new mission
 # @prompt mission_name Mission Name

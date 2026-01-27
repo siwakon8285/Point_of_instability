@@ -4,6 +4,7 @@ export interface Passport {
     expires_in: number;
     display_name: string;
     avatar_url?: string;
+    sub?: string;
 }
 
 export interface RegisterModel {

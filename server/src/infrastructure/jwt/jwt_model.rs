@@ -13,6 +13,7 @@ pub struct Passport {
     pub expires_in: usize,
     pub display_name: String,
     pub avatar_url: Option<String>,
+    pub sub: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -41,6 +42,7 @@ impl Passport {
             expires_in,
             display_name,
             avatar_url,
+            sub: brawler_id.to_string(),
         })
     }
 }

@@ -33,6 +33,18 @@ export class MissionService {
     if (filter.status) {
       params.push(`status=${encodeURIComponent(filter.status)}`);
     }
+    if (filter.exclude_owned_by !== undefined) {
+      params.push(`exclude_owned_by=${filter.exclude_owned_by}`);
+    }
+    if (filter.exclude_joined_by !== undefined) {
+      params.push(`exclude_joined_by=${filter.exclude_joined_by}`);
+    }
+    if (filter.owned_by !== undefined) {
+      params.push(`owned_by=${filter.owned_by}`);
+    }
+    if (filter.joined_by !== undefined) {
+      params.push(`joined_by=${filter.joined_by}`);
+    }
     return params.join('&');
   }
   async add(mission: AddMission): Promise<number> {
@@ -40,5 +52,36 @@ export class MissionService {
     const observable = this._http.post<{ mission_id: number }>(url, mission);
     const resp = await firstValueFrom(observable);
     return resp.mission_id;
+  }
+
+  async getMyMissions(): Promise<Mission[]> {
+    const url = this._api_url + '/brawlers/my-missions';
+    const observable = this._http.get<Mission[]>(url);
+    const missions = await firstValueFrom(observable);
+    return missions;
+  }
+
+  async join(missionId: number): Promise<void> {
+    const url = `${this._api_url}/crew-operation/join/${missionId}`;
+    const observable = this._http.post<void>(url, {});
+    await firstValueFrom(observable);
+  }
+
+  async leave(missionId: number): Promise<void> {
+    const url = `${this._api_url}/crew-operation/leave/${missionId}`;
+    const observable = this._http.delete<void>(url);
+    await firstValueFrom(observable);
+  }
+
+  async edit(missionId: number, mission: { name?: string; description?: string }): Promise<void> {
+    const url = `${this._api_url}/mission-management/${missionId}`;
+    const observable = this._http.patch<void>(url, mission);
+    await firstValueFrom(observable);
+  }
+
+  async delete(missionId: number): Promise<void> {
+    const url = `${this._api_url}/mission-management/${missionId}`;
+    const observable = this._http.delete<void>(url);
+    await firstValueFrom(observable);
   }
 }

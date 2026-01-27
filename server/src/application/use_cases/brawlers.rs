@@ -5,6 +5,7 @@ use crate::{
         value_objects::{
             base64_image::Base64Image,
             brawler_model::RegisterBrawlerModel,
+            mission_model::MissionModel,
             uploaded_image::{UploadImageOptions, UploadedImage},
         },
     },
@@ -70,5 +71,9 @@ where
         self.brawler_repository
             .update_profile(brawler_id, display_name)
             .await
+    }
+
+    pub async fn get_missions(&self, brawler_id: i32) -> Result<Vec<MissionModel>> {
+        self.brawler_repository.get_missions(brawler_id).await
     }
 }

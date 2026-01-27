@@ -38,7 +38,6 @@ impl MissionManagementRepository for MissionManagementPostgres {
         let result = diesel::update(missions::table)
             .filter(missions::id.eq(mission_id))
             .filter(missions::deleted_at.is_null())
-            .filter(missions::status.eq(MissionStatuses::Open.to_string()))
             .set(&edit_mission_entity)
             .returning(missions::id)
             .get_result::<i32>(&mut conn)?;
@@ -48,15 +47,19 @@ impl MissionManagementRepository for MissionManagementPostgres {
     async fn remove(&self, mission_id: i32, chief_id: i32) -> Result<()> {
         let mut conn = self.db_pool.get()?;
 
-        diesel::update(missions::table)
+        let affected_rows = diesel::update(missions::table)
             .filter(missions::id.eq(mission_id))
+            .filter(missions::chief_id.eq(chief_id))
             .filter(missions::deleted_at.is_null())
             .filter(missions::status.eq(MissionStatuses::Open.to_string()))
-            .set((
-                missions::deleted_at.eq(diesel::dsl::now),
-                missions::chief_id.eq(chief_id),
-            ))
+            .set(missions::deleted_at.eq(diesel::dsl::now))
             .execute(&mut conn)?;
+
+        if affected_rows == 0 {
+            return Err(anyhow::anyhow!(
+                "Mission not found or you don't have permission to delete it!"
+            ));
+        }
 
         Ok(())
     }

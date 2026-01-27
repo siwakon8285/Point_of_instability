@@ -5,75 +5,85 @@
     </div>
 
     <mat-card class="filter-card">
-        <mat-card-header>
-            <mat-card-title>🔍 Search Missions</mat-card-title>
-        </mat-card-header>
         <mat-card-content>
             <div class="filter-form">
-                <mat-form-field appearance="outline">
-                    <mat-label>Mission Name</mat-label>
-                    <input matInput [(ngModel)]="filter.name" placeholder="Enter mission name">
-                </mat-form-field>
+                <div class="filter-group">
+                    <mat-icon class="search-icon">search</mat-icon>
+                    <span class="filter-label">Search Missions</span>
+                </div>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Status</mat-label>
-                    <mat-select [(ngModel)]="filter.status">
-                        <mat-option [value]="undefined">-- All Status --</mat-option>
-                        <mat-option value="Open">Open</mat-option>
-                        <mat-option value="InProgress">In Progress</mat-option>
-                        <mat-option value="Completed">Completed</mat-option>
-                        <mat-option value="Failed">Failed</mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <div class="filter-inputs">
+                    <mat-form-field appearance="outline" class="search-field">
+                        <mat-label>Mission Name</mat-label>
+                        <input matInput [ngModel]="filter().name" (ngModelChange)="updateFilter({name: $event})"
+                            placeholder="Mission Name">
+                    </mat-form-field>
 
-                <div class="filter-actions">
-                    <button mat-raised-button color="primary" (click)="onSubmit()">
-                        <mat-icon>search</mat-icon>
-                        Search
+                    <mat-form-field appearance="outline" class="status-field">
+                        <mat-label>Status</mat-label>
+                        <mat-select [ngModel]="filter().status" (ngModelChange)="updateFilter({status: $event})">
+                            <mat-option value="Open">Open</mat-option>
+                            <mat-option value="InProgress">In Progress</mat-option>
+                            <mat-option value="Completed">Completed</mat-option>
+                            <mat-option value="Failed">Failed</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <button mat-raised-button class="search-btn" (click)="onSubmit()">
+                        <mat-icon>search</mat-icon> Search
                     </button>
                 </div>
             </div>
         </mat-card-content>
     </mat-card>
 
-    <div class="missions-list">
-        @for (mission of missions; track mission.id) {
-        <mat-card class="mission-card">
-            <mat-card-header>
-                <mat-card-title>{{ mission.name }}</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <span class="status-badge" [ngClass]="mission.status.toLowerCase()">
-                    @switch (mission.status) {
-                    @case ('Open') {
-                    <mat-icon class="status-icon">radio_button_unchecked</mat-icon>
+    <div class="mission-table-container">
+        @if(missions().length) {
+        <table class="mission-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Chief</th>
+                    <th>Number of Crew</th>
+                    <th>Status</th>
+                    <th>Created at</th>
+                    <th>Updated at</th>
+                    @if(isSignin()) {
+                    <th class="action-header">Actions</th>
                     }
-                    @case ('InProgress') {
-                    <mat-icon class="status-icon">pending</mat-icon>
-                    }
-                    @case ('Completed') {
-                    <mat-icon class="status-icon">check_circle</mat-icon>
-                    }
-                    @case ('Failed') {
-                    <mat-icon class="status-icon">cancel</mat-icon>
-                    }
-                    }
-                    {{ mission.status }}
-                </span>
-                <p class="mission-description">{{ mission.description || 'No description available' }}</p>
-                <div class="card-footer">
-                    <div class="crew-info">
-                        <mat-icon>group</mat-icon>
-                        <span>{{ mission.crew_count }} members</span>
-                    </div>
-                    <button mat-stroked-button class="view-btn">
-                        <mat-icon>visibility</mat-icon>
-                        View
-                    </button>
-                </div>
-            </mat-card-content>
-        </mat-card>
-        } @empty {
+                </tr>
+            </thead>
+            <tbody>
+                @for (mission of missions(); track mission.id) {
+                <tr>
+                    <td class="name-cell">{{ mission.name }}</td>
+                    <td class="description-cell">{{ mission.description || '-' }}</td>
+                    <td>{{ mission.chief_display_name }}</td>
+                    <td>{{ mission.crew_count }} / 3</td>
+                    <td>
+                        <span class="status-badge" [ngClass]="mission.status.toLowerCase()">
+                            {{ mission.status.toUpperCase() }}
+                        </span>
+                    </td>
+                    <td>{{ mission.created_at | date:'MM/dd/yy, h:mm a' }}</td>
+                    <td>{{ mission.updated_at | date:'MM/dd/yy, h:mm a' }}</td>
+                    <td class="action-cell">
+                        @if(isSignin()) {
+                        @if(mission.chief_id === currentUserId()) {
+                        <span class="owned-label">Owner</span>
+                        } @else {
+                        <a class="join-link" (click)="onJoin(mission.id)">Join</a>
+                        }
+                        } @else {
+                        <span class="signin-required">Sign in to Join</span>
+                        }
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        } @else {
         <div class="no-missions">
             <mat-icon>search_off</mat-icon>
             <p class="no-missions-text">No missions found</p>

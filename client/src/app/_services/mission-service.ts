@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -13,6 +13,13 @@ export class MissionService {
   private _api_url = environment.apiUrl;
   private _http = inject(HttpClient);
   filter: MissionFilter = {};
+
+  // Global trigger for refreshing mission lists across components
+  refreshTrigger = signal<number>(0);
+
+  triggerRefresh(): void {
+    this.refreshTrigger.update((v: number) => v + 1);
+  }
 
   async gets(filter: MissionFilter): Promise<Mission[]> {
     const queryString = this.toQueryString(filter);
@@ -63,25 +70,25 @@ export class MissionService {
 
   async join(missionId: number): Promise<void> {
     const url = `${this._api_url}/crew-operation/join/${missionId}`;
-    const observable = this._http.post<void>(url, {});
+    const observable = this._http.post(url, {}, { responseType: 'text' });
     await firstValueFrom(observable);
   }
 
   async leave(missionId: number): Promise<void> {
     const url = `${this._api_url}/crew-operation/leave/${missionId}`;
-    const observable = this._http.delete<void>(url);
+    const observable = this._http.delete(url, { responseType: 'text' });
     await firstValueFrom(observable);
   }
 
   async edit(missionId: number, mission: { name?: string; description?: string }): Promise<void> {
     const url = `${this._api_url}/mission-management/${missionId}`;
-    const observable = this._http.patch<void>(url, mission);
+    const observable = this._http.patch(url, mission, { responseType: 'text' });
     await firstValueFrom(observable);
   }
 
   async delete(missionId: number): Promise<void> {
     const url = `${this._api_url}/mission-management/${missionId}`;
-    const observable = this._http.delete<void>(url);
+    const observable = this._http.delete(url, { responseType: 'text' });
     await firstValueFrom(observable);
   }
 }

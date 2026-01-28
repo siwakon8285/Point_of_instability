@@ -38,7 +38,7 @@
     </mat-card>
 
     <div class="mission-table-container">
-        @if(missions().length) {
+        @if(filteredMissions().length) {
         <table class="mission-table">
             <thead>
                 <tr>
@@ -55,7 +55,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for (mission of missions(); track mission.id) {
+                @for (mission of filteredMissions(); track mission.id) {
                 <tr>
                     <td class="name-cell">{{ mission.name }}</td>
                     <td class="description-cell">{{ mission.description || '-' }}</td>

@@ -30,9 +30,10 @@ export class Missions implements OnInit {
   private _router = inject(Router);
 
   filter = signal<MissionFilter>({ status: 'Open' });
-  refreshTrigger = signal<number>(0);
+  hiddenMissionIds = signal<Set<number>>(new Set());
 
   isSignin = computed(() => this._passportService.isSignin());
+
 
   currentUserId = computed(() => {
     const passportData = this._passportService.data();
@@ -46,9 +47,8 @@ export class Missions implements OnInit {
     combineLatest([
       toObservable(this.filter),
       toObservable(this.currentUserId),
-      toObservable(this.refreshTrigger)
+      toObservable(this._missionService.refreshTrigger)
     ]).pipe(
-      debounceTime(100), // Prevent redundant calls
       filter(([_, userId, __]: [MissionFilter, number | undefined, number]) => {
         // Wait until userId is available before making API call
         console.log('DEBUG filter: userId =', userId);
@@ -72,6 +72,11 @@ export class Missions implements OnInit {
     { initialValue: [] as Mission[] }
   );
 
+  filteredMissions = computed(() => {
+    const hidden = this.hiddenMissionIds();
+    return this.missions().filter(m => !hidden.has(m.id));
+  });
+
   async ngOnInit(): Promise<void> {
     // Initial fetch handled by observable chain
   }
@@ -81,18 +86,42 @@ export class Missions implements OnInit {
   }
 
   onSubmit(): void {
-    this.refreshTrigger.update(v => v + 1);
+    this._missionService.triggerRefresh();
   }
 
   async onJoin(missionId: number): Promise<void> {
+    // Optimistic Update: Hide immediately
+    this.hiddenMissionIds.update(set => {
+      const newSet = new Set(set);
+      newSet.add(missionId);
+      return newSet;
+    });
+
     try {
       await this._missionService.join(missionId);
       this._snackBar.open('Joined mission successfully!', 'OK', { duration: 3000 });
+      this._missionService.triggerRefresh();
       this._router.navigate(['/chief']);
     } catch (error: any) {
-      console.error(error);
-      const errorMsg = error.error || error.message || 'Failed to join mission';
+      // Rollback on error
+      this.hiddenMissionIds.update(set => {
+        const newSet = new Set(set);
+        newSet.delete(missionId);
+        return newSet;
+      });
+      console.error('Join error:', error);
+      // Handle various error formats
+      let errorMsg = 'Failed to join mission';
+      if (typeof error?.error === 'string') {
+        errorMsg = error.error;
+      } else if (typeof error?.error?.message === 'string') {
+        errorMsg = error.error.message;
+      } else if (typeof error?.message === 'string') {
+        errorMsg = error.message;
+      }
       this._snackBar.open(errorMsg, 'OK', { duration: 5000, panelClass: ['error-snackbar'] });
     }
   }
+
+
 }

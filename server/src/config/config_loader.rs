@@ -12,14 +12,16 @@ pub fn load() -> Result<DotEnvyConfig> {
     dotenvy::dotenv().ok();
 
     let server = Server {
-        port: env::var("SERVER_PORT")
-            .expect("SERVER_PORT is valid")
+        // Check PORT first (for Render), then fall back to SERVER_PORT
+        port: env::var("PORT")
+            .or_else(|_| env::var("SERVER_PORT"))
+            .expect("PORT or SERVER_PORT must be set")
             .parse()?,
         body_limit: env::var("SERVER_BODY_LIMIT")
-            .expect("SERVER_BODY_LIMIT is valid")
+            .unwrap_or_else(|_| "10".to_string())
             .parse()?,
         timeout: env::var("SERVER_TIMEOUT")
-            .expect("SERVER_TIMEOUT is valid")
+            .unwrap_or_else(|_| "30".to_string())
             .parse()?,
     };
 

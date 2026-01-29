@@ -1,51 +1,79 @@
+/* 404 Page Styles */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 150px);
+  padding: 2rem;
+  animation: fadeIn 0.6s ease-out;
+}
 
-body
-{
-  background-color:#fff;
-/*   background: radial-gradient(at 50% -20%, #908392, #0d060e) fixed; */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.container a {
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.container a:hover {
+  transform: scale(1.02);
 }
 
 
-#handboy
-{
-   animation: swing ease-in-out 1.3s infinite alternate;
-    transform-origin: 98% 98%;
-    transform-box: fill-box;
-    
+#handboy {
+  animation: swing ease-in-out 1.3s infinite alternate;
+  transform-origin: 98% 98%;
+  transform-box: fill-box;
+
 }
 
 
-#girllight
-{
-   animation: swing ease-in-out 1.3s infinite alternate;
-    transform-origin: 0% 97%;
-    transform-box: fill-box;
+#girllight {
+  animation: swing ease-in-out 1.3s infinite alternate;
+  transform-origin: 0% 97%;
+  transform-box: fill-box;
 }
 
-#hairgirl
-{
-    animation: swinghair ease-in-out 1.3s infinite alternate;
-   transform-origin: 60% 0%;
-    transform-box: fill-box;
-  
+#hairgirl {
+  animation: swinghair ease-in-out 1.3s infinite alternate;
+  transform-origin: 60% 0%;
+  transform-box: fill-box;
+
 }
 
-#zero
-{
-  transform-origin:bottom;
-  transform-box:fill-box;
-  
+#zero {
+  transform-origin: bottom;
+  transform-box: fill-box;
+
 }
 
 /*************swing************/
 @keyframes swing {
-    0% { transform: rotate(10deg); }
-    100% { transform: rotate(-10deg); }
+  0% {
+    transform: rotate(10deg);
+  }
+
+  100% {
+    transform: rotate(-10deg);
+  }
 }
 
 
 /*************swing hair************/
 @keyframes swinghair {
-    0% { transform: rotate(6deg); }
-    100% { transform: rotate(-6deg); }
+  0% {
+    transform: rotate(6deg);
+  }
+
+  100% {
+    transform: rotate(-6deg);
+  }
 }

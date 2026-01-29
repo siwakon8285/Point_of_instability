@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { PassportService } from '../_services/passport-service';
 import { getAvatar } from '../_helpers/avatar';
 import { MatDialog } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -12,7 +13,7 @@ import { UserService } from '../_services/user-service';
 
 @Component({
   selector: 'app-profile',
-  imports: [MatButtonModule, MatIconModule, MatSnackBarModule],
+  imports: [MatCardModule, MatButtonModule, MatIconModule, MatSnackBarModule],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
@@ -47,7 +48,7 @@ export class Profile {
         console.log('Uploading file:', file.name);
         const success = await this._userService.uploadAvatarImage(file);
         console.log('Upload success:', success);
-        
+
         if (success) {
           this._snackBar.open('อัปโหลดรูปโปรไฟล์สำเร็จ!', 'ปิด', {
             duration: 3000,
@@ -61,7 +62,7 @@ export class Profile {
             verticalPosition: 'bottom'
           });
         }
-        
+
         // Force change detection to ensure the UI updates
         this._cdr.detectChanges();
       }

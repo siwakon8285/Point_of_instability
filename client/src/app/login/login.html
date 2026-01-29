@@ -1,10 +1,22 @@
 <div class="login-container">
-    <mat-card>
-        <h3>@if (mode === 'login') { Login } @else { Register }</h3>
+    <!-- Background Decor -->
+    <div class="glow-bg"></div>
+
+    <mat-card class="glass-panel login-card">
+        <div class="card-header">
+            <div class="icon-badge">
+                <mat-icon>{{ mode === 'login' ? 'lock_open' : 'person_add' }}</mat-icon>
+            </div>
+            <h3>{{ mode === 'login' ? 'Welcome Back' : 'Create Account' }}</h3>
+            <p>{{ mode === 'login' ? 'Enter your credentials to access your account' : 'Join us and start your journey
+                today' }}</p>
+        </div>
+
         <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
             <!-- Username -->
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="custom-field">
                 <mat-label>Username</mat-label>
+                <mat-icon matPrefix>person</mat-icon>
                 <input matInput type="text" placeholder="username" formControlName="username"
                     (input)="updateErrorMessage('username')">
                 @if (form.controls['username'].invalid) {
@@ -13,8 +25,9 @@
             </mat-form-field>
 
             <!-- Password -->
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="custom-field">
                 <mat-label>Password</mat-label>
+                <mat-icon matPrefix>key</mat-icon>
                 <input matInput type="password" placeholder="password" formControlName="password"
                     (input)="updateErrorMessage('password')">
                 @if (form.controls['password'].invalid) {
@@ -24,8 +37,9 @@
 
             @if (mode === 'register') {
             <!-- Confirm Password -->
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="custom-field">
                 <mat-label>Confirm Password</mat-label>
+                <mat-icon matPrefix>lock_reset</mat-icon>
                 <input matInput type="password" placeholder="confirm password" formControlName="confirm_password"
                     (input)="updateErrorMessage('confirm_password')">
                 @if (form.controls['confirm_password'].invalid) {
@@ -34,8 +48,9 @@
             </mat-form-field>
 
             <!-- Display Name -->
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="custom-field">
                 <mat-label>Display Name</mat-label>
+                <mat-icon matPrefix>badge</mat-icon>
                 <input matInput type="text" placeholder="display name" formControlName="display_name"
                     (input)="updateErrorMessage('display_name')">
                 @if (form.controls['display_name'].invalid) {
@@ -44,21 +59,41 @@
             </mat-form-field>
             }
 
-            <button mat-raised-button type="submit" class="blue" [disabled]="!form.valid">
-                @if (mode === 'login') { LOGIN } @else { REGISTER }
+            <button mat-raised-button type="submit" class="submit-btn" [disabled]="!form.valid">
+                {{ mode === 'login' ? 'Sign In' : 'Sign Up' }}
+                <mat-icon>arrow_forward</mat-icon>
             </button>
         </form>
 
         @if(errorFromServer !== '') {
-        <span class="error">{{errorFromServer}}</span>
+        <div class="error-banner">
+            <mat-icon>error_outline</mat-icon>
+            <span>{{errorFromServer}}</span>
+        </div>
         }
 
-        <div class="login-spacer">or</div>
+        <div class="divider">
+            <span>or continue with</span>
+        </div>
 
-        @if (mode === 'login') {
-        <div class="toggle">New here? <span (click)="toggleMode()">Sign Up</span></div>
-        } @else {
-        <div class="toggle">Already have an account? <span (click)="toggleMode()">Log in</span></div>
-        }
+        <div class="social-login">
+            <button class="social-btn" type="button">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+            </button>
+            <button class="social-btn" type="button">
+                <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" alt="Facebook">
+            </button>
+            <button class="social-btn" type="button">
+                <img src="https://www.svgrepo.com/show/475689/twitter-color.svg" alt="Twitter">
+            </button>
+        </div>
+
+        <div class="toggle-wrapper">
+            @if (mode === 'login') {
+            <p>Don't have an account? <span (click)="toggleMode()">Sign up now</span></p>
+            } @else {
+            <p>Already have an account? <span (click)="toggleMode()">Log in</span></p>
+            }
+        </div>
     </mat-card>
 </div>

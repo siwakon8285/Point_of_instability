@@ -1,50 +1,62 @@
 <div class="profile-container">
-    <div class="profile-card">
-        <!-- Avatar Section -->
-        <div class="avatar-section">
+    <div class="glow-bg"></div>
+
+    <mat-card class="glass-panel profile-card">
+        <div class="profile-header">
             <div class="avatar-wrapper">
-                <img [src]="avatarUrl()" [alt]="displayName()" class="avatar">
-                <div class="avatar-glow"></div>
+                <img [src]="avatarUrl()" [alt]="displayName()" class="profile-avatar">
+                <button class="edit-avatar-btn" (click)="openDialog()">
+                    <mat-icon>camera_alt</mat-icon>
+                </button>
             </div>
-            <button class="upload-btn" (click)="openDialog()">
-                <mat-icon>camera_alt</mat-icon>
-            </button>
+
+            <div class="profile-identity">
+                <h1 class="profile-name">{{displayName()}}</h1>
+                <p class="profile-role">Mission Specialist</p>
+            </div>
         </div>
 
-        <!-- User Info -->
-        <div class="user-info">
-            <h1 class="name">{{displayName()}}</h1>
-            <p class="tagline">Welcome back!</p>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <mat-icon>assignment_turned_in</mat-icon>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-value">12</span>
+                    <span class="stat-label">Missions</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <mat-icon>schedule</mat-icon>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-value">48h</span>
+                    <span class="stat-label">Active Time</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <mat-icon>military_tech</mat-icon>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-value">Rank 5</span>
+                    <span class="stat-label">Current Level</span>
+                </div>
+            </div>
         </div>
 
-        <!-- Stats Section -->
-        <div class="stats-section">
-            <div class="stat-item">
-                <span class="stat-value">12</span>
-                <span class="stat-label">Missions</span>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <span class="stat-value">48</span>
-                <span class="stat-label">Hours</span>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <span class="stat-value">5</span>
-                <span class="stat-label">Awards</span>
-            </div>
-        </div>
-<!--  -->
-        <!-- Actions -->
-        <div class="actions">
-            <button class="btn-primary" (click)="editProfile()">
+        <div class="action-buttons">
+            <button mat-flat-button class="action-btn primary" (click)="editProfile()">
                 <mat-icon>edit</mat-icon>
                 Edit Profile
             </button>
-            <button class="btn-secondary" (click)="logout()">
+            <button mat-stroked-button class="action-btn secondary" (click)="logout()">
                 <mat-icon>logout</mat-icon>
-                Logout
+                Sign Out
             </button>
         </div>
-    </div>
+    </mat-card>
 </div>

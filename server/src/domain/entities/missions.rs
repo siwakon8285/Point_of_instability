@@ -14,6 +14,7 @@ pub struct MissionEntity {
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
     pub deleted_at: Option<NaiveDateTime>,
+    pub max_crew: i32,
 }
 
 #[derive(Debug, Clone, Insertable)]
@@ -23,6 +24,7 @@ pub struct AddMissionEntity {
     pub name: String,
     pub status: String,
     pub description: Option<String>,
+    pub max_crew: i32,
 }
 
 #[derive(Debug, Clone, AsChangeset)]
@@ -32,4 +34,5 @@ pub struct EditMissionEntity {
     pub name: Option<String>,
     pub status: Option<String>,
     pub description: Option<String>,
+    pub max_crew: Option<i32>,
 }

@@ -25,6 +25,8 @@ pub struct MissionModel {
     pub chief_display_name: String,
     #[diesel(sql_type = BigInt)]
     pub crew_count: i64,
+    #[diesel(sql_type = Int4)]
+    pub max_crew: i32,
     #[diesel(sql_type = Timestamp)]
     pub created_at: NaiveDateTime,
     #[diesel(sql_type = Timestamp)]
@@ -35,6 +37,7 @@ pub struct MissionModel {
 pub struct AddMissionModel {
     pub name: String,
     pub description: Option<String>,
+    pub max_crew: Option<i32>,
 }
 
 impl AddMissionModel {
@@ -44,6 +47,7 @@ impl AddMissionModel {
             description: self.description.clone(),
             status: MissionStatuses::Open.to_string(),
             chief_id,
+            max_crew: self.max_crew.unwrap_or(3),
         }
     }
 }
@@ -52,6 +56,7 @@ impl AddMissionModel {
 pub struct EditMissionModel {
     pub name: Option<String>,
     pub description: Option<String>,
+    pub max_crew: Option<i32>,
 }
 
 impl EditMissionModel {
@@ -61,6 +66,7 @@ impl EditMissionModel {
             description: self.description.clone(),
             status: None,
             chief_id,
+            max_crew: self.max_crew,
         }
     }
 }

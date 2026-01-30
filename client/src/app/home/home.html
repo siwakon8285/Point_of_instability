@@ -7,37 +7,226 @@
         <div class="blob blob-3"></div>
     </div>
 
-    <div class="hero-section">
-        <div class="hero-content">
-            <h1 class="hero-title">Point of <span class="accent">Instability</span></h1>
-            <p class="hero-subtitle">Join the elite force of brawlers and embark on high-stakes missions across the
-                multiverse.</p>
+    <!-- Loading State -->
+    @if (isLoading()) {
+    <div class="loading-container">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+    } @else {
+
+    <!-- GUEST VIEW -->
+    @if (!isLoggedIn()) {
+    <div class="guest-view">
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">Point of <span class="accent">Instability</span></h1>
+                <p class="hero-subtitle">Join the elite force of brawlers and embark on high-stakes missions across the
+                    multiverse.</p>
+                <button mat-flat-button class="cta-button" (click)="goToLogin()">
+                    <mat-icon>rocket_launch</mat-icon>
+                    Start Your Journey
+                </button>
+            </div>
         </div>
 
-        <div class="features-grid">
-            <div class="feature-card glass-panel" style="--delay: 0.1s">
-                <div class="icon-wrapper">
+        <!-- Live Stats Section -->
+        @if (publicStats()) {
+        <div class="stats-section">
+            <h2 class="section-title">Live Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card glass-panel">
+                    <div class="stat-icon missions-icon">
+                        <mat-icon>assignment</mat-icon>
+                    </div>
+                    <div class="stat-value">{{ publicStats()?.total_missions }}</div>
+                    <div class="stat-label">Total Missions</div>
+                </div>
+                <div class="stat-card glass-panel">
+                    <div class="stat-icon brawlers-icon">
+                        <mat-icon>groups</mat-icon>
+                    </div>
+                    <div class="stat-value">{{ publicStats()?.total_brawlers }}</div>
+                    <div class="stat-label">Active Brawlers</div>
+                </div>
+                <div class="stat-card glass-panel">
+                    <div class="stat-icon open-icon">
+                        <mat-icon>door_open</mat-icon>
+                    </div>
+                    <div class="stat-value">{{ publicStats()?.open_missions }}</div>
+                    <div class="stat-label">Open Missions</div>
+                </div>
+                <div class="stat-card glass-panel">
+                    <div class="stat-icon active-icon">
+                        <mat-icon>pending_actions</mat-icon>
+                    </div>
+                    <div class="stat-value">{{ publicStats()?.active_missions }}</div>
+                    <div class="stat-label">In Progress</div>
+                </div>
+            </div>
+        </div>
+        }
+
+        <!-- Recent Missions Section -->
+        @if (recentMissions().length > 0) {
+        <div class="recent-missions-section">
+            <h2 class="section-title">Recent Missions</h2>
+            <div class="missions-list">
+                @for (mission of recentMissions(); track mission.id) {
+                <div class="mission-card glass-panel">
+                    <div class="mission-header">
+                        <span class="mission-name">{{ mission.name }}</span>
+                        <span class="status-badge" [class]="mission.status.toLowerCase()">
+                            {{ mission.status }}
+                        </span>
+                    </div>
+                    <p class="mission-description">{{ mission.description || 'No description' }}</p>
+                    <div class="mission-meta">
+                        <span><mat-icon>person</mat-icon> {{ mission.chief_display_name }}</span>
+                        <span><mat-icon>group</mat-icon> {{ mission.crew_count }}/3</span>
+                        <span><mat-icon>schedule</mat-icon> {{ mission.created_at | date:'short' }}</span>
+                    </div>
+                </div>
+                }
+            </div>
+            <button mat-stroked-button class="view-all-btn" (click)="goToMissions()">
+                View All Missions
+                <mat-icon>arrow_forward</mat-icon>
+            </button>
+        </div>
+        }
+    </div>
+    }
+
+    <!-- AUTHENTICATED VIEW -->
+    @if (isLoggedIn()) {
+    <div class="authenticated-view">
+        <!-- Welcome Header -->
+        <div class="welcome-header">
+            <h1 class="welcome-title">Welcome back, <span class="accent">{{ displayName() }}</span>!</h1>
+            <p class="welcome-subtitle">Here's your mission status overview</p>
+        </div>
+
+        <!-- User Stats Panel -->
+        @if (userDashboard()) {
+        <div class="user-stats-section">
+            <div class="stats-grid user-stats">
+                <div class="stat-card glass-panel highlight">
+                    <div class="stat-icon owned-icon">
+                        <mat-icon>military_tech</mat-icon>
+                    </div>
+                    <div class="stat-value">{{ userDashboard()?.stats?.my_missions_count }}</div>
+                    <div class="stat-label">Leading</div>
+                </div>
+                <div class="stat-card glass-panel">
+                    <div class="stat-icon joined-icon">
+                        <mat-icon>handshake</mat-icon>
+                    </div>
+                    <div class="stat-value">{{ userDashboard()?.stats?.joined_missions_count }}</div>
+                    <div class="stat-label">Joined</div>
+                </div>
+                <div class="stat-card glass-panel">
+                    <div class="stat-icon success-icon">
+                        <mat-icon>emoji_events</mat-icon>
+                    </div>
+                    <div class="stat-value">{{ userDashboard()?.stats?.success_count }}</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+                <div class="stat-card glass-panel">
+                    <div class="stat-icon rate-icon">
+                        <mat-icon>trending_up</mat-icon>
+                    </div>
+                    <div class="stat-value">{{ successRate() }}%</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- My Active Missions -->
+        <div class="missions-panel">
+            <div class="panel-header">
+                <h2 class="section-title">
                     <mat-icon>rocket_launch</mat-icon>
-                </div>
-                <h3>Mission Control</h3>
-                <p>Track and manage your operations with real-time status updates.</p>
+                    My Active Missions
+                </h2>
+                <button mat-button class="see-all-btn" (click)="goToMyMissions()">
+                    See All <mat-icon>chevron_right</mat-icon>
+                </button>
             </div>
+            @if (userDashboard()?.active_missions?.length) {
+            <div class="missions-horizontal">
+                @for (mission of userDashboard()?.active_missions; track mission.id) {
+                <div class="mission-card glass-panel compact">
+                    <div class="mission-header">
+                        <span class="mission-name">{{ mission.name }}</span>
+                        <span class="status-badge" [class]="mission.status.toLowerCase()">
+                            {{ mission.status }}
+                        </span>
+                    </div>
+                    <div class="mission-meta">
+                        <span><mat-icon>group</mat-icon> {{ mission.crew_count }}/3</span>
+                    </div>
+                </div>
+                }
+            </div>
+            } @else {
+            <div class="empty-state">
+                <mat-icon>inbox</mat-icon>
+                <p>No active missions. Create one or join an open mission!</p>
+            </div>
+            }
+        </div>
 
-            <div class="feature-card glass-panel" style="--delay: 0.2s">
-                <div class="icon-wrapper">
-                    <mat-icon>groups</mat-icon>
-                </div>
-                <h3>Team Synergy</h3>
-                <p>Coordinate directly with your crew and optimize performance.</p>
+        <!-- Open Missions to Join -->
+        <div class="missions-panel">
+            <div class="panel-header">
+                <h2 class="section-title">
+                    <mat-icon>explore</mat-icon>
+                    Open Missions to Join
+                </h2>
+                <button mat-button class="see-all-btn" (click)="goToMissions()">
+                    Browse All <mat-icon>chevron_right</mat-icon>
+                </button>
             </div>
+            @if (userDashboard()?.open_missions?.length) {
+            <div class="missions-horizontal">
+                @for (mission of userDashboard()?.open_missions; track mission.id) {
+                <div class="mission-card glass-panel compact joinable">
+                    <div class="mission-header">
+                        <span class="mission-name">{{ mission.name }}</span>
+                        <span class="status-badge open">Open</span>
+                    </div>
+                    <p class="mission-description short">{{ mission.description || 'No description' }}</p>
+                    <div class="mission-footer">
+                        <span class="chief-info"><mat-icon>person</mat-icon> {{ mission.chief_display_name }}</span>
+                        <button mat-flat-button class="join-btn" (click)="joinMission(mission.id)">
+                            <mat-icon>add</mat-icon> Join
+                        </button>
+                    </div>
+                </div>
+                }
+            </div>
+            } @else {
+            <div class="empty-state">
+                <mat-icon>check_circle</mat-icon>
+                <p>All caught up! No open missions available right now.</p>
+            </div>
+            }
+        </div>
+        }
 
-            <div class="feature-card glass-panel" style="--delay: 0.3s">
-                <div class="icon-wrapper">
-                    <mat-icon>analytics</mat-icon>
-                </div>
-                <h3>Performance Analytics</h3>
-                <p> visualize your success rates and improve strategy.</p>
-            </div>
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <button mat-flat-button class="action-btn primary" (click)="goToMyMissions()">
+                <mat-icon>add_circle</mat-icon>
+                Create Mission
+            </button>
+            <button mat-stroked-button class="action-btn secondary" (click)="goToMissions()">
+                <mat-icon>search</mat-icon>
+                Browse Missions
+            </button>
         </div>
     </div>
+    }
+    }
 </div>

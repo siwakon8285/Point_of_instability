@@ -60,7 +60,7 @@
                     <td class="name-cell">{{ mission.name }}</td>
                     <td class="description-cell">{{ mission.description || '-' }}</td>
                     <td>{{ mission.chief_display_name }}</td>
-                    <td>{{ mission.crew_count }} / 3</td>
+                    <td>{{ mission.crew_count }} / {{ mission.max_crew }}</td>
                     <td>
                         <span class="status-badge" [ngClass]="mission.status.toLowerCase()">
                             {{ mission.status.toUpperCase() }}

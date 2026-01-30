@@ -42,6 +42,7 @@ export class MissionManager {
   showDialog = signal<boolean>(false);
   newMissionName = signal<string>('');
   newMissionDescription = signal<string>('');
+  newMissionMaxCrew = signal<number>(3);
   isSubmitting = signal<boolean>(false);
 
   // Edit Dialog state
@@ -49,6 +50,7 @@ export class MissionManager {
   editingMission = signal<Mission | null>(null);
   editMissionName = signal<string>('');
   editMissionDescription = signal<string>('');
+  editMissionMaxCrew = signal<number>(3);
 
   // Delete Confirmation state
   showDeleteConfirm = signal<boolean>(false);
@@ -99,6 +101,7 @@ export class MissionManager {
     this.showDialog.set(false);
     this.newMissionName.set('');
     this.newMissionDescription.set('');
+    this.newMissionMaxCrew.set(3);
   }
 
   async submitNewMission(): Promise<void> {
@@ -112,7 +115,7 @@ export class MissionManager {
 
     this.isSubmitting.set(true);
     try {
-      const addMission: AddMission = { name, description };
+      const addMission: AddMission = { name, description, max_crew: this.newMissionMaxCrew() };
       await this._missionService.add(addMission);
       this._snackBar.open('Mission created successfully!', 'OK', { duration: 3000 });
       this.closeDialog();
@@ -131,6 +134,7 @@ export class MissionManager {
     this.editingMission.set(mission);
     this.editMissionName.set(mission.name);
     this.editMissionDescription.set(mission.description || '');
+    this.editMissionMaxCrew.set(mission.max_crew || 3);
     this.showEditDialog.set(true);
   }
 
@@ -139,6 +143,7 @@ export class MissionManager {
     this.editingMission.set(null);
     this.editMissionName.set('');
     this.editMissionDescription.set('');
+    this.editMissionMaxCrew.set(3);
   }
 
   async submitEditMission(): Promise<void> {
@@ -155,7 +160,11 @@ export class MissionManager {
 
     this.isSubmitting.set(true);
     try {
-      await this._missionService.edit(mission.id, { name, description });
+      await this._missionService.edit(mission.id, {
+        name,
+        description,
+        max_crew: this.editMissionMaxCrew()
+      });
       this._snackBar.open('Mission updated successfully!', 'OK', { duration: 3000 });
       this.closeEditDialog();
       this._missionService.triggerRefresh();

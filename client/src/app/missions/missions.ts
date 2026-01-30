@@ -1,7 +1,7 @@
-import { Component, computed, inject, OnInit, Signal, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, OnDestroy, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { combineLatest, from, of } from 'rxjs';
-import { catchError, debounceTime, filter, switchMap } from 'rxjs/operators';
+import { combineLatest, from, of, interval, Subscription } from 'rxjs';
+import { catchError, filter, switchMap } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -23,11 +23,12 @@ import { MissionFilter } from '../_models/mission-filter';
   templateUrl: './missions.html',
   styleUrl: './missions.css'
 })
-export class Missions implements OnInit {
+export class Missions implements OnInit, OnDestroy {
   private _missionService = inject(MissionService);
   private _passportService = inject(PassportService);
   private _snackBar = inject(MatSnackBar);
   private _router = inject(Router);
+  private _autoRefreshSub?: Subscription;
 
   filter = signal<MissionFilter>({ status: 'Open' });
   hiddenMissionIds = signal<Set<number>>(new Set());
@@ -78,7 +79,14 @@ export class Missions implements OnInit {
   });
 
   async ngOnInit(): Promise<void> {
-    // Initial fetch handled by observable chain
+    // Auto-refresh every 10 seconds to sync with other users' changes
+    this._autoRefreshSub = interval(10000).subscribe(() => {
+      this._missionService.triggerRefresh();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this._autoRefreshSub?.unsubscribe();
   }
 
   updateFilter(updates: Partial<MissionFilter>): void {

@@ -1,5 +1,6 @@
+/* Dark Cyberpunk Theme - Login Page */
 .login-container {
-    min-height: calc(100vh - 64px);
+    min-height: calc(100vh - 80px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -10,9 +11,9 @@
 
 .glow-bg {
     position: absolute;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle at center, rgba(124, 58, 237, 0.4) 0%, rgba(192, 38, 211, 0.3) 30%, transparent 70%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle at center, rgba(147, 51, 234, 0.25) 0%, rgba(34, 211, 238, 0.1) 30%, transparent 70%);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -36,49 +37,47 @@
 
 .login-card {
     width: 100%;
-    max-width: 440px;
-    padding: 3rem !important;
+    max-width: 420px;
+    padding: 2.5rem !important;
     border-radius: 24px !important;
-    background: white !important;
-    border: 2px solid rgba(124, 58, 237, 0.15) !important;
-    box-shadow:
-        0 25px 60px -15px rgba(124, 58, 237, 0.2),
-        0 10px 30px -10px rgba(0, 0, 0, 0.1),
-        0 0 0 1px rgba(255, 255, 255, 0.9) inset !important;
+    background: rgba(21, 21, 31, 0.85) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: var(--shadow-lg), 0 0 30px rgba(168, 85, 247, 0.15) !important;
     animation: fadeUp 0.6s ease-out;
 }
 
 /* Header */
 .card-header {
     text-align: center;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
 }
 
 .icon-badge {
-    width: 68px;
-    height: 68px;
-    background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #a855f7 0%, #c084fc 100%);
     color: white;
-    border-radius: 20px;
+    border-radius: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1.5rem;
-    box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
+    margin: 0 auto 1.25rem;
+    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4), 0 0 20px rgba(168, 85, 247, 0.2);
 }
 
 .icon-badge mat-icon {
-    transform: scale(1.5);
+    transform: scale(1.4);
 }
 
 .card-header h3 {
-    font-size: 1.75rem;
+    font-size: 1.6rem;
     margin-bottom: 0.5rem;
-    color: var(--slate-900);
+    color: var(--text-primary);
 }
 
 .card-header p {
-    color: var(--slate-500);
+    color: var(--text-secondary);
     font-size: 0.95rem;
 }
 
@@ -89,54 +88,36 @@
 }
 
 ::ng-deep .custom-field .mat-mdc-text-field-wrapper {
-    background-color: var(--slate-50) !important;
-    border-radius: 12px;
-}
-
-::ng-deep .custom-field .mat-mdc-form-field-focus-indicator {
+    background-color: var(--bg-tertiary) !important;
     border-radius: 12px;
 }
 
 ::ng-deep .custom-field .mat-icon {
-    color: var(--slate-400);
+    color: var(--text-muted);
     margin-right: 8px;
 }
 
 /* Button Styles */
 .submit-btn {
     width: 100%;
-    height: 56px;
+    height: 54px;
     margin-top: 1.5rem;
-    background: linear-gradient(135deg, #7c3aed 0%, #9333ea 50%, #c026d3 100%) !important;
-    background-size: 200% 200% !important;
+    background: linear-gradient(135deg, #a855f7 0%, #c084fc 100%) !important;
     color: white !important;
     font-size: 1rem !important;
     font-weight: 600 !important;
     border-radius: 14px !important;
-    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4) !important;
+    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 8px;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1) !important;
+    transition: all 0.4s ease !important;
 }
 
 .submit-btn:hover:not(:disabled) {
-    background-position: 100% 50% !important;
     transform: translateY(-3px);
-    box-shadow: 0 12px 35px rgba(124, 58, 237, 0.5) !important;
-}
-
-.submit-btn:active:not(:disabled) {
-    transform: translateY(0) scale(0.98);
-}
-
-.submit-btn mat-icon {
-    transition: transform 0.3s ease;
-}
-
-.submit-btn:hover:not(:disabled) mat-icon {
-    transform: translateX(4px);
+    box-shadow: 0 12px 35px rgba(168, 85, 247, 0.5) !important;
 }
 
 .submit-btn:disabled {
@@ -146,42 +127,23 @@
 
 /* Error Banner */
 .error-banner {
-    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-    border: 1px solid #fecaca;
-    color: var(--error);
-    padding: 14px 18px;
-    border-radius: 14px;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #f87171;
+    padding: 12px 16px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-top: 1.5rem;
+    gap: 10px;
+    margin-top: 1.25rem;
     font-weight: 500;
     font-size: 0.9rem;
-    animation: shake 0.5s ease-out;
 }
 
-@keyframes shake {
-
-    0%,
-    100% {
-        transform: translateX(0);
-    }
-
-    20%,
-    60% {
-        transform: translateX(-5px);
-    }
-
-    40%,
-    80% {
-        transform: translateX(5px);
-    }
-}
-
-/* Divider & Social */
+/* Divider */
 .divider {
     text-align: center;
-    margin: 2rem 0;
+    margin: 1.75rem 0;
     position: relative;
 }
 
@@ -192,80 +154,66 @@
     top: 50%;
     width: 100%;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--slate-200), transparent);
-    z-index: 0;
+    background: linear-gradient(90deg, transparent, var(--border-color), transparent);
 }
 
 .divider span {
-    background: white;
+    background: var(--bg-card);
     padding: 0 16px;
-    color: var(--slate-400);
+    color: var(--text-muted);
     font-size: 0.85rem;
     position: relative;
-    z-index: 1;
 }
 
+/* Social Login */
 .social-login {
     display: flex;
     justify-content: center;
     gap: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.75rem;
 }
 
 .social-btn {
-    width: 54px;
-    height: 54px;
+    width: 52px;
+    height: 52px;
     border-radius: 14px;
-    border: 1px solid var(--slate-200);
-    background: white;
+    border: 1px solid var(--border-color);
+    background: var(--bg-tertiary);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 0.3s ease;
 }
 
 .social-btn:hover {
-    background: var(--slate-50);
-    border-color: var(--slate-300);
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-}
-
-.social-btn:active {
-    transform: translateY(0) scale(0.98);
+    border-color: var(--accent-primary);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md), 0 0 15px rgba(168, 85, 247, 0.2);
 }
 
 .social-btn img {
-    width: 26px;
-    height: 26px;
-    transition: transform 0.3s ease;
-}
-
-.social-btn:hover img {
-    transform: scale(1.1);
+    width: 24px;
+    height: 24px;
 }
 
 /* Toggle */
 .toggle-wrapper {
     text-align: center;
-    color: var(--slate-500);
+    color: var(--text-secondary);
     font-size: 0.95rem;
 }
 
 .toggle-wrapper span {
-    color: var(--primary-600);
+    color: var(--accent-primary);
     font-weight: 600;
     cursor: pointer;
-    transition: color 0.2s;
 }
 
 .toggle-wrapper span:hover {
-    color: var(--secondary-600);
     text-decoration: underline;
 }
 
-/* Animation */
 @keyframes fadeUp {
     from {
         opacity: 0;
@@ -275,11 +223,5 @@
     to {
         opacity: 1;
         transform: translateY(0);
-    }
-}
-
-@media (max-width: 480px) {
-    .login-card {
-        padding: 2rem !important;
     }
 }

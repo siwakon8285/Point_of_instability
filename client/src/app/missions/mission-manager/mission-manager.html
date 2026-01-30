@@ -33,6 +33,7 @@
                     <tr>
                         <th>NAME</th>
                         <th>DESCRIPTION</th>
+                        <th>CHIEF</th>
                         <th>STATUS</th>
                         <th>CREW</th>
                         <th class="action-header">ACTIONS</th>
@@ -43,12 +44,13 @@
                     <tr>
                         <td class="name-cell">{{ mission.name }}</td>
                         <td class="description-cell">{{ mission.description || '-' }}</td>
+                        <td>{{ mission.chief_display_name }}</td>
                         <td>
                             <span class="status-badge" [ngClass]="mission.status.toLowerCase()">
                                 {{ mission.status.toUpperCase() }}
                             </span>
                         </td>
-                        <td>{{ mission.crew_count }} / 3</td>
+                        <td>{{ mission.crew_count }} / {{ mission.max_crew }}</td>
                         <td class="action-cell">
                             <mat-icon class="action-icon" (click)="openEditDialog(mission)">edit</mat-icon>
                             <mat-icon class="action-icon delete" (click)="openDeleteConfirm(mission)">delete</mat-icon>
@@ -136,6 +138,12 @@
                         (input)="newMissionDescription.set($any($event.target).value)"
                         placeholder="Enter mission description (optional)" rows="4" maxlength="500"></textarea>
                 </mat-form-field>
+                <mat-form-field appearance="outline" class="half-width">
+                    <mat-label>Max Crew Size</mat-label>
+                    <input matInput type="number" [value]="newMissionMaxCrew()"
+                        (input)="newMissionMaxCrew.set(+$any($event.target).value)" min="2" max="10" placeholder="3">
+                    <mat-hint>2-10 members</mat-hint>
+                </mat-form-field>
             </div>
             <div class="dialog-actions">
                 <button mat-button class="cancel-btn" (click)="closeDialog()" [disabled]="isSubmitting()">
@@ -175,6 +183,12 @@
                     <textarea matInput [value]="editMissionDescription()"
                         (input)="editMissionDescription.set($any($event.target).value)"
                         placeholder="Enter mission description (optional)" rows="4" maxlength="500"></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="half-width">
+                    <mat-label>Max Crew Size</mat-label>
+                    <input matInput type="number" [value]="editMissionMaxCrew()"
+                        (input)="editMissionMaxCrew.set(+$any($event.target).value)" min="2" max="10" placeholder="3">
+                    <mat-hint>2-10 members</mat-hint>
                 </mat-form-field>
             </div>
             <div class="dialog-actions">

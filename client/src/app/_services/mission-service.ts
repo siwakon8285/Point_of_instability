@@ -80,7 +80,7 @@ export class MissionService {
     await firstValueFrom(observable);
   }
 
-  async edit(missionId: number, mission: { name?: string; description?: string }): Promise<void> {
+  async edit(missionId: number, mission: { name?: string; description?: string; max_crew?: number }): Promise<void> {
     const url = `${this._api_url}/mission-management/${missionId}`;
     const observable = this._http.patch(url, mission, { responseType: 'text' });
     await firstValueFrom(observable);

@@ -128,6 +128,7 @@ impl BrawlerRepository for BrawlerPostgres {
                 m.chief_id,
                 b.display_name AS chief_display_name,
                 (SELECT COUNT(*) FROM crew_memberships cm WHERE cm.mission_id = m.id) AS crew_count,
+                m.max_crew,
                 m.created_at,
                 m.updated_at
             FROM missions m

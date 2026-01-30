@@ -1,0 +1,10 @@
+### Get public stats
+GET http://localhost:3000/api/dashboard/stats
+
+### Get recent missions
+GET http://localhost:3000/api/dashboard/recent-missions
+
+### Get user dashboard (authenticated)
+# @name getUserDashboard
+GET http://localhost:3000/api/dashboard/me
+Authorization: Bearer {{$dotenv JWT_TOKEN}}

@@ -10,7 +10,7 @@ use crate::domain::{
 use anyhow::Result;
 use std::sync::Arc;
 
-const MAX_CREW_PER_MISSION: i64 = 3;
+// Note: MAX_CREW_PER_MISSION is now read from mission.max_crew, this constant is deprecated
 
 pub struct CrewOperationUseCase<T1, T2, T3>
 where
@@ -63,7 +63,7 @@ where
             return Err(anyhow::anyhow!("Mission is not joinable"));
         }
 
-        if (crew_count as i64) >= MAX_CREW_PER_MISSION {
+        if (crew_count as i64) >= (mission.max_crew as i64) {
             // Update status to Failed if room is full
             self.mission_management_repository
                 .edit(
@@ -73,6 +73,7 @@ where
                         name: None,
                         status: Some(MissionStatuses::Failed.to_string()),
                         description: None,
+                        max_crew: None,
                     },
                 )
                 .await?;
@@ -95,6 +96,7 @@ where
                     name: None,
                     status: Some(MissionStatuses::Completed.to_string()),
                     description: None,
+                    max_crew: None,
                 },
             )
             .await?;
@@ -131,6 +133,7 @@ where
                     name: None,
                     status: Some(MissionStatuses::Open.to_string()),
                     description: None,
+                    max_crew: None,
                 },
             )
             .await?;

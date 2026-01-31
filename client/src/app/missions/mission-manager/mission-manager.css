@@ -138,35 +138,35 @@
 
 .mission-table th:nth-child(1),
 .mission-table td:nth-child(1) {
-    width: 15%;
+    width: 14%;
 }
 
 .mission-table th:nth-child(2),
 .mission-table td:nth-child(2) {
-    width: 22%;
+    width: 18%;
 }
 
 .mission-table th:nth-child(3),
 .mission-table td:nth-child(3) {
-    width: 15%;
+    width: 14%;
 }
 
 .mission-table th:nth-child(4),
 .mission-table td:nth-child(4) {
-    width: 12%;
+    width: 10%;
     text-align: center;
 }
 
 .mission-table th:nth-child(5),
 .mission-table td:nth-child(5) {
-    width: 12%;
+    width: 10%;
     text-align: center;
 }
 
 .mission-table th:nth-child(6),
 .mission-table td:nth-child(6) {
     width: 10%;
-    text-align: right;
+    text-align: center;
 }
 
 .mission-table th {
@@ -195,6 +195,51 @@
 .name-cell {
     font-weight: 600;
     color: var(--text-primary);
+}
+
+/* Keep date/time text on single line */
+.nowrap-cell {
+    white-space: nowrap;
+    min-width: 150px;
+    padding-right: 30px !important;
+}
+
+/* Deadline countdown styles */
+.deadline-cell {
+    text-align: center;
+}
+
+.countdown {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    background: rgba(34, 211, 238, 0.15);
+    color: #22d3ee;
+}
+
+.countdown.urgent {
+    background: rgba(251, 146, 60, 0.2);
+    color: #fb923c;
+    animation: pulse-urgent 1.5s infinite;
+}
+
+.countdown.expired {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+@keyframes pulse-urgent {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
 }
 
 .description-cell {
@@ -233,11 +278,71 @@
     color: #f87171;
 }
 
+/* Status Action Buttons */
+.status-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.status-btn mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.status-btn.start {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+}
+
+.status-btn.start:hover {
+    background: rgba(34, 197, 94, 0.4);
+    transform: scale(1.1);
+}
+
+.status-btn.complete {
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+}
+
+.status-btn.complete:hover {
+    background: rgba(59, 130, 246, 0.4);
+    transform: scale(1.1);
+}
+
+.status-btn.fail {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.status-btn.fail:hover {
+    background: rgba(239, 68, 68, 0.4);
+    transform: scale(1.1);
+}
+
 /* Action Icons */
+.action-header {
+    text-align: right;
+    padding-left: 20px !important;
+    padding-right: 24px !important;
+    min-width: 80px;
+}
+
 .action-cell {
     text-align: right;
+    padding-left: 20px !important;
     padding-right: 24px !important;
     white-space: nowrap;
+    min-width: 80px;
 }
 
 .action-icon {
@@ -251,6 +356,14 @@
     vertical-align: middle;
     text-decoration: none;
     border: none;
+}
+
+/* Specific adjustment for owned missions actions */
+.owned-missions-table .action-header,
+.owned-missions-table .action-cell {
+    padding-right: 12px !important;
+    text-align: right;
+    width: auto;
 }
 
 .action-icon:first-child {
@@ -510,4 +623,233 @@
     .manager-container {
         padding: 30px 15px;
     }
+}
+
+/* Crew Count Link */
+.crew-cell {
+    cursor: pointer;
+}
+
+.crew-count-link {
+    color: var(--accent-secondary);
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    transition: all 0.2s ease;
+}
+
+.crew-count-link:hover {
+    color: var(--accent-primary);
+    text-decoration-style: solid;
+}
+
+/* Crew Dialog Styles */
+.crew-dialog {
+    max-width: 450px;
+}
+
+.dialog-header.crew {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+/* Dialog Form Layout Helper */
+.half-width {
+    width: 48%;
+    margin-right: 2%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.duration-group {
+    display: inline-flex;
+    width: 48%;
+    gap: 8px;
+    vertical-align: top;
+}
+
+.quarter-width {
+    flex: 1;
+}
+
+/* Fix mat-suffix color */
+.mat-mdc-form-field-text-suffix {
+    color: var(--accent-primary) !important;
+    font-weight: 700 !important;
+    padding-left: 4px;
+}
+
+
+
+.crew-mission-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(21, 21, 31, 0.6);
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
+
+.crew-mission-info .mission-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.crew-count-badge {
+    background: linear-gradient(135deg, #06b6d4, #22d3ee);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.loading-crew,
+.no-crew {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+    gap: 12px;
+}
+
+.loading-crew mat-icon,
+.no-crew mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.crew-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.crew-member-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(21, 21, 31, 0.4);
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.crew-member-item:hover {
+    background: rgba(21, 21, 31, 0.7);
+}
+
+.member-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--bg-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.member-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.member-avatar mat-icon {
+    font-size: 24px;
+    color: var(--text-muted);
+}
+
+.member-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.member-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.member-username {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.kick-btn {
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    margin-left: auto;
+    opacity: 0.7;
+}
+
+.kick-btn:hover {
+    background: rgba(239, 68, 68, 0.15);
+    opacity: 1;
+}
+
+.kick-btn mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+/* Status Text Styles (Ported from missions.css) */
+.status-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    display: inline-block;
+}
+
+.status-text.in-progress {
+    color: #fbbf24;
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.status-text.completed {
+    color: #c084fc;
+    background: rgba(168, 85, 247, 0.1);
+}
+
+.status-text.failed {
+    color: #f87171;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.status-text.muted {
+    color: var(--text-muted);
+    font-style: italic;
+    background: transparent;
+    padding: 0;
 }

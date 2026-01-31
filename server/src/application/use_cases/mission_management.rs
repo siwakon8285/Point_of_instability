@@ -89,12 +89,21 @@ where
     }
 
     pub async fn remove(&self, mission_id: i32, chief_id: i32) -> Result<()> {
+        let mission = self
+            .mission_viewing_repository
+            .view_detail(mission_id)
+            .await?;
+
         let crew_count = self
             .mission_viewing_repository
             .crew_counting(mission_id)
             .await?;
 
-        if crew_count > 0 {
+        // Allow deletion if mission is Completed or Failed, even if it has crew.
+        // Only block if it's Open/InProgress and has crew.
+        let is_finished = mission.status == "Completed" || mission.status == "Failed";
+
+        if !is_finished && crew_count > 0 {
             return Err(anyhow::anyhow!(
                 "Mission has been taken by brawler for now!"
             ));

@@ -38,6 +38,7 @@ pub async fn get_all<T>(
 where
     T: MissionViewingRepository + Send + Sync + 'static,
 {
+    tracing::info!("get_all filter: {:?}", filter);
     match use_case.get(&filter).await {
         Ok(models) => (StatusCode::OK, Json(models)).into_response(),
         Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),

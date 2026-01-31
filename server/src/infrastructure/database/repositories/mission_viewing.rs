@@ -40,6 +40,8 @@ impl MissionViewingRepository for MissionViewingPostgres {
                 b.display_name AS chief_display_name,
                 (SELECT COUNT(*) FROM crew_memberships cm WHERE cm.mission_id = m.id) AS crew_count,
                 m.max_crew,
+                m.deadline,
+                m.duration,
                 m.created_at,
                 m.updated_at
             FROM missions m
@@ -69,12 +71,17 @@ impl MissionViewingRepository for MissionViewingPostgres {
                 b.display_name AS chief_display_name,
                 (SELECT COUNT(*) FROM crew_memberships cm WHERE cm.mission_id = m.id) AS crew_count,
                 m.max_crew,
+                m.deadline,
+                m.duration,
                 m.created_at,
                 m.updated_at
             FROM missions m
             INNER JOIN brawlers b ON b.id = m.chief_id
             WHERE m.deleted_at IS NULL
-                AND ($1 IS NULL OR LOWER(m.status) = LOWER($1))
+                AND ($1 IS NULL 
+                    OR LOWER(m.status) = LOWER($1)
+                    OR (LOWER($1) = 'open' AND m.status = 'InProgress')
+                )
                 AND ($2 IS NULL OR m.name ILIKE $2)
                 AND ($3 IS NULL OR m.chief_id != $3)
                 AND ($4 IS NULL OR NOT EXISTS (

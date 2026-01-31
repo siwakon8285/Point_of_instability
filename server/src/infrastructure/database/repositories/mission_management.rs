@@ -51,7 +51,12 @@ impl MissionManagementRepository for MissionManagementPostgres {
             .filter(missions::id.eq(mission_id))
             .filter(missions::chief_id.eq(chief_id))
             .filter(missions::deleted_at.is_null())
-            .filter(missions::status.eq(MissionStatuses::Open.to_string()))
+            .filter(
+                missions::status
+                    .eq(MissionStatuses::Open.to_string())
+                    .or(missions::status.eq(MissionStatuses::Completed.to_string()))
+                    .or(missions::status.eq(MissionStatuses::Failed.to_string())),
+            )
             .set(missions::deleted_at.eq(diesel::dsl::now))
             .execute(&mut conn)?;
 

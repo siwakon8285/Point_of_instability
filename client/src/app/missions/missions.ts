@@ -16,6 +16,7 @@ import { MissionService } from '../_services/mission-service';
 import { PassportService } from '../_services/passport-service';
 import { Mission } from '../_models/mission';
 import { MissionFilter } from '../_models/mission-filter';
+import { CrewMember } from '../_models/crew-member';
 
 @Component({
   selector: 'app-missions',
@@ -32,6 +33,12 @@ export class Missions implements OnInit, OnDestroy {
 
   filter = signal<MissionFilter>({ status: 'Open' });
   hiddenMissionIds = signal<Set<number>>(new Set());
+
+  // Crew Dialog state
+  showCrewDialog = signal<boolean>(false);
+  crewDialogMission = signal<Mission | null>(null);
+  crewMembers = signal<CrewMember[]>([]);
+  isLoadingCrew = signal<boolean>(false);
 
   isSignin = computed(() => this._passportService.isSignin());
 
@@ -131,5 +138,76 @@ export class Missions implements OnInit, OnDestroy {
     }
   }
 
+  // Crew Members Dialog
+  async openCrewDialog(mission: Mission): Promise<void> {
+    this.crewDialogMission.set(mission);
+    this.showCrewDialog.set(true);
+    this.isLoadingCrew.set(true);
 
+    try {
+      const members = await this._missionService.getCrewMembers(mission.id);
+      this.crewMembers.set(members);
+    } catch (error: any) {
+      console.error('Failed to load crew members', error);
+      this._snackBar.open('Failed to load crew members', 'OK', { duration: 3000 });
+      this.crewMembers.set([]);
+    } finally {
+      this.isLoadingCrew.set(false);
+    }
+  }
+
+  closeCrewDialog(): void {
+    this.showCrewDialog.set(false);
+    this.crewDialogMission.set(null);
+    this.crewMembers.set([]);
+  }
+  // Real-time update signal
+  now = signal<Date>(new Date());
+
+  constructor() {
+    setInterval(() => {
+      this.now.set(new Date());
+    }, 1000);
+  }
+
+  getDurationDisplay(minutes: number | undefined): string {
+    if (!minutes) return 'No duration';
+    const d = Math.floor(minutes / (24 * 60));
+    const h = Math.floor((minutes % (24 * 60)) / 60);
+    const m = minutes % 60;
+
+    let text = '';
+    if (d > 0) text += `${d}d `;
+    if (h > 0) text += `${h}h `;
+    text += `${m}m `;
+    return text.trim();
+  }
+
+  getCountdown(deadlineStr: string | undefined): { text: string; isExpired: boolean; isUrgent: boolean; isFailed: boolean } {
+    if (!deadlineStr) return { text: 'No deadline', isExpired: false, isUrgent: false, isFailed: false };
+
+    const now = this.now();
+    const safeDeadlineStr = deadlineStr.endsWith('Z') || deadlineStr.includes('+') ? deadlineStr : deadlineStr + 'Z';
+    const deadline = new Date(safeDeadlineStr);
+    const diff = deadline.getTime() - now.getTime();
+
+    if (diff <= 0) {
+      return { text: 'Expired', isExpired: true, isUrgent: false, isFailed: true };
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    const isUrgent = diff < 24 * 60 * 60 * 1000;
+
+    let text = '';
+    if (days > 0) text += `${days}d `;
+    if (hours > 0) text += `${hours}h `;
+    text += `${minutes}m `;
+    if (days === 0 && hours === 0) text += `${seconds}s`;
+
+    return { text: text.trim(), isExpired: false, isUrgent, isFailed: false };
+  }
 }

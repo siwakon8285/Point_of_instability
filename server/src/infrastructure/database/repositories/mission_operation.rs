@@ -20,18 +20,34 @@ impl MissionOperationPostgres {
         Self { db_pool }
     }
 
-    async fn set_status(&self, mission_id: i32, status: MissionStatuses) -> Result<i32> {
+    async fn set_status(
+        &self,
+        mission_id: i32,
+        status: MissionStatuses,
+        deadline: Option<chrono::NaiveDateTime>,
+    ) -> Result<i32> {
         let db_pool = Arc::clone(&self.db_pool);
         let status_str = status.to_string();
         let id = tokio::task::spawn_blocking(move || -> Result<i32> {
             let mut conn = db_pool.get()?;
-            diesel::update(missions::table)
+
+            let target = diesel::update(missions::table)
                 .filter(missions::id.eq(mission_id))
-                .filter(missions::deleted_at.is_null())
-                .set(missions::status.eq(status_str))
-                .returning(missions::id)
-                .get_result::<i32>(&mut conn)
-                .map_err(|e| anyhow::anyhow!(e))
+                .filter(missions::deleted_at.is_null());
+
+            let result = if let Some(d) = deadline {
+                target
+                    .set((missions::status.eq(status_str), missions::deadline.eq(d)))
+                    .returning(missions::id)
+                    .get_result::<i32>(&mut conn)
+            } else {
+                target
+                    .set(missions::status.eq(status_str))
+                    .returning(missions::id)
+                    .get_result::<i32>(&mut conn)
+            };
+
+            result.map_err(|e| anyhow::anyhow!(e))
         })
         .await??;
 
@@ -41,22 +57,29 @@ impl MissionOperationPostgres {
 
 #[async_trait]
 impl MissionOperationRepository for MissionOperationPostgres {
-    async fn to_progress(&self, mission_id: i32, _chief_id: i32) -> Result<i32> {
+    async fn to_progress(
+        &self,
+        mission_id: i32,
+        _chief_id: i32,
+        deadline: Option<chrono::NaiveDateTime>,
+    ) -> Result<i32> {
         let result = self
-            .set_status(mission_id, MissionStatuses::InProgress)
+            .set_status(mission_id, MissionStatuses::InProgress, deadline)
             .await?;
         Ok(result)
     }
 
     async fn to_completed(&self, mission_id: i32, _chief_id: i32) -> Result<i32> {
         let result = self
-            .set_status(mission_id, MissionStatuses::Completed)
+            .set_status(mission_id, MissionStatuses::Completed, None)
             .await?;
         Ok(result)
     }
 
     async fn to_failed(&self, mission_id: i32, _chief_id: i32) -> Result<i32> {
-        let result = self.set_status(mission_id, MissionStatuses::Failed).await?;
+        let result = self
+            .set_status(mission_id, MissionStatuses::Failed, None)
+            .await?;
         Ok(result)
     }
 }

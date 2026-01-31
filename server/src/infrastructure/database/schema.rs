@@ -39,6 +39,8 @@ diesel::table! {
         updated_at -> Timestamp,
         deleted_at -> Nullable<Timestamp>,
         max_crew -> Int4,
+        deadline -> Nullable<Timestamp>,
+        duration -> Nullable<Int4>,
     }
 }
 

@@ -47,12 +47,6 @@ where
             return Err(anyhow::anyhow!("Mission status must be Open or Failed"));
         }
 
-        if crew_count == 0 {
-            return Err(anyhow::anyhow!(
-                "Mission must have at least one crew member"
-            ));
-        }
-
         let max_crew_per_mission: u32 = std::env::var("MAX_CREW_PER_MISSION")
             .unwrap_or_else(|_| "5".to_string())
             .parse()?;
@@ -67,9 +61,17 @@ where
             ));
         }
 
+        let mut deadline = None;
+        if let Some(duration_minutes) = mission.duration {
+            // Duration is in minutes (i32)
+            // Calculate deadline = UTC now + duration
+            let now = chrono::Utc::now().naive_utc();
+            deadline = Some(now + chrono::Duration::minutes(duration_minutes as i64));
+        }
+
         let result = self
             .mission_operation_repository
-            .to_progress(mission_id, chief_id)
+            .to_progress(mission_id, chief_id, deadline)
             .await?;
 
         Ok(result)

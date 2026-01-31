@@ -7,6 +7,8 @@ export interface Mission {
     chief_display_name: string;
     crew_count: number;
     max_crew: number;
+    deadline?: string;
+    duration?: number;
     created_at: Date;
     updated_at: Date;
 }

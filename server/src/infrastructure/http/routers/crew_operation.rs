@@ -80,6 +80,29 @@ where
     }
 }
 
+pub async fn kick_member<T1, T2, T3>(
+    State(use_case): State<Arc<CrewOperationUseCase<T1, T2, T3>>>,
+    Extension(user_id): Extension<i32>, // This is the requester (Chief)
+    Path((mission_id, brawler_id)): Path<(i32, i32)>, // Target brawler
+) -> impl IntoResponse
+where
+    T1: CrewOperationRepository + Send + Sync + 'static,
+    T2: MissionViewingRepository + Send + Sync,
+    T3: MissionManagementRepository + Send + Sync,
+{
+    match use_case.kick_member(mission_id, brawler_id, user_id).await {
+        Ok(_) => (
+            StatusCode::OK,
+            format!(
+                "Kick member {} from mission {} completed",
+                brawler_id, mission_id
+            ),
+        )
+            .into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+    }
+}
+
 pub fn routes(db_pool: Arc<PgPoolSquad>) -> Router {
     let crew_repo = CrewOperationPostgres::new(db_pool.clone());
     let viewing_repo = MissionViewingPostgres::new(db_pool.clone());
@@ -93,6 +116,7 @@ pub fn routes(db_pool: Arc<PgPoolSquad>) -> Router {
     Router::new()
         .route("/join/{mission_id}", post(join))
         .route("/leave/{mission_id}", delete(leave))
+        .route("/kick/{mission_id}/{brawler_id}", delete(kick_member))
         .route_layer(middleware::from_fn(authorization))
         .with_state(Arc::new(use_case))
 }

@@ -74,6 +74,8 @@ where
                         status: Some(MissionStatuses::Failed.to_string()),
                         description: None,
                         max_crew: None,
+                        deadline: None,
+                        duration: None,
                     },
                 )
                 .await?;
@@ -85,20 +87,6 @@ where
                 mission_id,
                 brawler_id,
             })
-            .await?;
-
-        // Update status to Completed upon successful join
-        self.mission_management_repository
-            .edit(
-                mission_id,
-                EditMissionEntity {
-                    chief_id: mission.chief_id,
-                    name: None,
-                    status: Some(MissionStatuses::Completed.to_string()),
-                    description: None,
-                    max_crew: None,
-                },
-            )
             .await?;
 
         Ok(())
@@ -134,9 +122,75 @@ where
                     status: Some(MissionStatuses::Open.to_string()),
                     description: None,
                     max_crew: None,
+                    deadline: None,
+                    duration: None,
                 },
             )
             .await?;
+
+        Ok(())
+    }
+
+    pub async fn kick_member(&self, mission_id: i32, brawler_id: i32, chief_id: i32) -> Result<()> {
+        let mission = self
+            .mission_viewing_repository
+            .view_detail(mission_id)
+            .await?;
+
+        if mission.chief_id != chief_id {
+            return Err(anyhow::anyhow!("Only the chief can kick members"));
+        }
+
+        if brawler_id == chief_id {
+            return Err(anyhow::anyhow!("Chief cannot kick themselves"));
+        }
+
+        // Allow kicking if mission is Open
+        // If mission is Full(Failed) or InProgress, logic might vary.
+        // Assuming we allow kicking in Open and InProgress (if desired), but standard flow is Open.
+        // Let's stick to Open/Failed(Full) for now.
+        // Actually, if status is InProgress, kicking might be bad?
+        // User asked "Kick member who joined". Usually before start.
+        // But let's check leave condition: Open, Failed, Completed(!?).
+        let kickable_condition = mission.status == MissionStatuses::Open.to_string()
+            || mission.status == MissionStatuses::Failed.to_string(); // Failed might mean Full here?
+
+        if !kickable_condition {
+            // If InProgress, maybe allow?
+            // But existing leave logic allows Completed?? (See line 117).
+            // Let's emulate leave condition but restricted to Chief actions.
+            // Wait, if status is 'Completed', kicking makes no sense.
+            // If 'InProgress', kicking might be needed.
+            // I'll stick to safe default: Open or Failed (Full).
+            return Err(anyhow::anyhow!(
+                "Cannot kick member in current mission status"
+            ));
+        }
+
+        self.crew_operation_repository
+            .leave(CrewMemberShips {
+                mission_id,
+                brawler_id,
+            })
+            .await?;
+
+        // If mission was Full (Failed), set it back to Open
+        if mission.status == MissionStatuses::Failed.to_string() {
+            self.mission_management_repository
+                .edit(
+                    mission_id,
+                    EditMissionEntity {
+                        chief_id: mission.chief_id,
+                        name: None,
+                        status: Some(MissionStatuses::Open.to_string()),
+                        description: None,
+                        max_crew: None,
+                        deadline: None,
+                        duration: None,
+                    },
+                )
+                .await?;
+        }
 
         Ok(())
     }

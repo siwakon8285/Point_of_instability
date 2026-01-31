@@ -28,7 +28,7 @@
         <h2 class="section-title">Missions You're Leading</h2>
         <div class="mission-table-container">
             @if(ownedMissions().length) {
-            <table class="mission-table">
+            <table class="mission-table owned-missions-table">
                 <thead>
                     <tr>
                         <th>NAME</th>
@@ -36,6 +36,7 @@
                         <th>CHIEF</th>
                         <th>STATUS</th>
                         <th>CREW</th>
+                        <th>DEADLINE</th>
                         <th class="action-header">ACTIONS</th>
                     </tr>
                 </thead>
@@ -46,12 +47,55 @@
                         <td class="description-cell">{{ mission.description || '-' }}</td>
                         <td>{{ mission.chief_display_name }}</td>
                         <td>
-                            <span class="status-badge" [ngClass]="mission.status.toLowerCase()">
-                                {{ mission.status.toUpperCase() }}
+                            <span class="status-badge"
+                                [ngClass]="(mission.status === 'Open' && getCountdown(mission.deadline).isExpired) ? 'failed' : mission.status.toLowerCase()">
+                                {{ (mission.status === 'Open' && getCountdown(mission.deadline).isExpired) ? 'FAILED' :
+                                mission.status.toUpperCase() }}
                             </span>
                         </td>
-                        <td>{{ mission.crew_count }} / {{ mission.max_crew }}</td>
+                        <td class="crew-cell" (click)="openCrewDialog(mission)">
+                            <span class="crew-count-link">{{ mission.crew_count }} / {{ mission.max_crew }}</span>
+                        </td>
+                        <td class="deadline-cell">
+                            @if (mission.status === 'Open') {
+                            @if (mission.deadline) {
+                            <span class="countdown" [class.expired]="getCountdown(mission.deadline).isExpired"
+                                [class.urgent]="getCountdown(mission.deadline).isUrgent">
+                                {{ getCountdown(mission.deadline).text }}
+                            </span>
+                            } @else if (mission.duration) {
+                            <span class="duration-badge">
+                                {{ getDurationDisplay(mission.duration) }}
+                            </span>
+                            } @else {
+                            <span class="status-text muted">-</span>
+                            }
+                            } @else if (mission.status === 'InProgress') {
+                            <span class="countdown" [class.expired]="getCountdown(mission.deadline).isExpired"
+                                [class.urgent]="getCountdown(mission.deadline).isUrgent">
+                                {{ getCountdown(mission.deadline).text }}
+                            </span>
+                            } @else if (mission.status === 'Completed') {
+                            <span class="status-text completed">Ended</span>
+                            } @else {
+                            <span class="status-text failed">Failed</span>
+                            }
+                        </td>
                         <td class="action-cell">
+                            @if (mission.status === 'Open' || mission.status === 'Failed') {
+                            <button class="status-btn start" (click)="startMission(mission.id)" title="Start Mission">
+                                <mat-icon>play_arrow</mat-icon>
+                            </button>
+                            }
+                            @if (mission.status === 'InProgress') {
+                            <button class="status-btn complete" (click)="completeMission(mission.id)"
+                                title="Complete Mission">
+                                <mat-icon>check_circle</mat-icon>
+                            </button>
+                            <button class="status-btn fail" (click)="failMission(mission.id)" title="Mark as Failed">
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                            }
                             <mat-icon class="action-icon" (click)="openEditDialog(mission)">edit</mat-icon>
                             <mat-icon class="action-icon delete" (click)="openDeleteConfirm(mission)">delete</mat-icon>
                         </td>
@@ -78,7 +122,9 @@
                         <th>NAME</th>
                         <th>DESCRIPTION</th>
                         <th>CHIEF</th>
+                        <th>CREW</th>
                         <th>STATUS</th>
+                        <th>DEADLINE</th>
                         <th>JOINED AT</th>
                         <th class="action-header">ACTIONS</th>
                     </tr>
@@ -89,12 +135,42 @@
                         <td class="name-cell">{{ mission.name }}</td>
                         <td class="description-cell">{{ mission.description || '-' }}</td>
                         <td>{{ mission.chief_display_name }}</td>
+                        <td class="crew-cell" (click)="openCrewDialog(mission)">
+                            <span class="crew-count-link">{{ mission.crew_count }} / {{ mission.max_crew }}</span>
+                        </td>
                         <td>
-                            <span class="status-badge" [ngClass]="mission.status.toLowerCase()">
-                                {{ mission.status.toUpperCase() }}
+                            <span class="status-badge"
+                                [ngClass]="(mission.status === 'Open' && getCountdown(mission.deadline).isExpired) ? 'failed' : mission.status.toLowerCase()">
+                                {{ (mission.status === 'Open' && getCountdown(mission.deadline).isExpired) ? 'FAILED' :
+                                mission.status.toUpperCase() }}
                             </span>
                         </td>
-                        <td>{{ mission.created_at | date:'MM/dd/yy, h:mm a' }}</td>
+                        <td class="deadline-cell">
+                            @if (mission.status === 'Open') {
+                            @if (mission.deadline) {
+                            <span class="countdown" [class.expired]="getCountdown(mission.deadline).isExpired"
+                                [class.urgent]="getCountdown(mission.deadline).isUrgent">
+                                {{ getCountdown(mission.deadline).text }}
+                            </span>
+                            } @else if (mission.duration) {
+                            <span class="duration-badge">
+                                {{ getDurationDisplay(mission.duration) }}
+                            </span>
+                            } @else {
+                            <span class="status-text muted">-</span>
+                            }
+                            } @else if (mission.status === 'InProgress') {
+                            <span class="countdown" [class.expired]="getCountdown(mission.deadline).isExpired"
+                                [class.urgent]="getCountdown(mission.deadline).isUrgent">
+                                {{ getCountdown(mission.deadline).text }}
+                            </span>
+                            } @else if (mission.status === 'Completed') {
+                            <span class="status-text completed">Ended</span>
+                            } @else {
+                            <span class="status-text failed">Failed</span>
+                            }
+                        </td>
+                        <td class="nowrap-cell">{{ mission.created_at | date:'MM/dd/yy, h:mm a' }}</td>
                         <td class="action-cell">
                             <a class="leave-link" (click)="onLeave(mission.id)">Leave</a>
                         </td>
@@ -144,6 +220,26 @@
                         (input)="newMissionMaxCrew.set(+$any($event.target).value)" min="2" max="10" placeholder="3">
                     <mat-hint>2-10 members</mat-hint>
                 </mat-form-field>
+                <div class="duration-group">
+                    <mat-form-field appearance="outline" class="quarter-width">
+                        <mat-label>Days</mat-label>
+                        <input matInput type="number" [value]="newMissionDays()"
+                            (input)="newMissionDays.set(+$any($event.target).value)" min="0" placeholder="0">
+                        <span matSuffix>d</span>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="quarter-width">
+                        <mat-label>Hours</mat-label>
+                        <input matInput type="number" [value]="newMissionHours()"
+                            (input)="newMissionHours.set(+$any($event.target).value)" min="0" placeholder="0">
+                        <span matSuffix>h</span>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="quarter-width">
+                        <mat-label>Minutes</mat-label>
+                        <input matInput type="number" [value]="newMissionMinutes()"
+                            (input)="newMissionMinutes.set(+$any($event.target).value)" min="0" placeholder="0">
+                        <span matSuffix>m</span>
+                    </mat-form-field>
+                </div>
             </div>
             <div class="dialog-actions">
                 <button mat-button class="cancel-btn" (click)="closeDialog()" [disabled]="isSubmitting()">
@@ -190,6 +286,26 @@
                         (input)="editMissionMaxCrew.set(+$any($event.target).value)" min="2" max="10" placeholder="3">
                     <mat-hint>2-10 members</mat-hint>
                 </mat-form-field>
+                <div class="duration-group">
+                    <mat-form-field appearance="outline" class="quarter-width">
+                        <mat-label>Days</mat-label>
+                        <input matInput type="number" [value]="editMissionDays()"
+                            (input)="editMissionDays.set(+$any($event.target).value)" min="0" placeholder="0">
+                        <span matSuffix>d</span>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="quarter-width">
+                        <mat-label>Hours</mat-label>
+                        <input matInput type="number" [value]="editMissionHours()"
+                            (input)="editMissionHours.set(+$any($event.target).value)" min="0" placeholder="0">
+                        <span matSuffix>h</span>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="quarter-width">
+                        <mat-label>Minutes</mat-label>
+                        <input matInput type="number" [value]="editMissionMinutes()"
+                            (input)="editMissionMinutes.set(+$any($event.target).value)" min="0" placeholder="0">
+                        <span matSuffix>m</span>
+                    </mat-form-field>
+                </div>
             </div>
             <div class="dialog-actions">
                 <button mat-button class="cancel-btn" (click)="closeEditDialog()" [disabled]="isSubmitting()">
@@ -237,6 +353,65 @@
                     Delete Mission
                     }
                 </button>
+            </div>
+        </div>
+    </div>
+    }
+
+    <!-- Crew Members Dialog -->
+    @if (showCrewDialog()) {
+    <div class="dialog-overlay" (click)="closeCrewDialog()">
+        <div class="dialog-container crew-dialog" (click)="$event.stopPropagation()">
+            <div class="dialog-header crew">
+                <h2>Crew Members</h2>
+                <button mat-icon-button class="close-btn" (click)="closeCrewDialog()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+            <div class="dialog-content">
+                <div class="crew-mission-info">
+                    <span class="mission-name">{{ crewDialogMission()?.name }}</span>
+                    <span class="crew-count-badge">{{ crewMembers().length }} / {{ crewDialogMission()?.max_crew
+                        }}</span>
+                </div>
+
+                @if (isLoadingCrew()) {
+                <div class="loading-crew">
+                    <mat-icon class="spin">sync</mat-icon>
+                    <span>Loading crew members...</span>
+                </div>
+                } @else if (crewMembers().length === 0) {
+                <div class="no-crew">
+                    <mat-icon>group_off</mat-icon>
+                    <span>No crew members yet</span>
+                </div>
+                } @else {
+                <div class="crew-list">
+                    @for (member of crewMembers(); track member.id) {
+                    <div class="crew-member-item">
+                        <div class="member-avatar">
+                            @if (member.avatar_url) {
+                            <img [src]="member.avatar_url" [alt]="member.display_name">
+                            } @else {
+                            <mat-icon>person</mat-icon>
+                            }
+                        </div>
+                        <div class="member-info">
+                            <span class="member-name">{{ member.display_name }}</span>
+                            <span class="member-username">&#64;{{ member.username }}</span>
+                        </div>
+                        @if (crewDialogMission()?.chief_id === currentUserId() && member.id !== currentUserId()) {
+                        <button class="kick-btn" (click)="kickMember(member)" title="Kick member">
+                            <mat-icon>person_remove</mat-icon>
+                        </button>
+                        }
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+            <div class="dialog-actions">
+                <button mat-button class="cancel-btn" (click)="closeCrewDialog()">Close</button>
             </div>
         </div>
     </div>

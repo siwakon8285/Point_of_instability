@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 import { Mission } from '../_models/mission';
 import { MissionFilter } from '../_models/mission-filter';
 import { AddMission } from '../_models/add-mission';
+import { CrewMember } from '../_models/crew-member';
 
 @Injectable({
   providedIn: 'root'
@@ -80,7 +81,7 @@ export class MissionService {
     await firstValueFrom(observable);
   }
 
-  async edit(missionId: number, mission: { name?: string; description?: string; max_crew?: number }): Promise<void> {
+  async edit(missionId: number, mission: { name?: string; description?: string; max_crew?: number; deadline?: string; duration?: number }): Promise<void> {
     const url = `${this._api_url}/mission-management/${missionId}`;
     const observable = this._http.patch(url, mission, { responseType: 'text' });
     await firstValueFrom(observable);
@@ -88,6 +89,38 @@ export class MissionService {
 
   async delete(missionId: number): Promise<void> {
     const url = `${this._api_url}/mission-management/${missionId}`;
+    const observable = this._http.delete(url, { responseType: 'text' });
+    await firstValueFrom(observable);
+  }
+
+  // Status change methods
+  async setInProgress(missionId: number): Promise<void> {
+    const url = `${this._api_url}/mission-operation/in-progress/${missionId}`;
+    const observable = this._http.patch(url, {}, { responseType: 'text' });
+    await firstValueFrom(observable);
+  }
+
+  async setCompleted(missionId: number): Promise<void> {
+    const url = `${this._api_url}/mission-operation/to-completed/${missionId}`;
+    const observable = this._http.patch(url, {}, { responseType: 'text' });
+    await firstValueFrom(observable);
+  }
+
+  async setFailed(missionId: number): Promise<void> {
+    const url = `${this._api_url}/mission-operation/to-failed/${missionId}`;
+    const observable = this._http.patch(url, {}, { responseType: 'text' });
+    await firstValueFrom(observable);
+  }
+
+  // Crew Management
+  async getCrewMembers(missionId: number): Promise<CrewMember[]> {
+    const url = `${this._api_url}/brawlers/missions/${missionId}/brawlers`;
+    const observable = this._http.get<CrewMember[]>(url);
+    return await firstValueFrom(observable);
+  }
+
+  async kickMember(missionId: number, brawlerId: number): Promise<void> {
+    const url = `${this._api_url}/crew-operation/kick/${missionId}/${brawlerId}`;
     const observable = this._http.delete(url, { responseType: 'text' });
     await firstValueFrom(observable);
   }

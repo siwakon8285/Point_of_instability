@@ -82,7 +82,7 @@
                             }
                         </td>
                         <td class="action-cell">
-                            @if (mission.status === 'Open' || mission.status === 'Failed') {
+                            @if (mission.status === 'Open' || (mission.status === 'Failed' && !mission.deadline)) {
                             <button class="status-btn start" (click)="startMission(mission.id)" title="Start Mission">
                                 <mat-icon>play_arrow</mat-icon>
                             </button>
@@ -391,7 +391,7 @@
                     <div class="crew-member-item">
                         <div class="member-avatar">
                             @if (member.avatar_url) {
-                            <img [src]="member.avatar_url" [alt]="member.display_name">
+                            <img [src]="member.avatar_url" [alt]="member.display_name" crossorigin="anonymous">
                             } @else {
                             <mat-icon>person</mat-icon>
                             }

@@ -8,6 +8,11 @@
 
     <!-- Navigation Links - only show when logged in -->
     @if(display_name()){
+    <button mat-button class="nav-btn" routerLink="/" routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon>home</mat-icon>
+        <span> Home</span>
+    </button>
     <button mat-button class="nav-btn" routerLink="/missions" routerLinkActive="active">
         <mat-icon>search</mat-icon>
         <span> Browse</span>
@@ -29,7 +34,7 @@
     } @else {
     <button mat-button [matMenuTriggerFor]="profileMenu" class="profile-btn">
         <div class="profile-btn-content">
-            <img [src]="avatar_url()" class="avatar" [alt]="display_name() + ' avatar'">
+            <img [src]="avatar_url()" class="avatar" [alt]="display_name() + ' avatar'" crossorigin="anonymous">
             <span class="display-name">{{display_name()}}</span>
         </div>
     </button>

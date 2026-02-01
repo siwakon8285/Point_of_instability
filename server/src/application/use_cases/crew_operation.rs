@@ -98,6 +98,11 @@ where
             .view_detail(mission_id)
             .await?;
 
+        let crew_count = self
+            .mission_viewing_repository
+            .crew_counting(mission_id)
+            .await?;
+
         let leaving_condition = mission.status == MissionStatuses::Open.to_string()
             || mission.status == MissionStatuses::Failed.to_string()
             || mission.status == MissionStatuses::Completed.to_string();
@@ -112,21 +117,36 @@ where
             })
             .await?;
 
-        // Change mission status back to Open so it appears in Browse Missions
-        self.mission_management_repository
-            .edit(
-                mission_id,
-                EditMissionEntity {
-                    chief_id: mission.chief_id,
-                    name: None,
-                    status: Some(MissionStatuses::Open.to_string()),
-                    description: None,
-                    max_crew: None,
-                    deadline: None,
-                    duration: None,
-                },
-            )
-            .await?;
+        // Change mission status back to Open so it appears in Browse Missions,
+        // BUT only if it is not Completed/InProgress, and if it was "Failed" due to being Full.
+        let mut should_set_open = false;
+
+        if mission.status == MissionStatuses::Open.to_string() {
+            should_set_open = true;
+        } else if mission.status == MissionStatuses::Failed.to_string() {
+            // Only set to Open if it was actually full (which is why it might have been set to Failed automatically)
+            // If it wasn't full, it means it was manually failed or failed for other reasons, so we shouldn't re-open it.
+            if (crew_count as i64) >= (mission.max_crew as i64) {
+                should_set_open = true;
+            }
+        }
+
+        if should_set_open {
+            self.mission_management_repository
+                .edit(
+                    mission_id,
+                    EditMissionEntity {
+                        chief_id: mission.chief_id,
+                        name: None,
+                        status: Some(MissionStatuses::Open.to_string()),
+                        description: None,
+                        max_crew: None,
+                        deadline: None,
+                        duration: None,
+                    },
+                )
+                .await?;
+        }
 
         Ok(())
     }
@@ -176,20 +196,28 @@ where
 
         // If mission was Full (Failed), set it back to Open
         if mission.status == MissionStatuses::Failed.to_string() {
-            self.mission_management_repository
-                .edit(
-                    mission_id,
-                    EditMissionEntity {
-                        chief_id: mission.chief_id,
-                        name: None,
-                        status: Some(MissionStatuses::Open.to_string()),
-                        description: None,
-                        max_crew: None,
-                        deadline: None,
-                        duration: None,
-                    },
-                )
+            let crew_count = self
+                .mission_viewing_repository
+                .crew_counting(mission_id)
                 .await?;
+
+            // Only re-open if it was full
+            if (crew_count as i64) >= (mission.max_crew as i64) {
+                self.mission_management_repository
+                    .edit(
+                        mission_id,
+                        EditMissionEntity {
+                            chief_id: mission.chief_id,
+                            name: None,
+                            status: Some(MissionStatuses::Open.to_string()),
+                            description: None,
+                            max_crew: None,
+                            deadline: None,
+                            duration: None,
+                        },
+                    )
+                    .await?;
+            }
         }
 
         Ok(())

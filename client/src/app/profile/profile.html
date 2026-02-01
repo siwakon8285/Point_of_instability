@@ -4,7 +4,7 @@
     <mat-card class="glass-panel profile-card">
         <div class="profile-header">
             <div class="avatar-wrapper">
-                <img [src]="avatarUrl()" [alt]="displayName()" class="profile-avatar">
+                <img [src]="avatarUrl()" [alt]="displayName()" class="profile-avatar" crossorigin="anonymous">
                 <button class="edit-avatar-btn" (click)="openDialog()">
                     <mat-icon>camera_alt</mat-icon>
                 </button>

@@ -40,11 +40,24 @@ where
             .crew_counting(mission_id)
             .await?;
 
+        if mission.status == MissionStatuses::Completed.to_string() {
+            return Err(anyhow::anyhow!("Cannot restart a completed mission"));
+        }
+
         let is_status_open_or_fail = mission.status == MissionStatuses::Open.to_string()
             || mission.status == MissionStatuses::Failed.to_string();
 
         if !is_status_open_or_fail {
             return Err(anyhow::anyhow!("Mission status must be Open or Failed"));
+        }
+
+        // If Failed, check if it was "Ended Failed" (has deadline or low crew count)
+        if mission.status == MissionStatuses::Failed.to_string() {
+            if mission.deadline.is_some() {
+                return Err(anyhow::anyhow!(
+                    "Cannot restart a failed mission that has ended"
+                ));
+            }
         }
 
         let max_crew_per_mission: u32 = std::env::var("MAX_CREW_PER_MISSION")

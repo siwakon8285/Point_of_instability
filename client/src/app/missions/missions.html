@@ -164,7 +164,7 @@
                     <div class="crew-member-item">
                         <div class="member-avatar">
                             @if (member.avatar_url) {
-                            <img [src]="member.avatar_url" [alt]="member.display_name">
+                            <img [src]="member.avatar_url" [alt]="member.display_name" crossorigin="anonymous">
                             } @else {
                             <mat-icon>person</mat-icon>
                             }

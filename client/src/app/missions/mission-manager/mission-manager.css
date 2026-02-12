@@ -1,10 +1,23 @@
-/* Dark Cyberpunk Theme - Mission Manager */
+/* ☕ Coffee Shop Theme - Mission Manager */
 .manager-container {
     padding: 50px 30px;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+    animation: pageSlideIn 0.6s ease-out;
+}
+
+@keyframes pageSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .page-header {
@@ -21,9 +34,8 @@
     left: 0;
     width: 60px;
     height: 3px;
-    background: linear-gradient(90deg, #a855f7, #22d3ee);
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-light));
     border-radius: 2px;
-    box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
 }
 
 /* Stats Summary */
@@ -37,34 +49,58 @@
 }
 
 .stat-card {
-    background: rgba(21, 21, 31, 0.8);
-    backdrop-filter: blur(12px);
+    background: var(--bg-card);
     border: 1px solid var(--border-color);
     padding: 28px 24px;
-    border-radius: 18px;
+    border-radius: 16px;
     box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: column;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     border-top: 4px solid transparent;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: statPopIn 0.5s ease-out forwards;
+}
+
+.stat-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.stat-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.stat-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.stat-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+@keyframes statPopIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg), 0 0 20px rgba(168, 85, 247, 0.2);
-    border-color: var(--accent-primary);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
 }
 
 .stat-card.leading {
-    border-top-color: #a855f7;
+    border-top-color: var(--accent-primary);
 }
 
 .stat-card.joined {
-    border-top-color: #22d3ee;
+    border-top-color: var(--accent-secondary);
 }
 
 .stat-card.open {
-    border-top-color: #fbbf24;
+    border-top-color: var(--accent-light);
 }
 
 .stat-label {
@@ -80,48 +116,50 @@
     font-size: 2.25rem;
     font-weight: 800;
     color: var(--text-primary);
+    font-family: var(--font-display);
 }
 
 .stat-card.leading .stat-value {
-    background: linear-gradient(45deg, #a855f7, #c084fc);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--accent-primary);
 }
 
 .stat-card.joined .stat-value {
-    background: linear-gradient(45deg, #06b6d4, #22d3ee);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--accent-secondary);
 }
 
 .stat-card.open .stat-value {
-    background: linear-gradient(45deg, #f59e0b, #fbbf24);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--accent-light);
 }
 
 .page-title {
     font-size: 3rem;
     font-weight: 800;
     margin-bottom: 14px;
-    letter-spacing: -0.03em;
-    background: linear-gradient(135deg, #f5f5f7, #a855f7, #22d3ee);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    font-family: var(--font-display);
 }
 
-/* Table Styling - Dark Glass */
+/* Table Styling */
 .mission-table-container {
-    background: rgba(21, 21, 31, 0.8);
-    backdrop-filter: blur(12px);
-    border-radius: 18px;
+    background: var(--bg-card);
+    border-radius: 16px;
     overflow: hidden;
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-md);
+    animation: tableFadeUp 0.5s ease-out 0.2s backwards;
+}
+
+@keyframes tableFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .mission-table {
@@ -170,9 +208,9 @@
 }
 
 .mission-table th {
-    background: var(--bg-tertiary);
+    background: var(--bg-secondary);
     padding: 18px 24px;
-    color: var(--accent-primary);
+    color: var(--text-secondary);
     font-weight: 700;
     font-size: 0.7rem;
     border-bottom: 1px solid var(--border-color);
@@ -182,7 +220,7 @@
 
 .mission-table td {
     padding: 20px 24px;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid rgba(111, 78, 55, 0.06);
     color: var(--text-secondary);
     font-size: 0.95rem;
     vertical-align: middle;
@@ -197,14 +235,13 @@
     color: var(--text-primary);
 }
 
-/* Keep date/time text on single line */
 .nowrap-cell {
     white-space: nowrap;
     min-width: 150px;
     padding-right: 30px !important;
 }
 
-/* Deadline countdown styles */
+/* Deadline countdown */
 .deadline-cell {
     text-align: center;
 }
@@ -215,19 +252,19 @@
     font-size: 0.8rem;
     font-weight: 600;
     white-space: nowrap;
-    background: rgba(34, 211, 238, 0.15);
-    color: #22d3ee;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
 }
 
 .countdown.urgent {
-    background: rgba(251, 146, 60, 0.2);
-    color: #fb923c;
+    background: rgba(196, 154, 60, 0.15);
+    color: var(--warning);
     animation: pulse-urgent 1.5s infinite;
 }
 
 .countdown.expired {
-    background: rgba(239, 68, 68, 0.2);
-    color: #ef4444;
+    background: rgba(184, 84, 80, 0.12);
+    color: var(--error);
 }
 
 @keyframes pulse-urgent {
@@ -258,24 +295,23 @@
 }
 
 .status-badge.open {
-    background: rgba(16, 185, 129, 0.2);
-    color: #34d399;
-    box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+    background: rgba(90, 140, 90, 0.12);
+    color: var(--success);
 }
 
 .status-badge.inprogress {
-    background: rgba(245, 158, 11, 0.2);
-    color: #fbbf24;
+    background: rgba(196, 154, 60, 0.12);
+    color: var(--warning);
 }
 
 .status-badge.completed {
-    background: rgba(168, 85, 247, 0.2);
-    color: #c084fc;
+    background: rgba(111, 78, 55, 0.1);
+    color: var(--accent-primary);
 }
 
 .status-badge.failed {
-    background: rgba(239, 68, 68, 0.2);
-    color: #f87171;
+    background: rgba(184, 84, 80, 0.12);
+    color: var(--error);
 }
 
 /* Status Action Buttons */
@@ -300,32 +336,32 @@
 }
 
 .status-btn.start {
-    background: rgba(34, 197, 94, 0.2);
-    color: #22c55e;
+    background: rgba(90, 140, 90, 0.15);
+    color: var(--success);
 }
 
 .status-btn.start:hover {
-    background: rgba(34, 197, 94, 0.4);
+    background: rgba(90, 140, 90, 0.3);
     transform: scale(1.1);
 }
 
 .status-btn.complete {
-    background: rgba(59, 130, 246, 0.2);
-    color: #3b82f6;
+    background: rgba(111, 78, 55, 0.1);
+    color: var(--accent-primary);
 }
 
 .status-btn.complete:hover {
-    background: rgba(59, 130, 246, 0.4);
+    background: rgba(111, 78, 55, 0.2);
     transform: scale(1.1);
 }
 
 .status-btn.fail {
-    background: rgba(239, 68, 68, 0.2);
-    color: #ef4444;
+    background: rgba(184, 84, 80, 0.12);
+    color: var(--error);
 }
 
 .status-btn.fail:hover {
-    background: rgba(239, 68, 68, 0.4);
+    background: rgba(184, 84, 80, 0.25);
     transform: scale(1.1);
 }
 
@@ -358,7 +394,6 @@
     border: none;
 }
 
-/* Specific adjustment for owned missions actions */
 .owned-missions-table .action-header,
 .owned-missions-table .action-cell {
     padding-right: 12px !important;
@@ -375,11 +410,11 @@
 }
 
 .action-icon.delete:hover {
-    color: #f87171;
+    color: var(--error);
 }
 
 .leave-link {
-    color: #f87171;
+    color: var(--error);
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
@@ -394,6 +429,27 @@
     margin-bottom: 45px;
     width: 100%;
     max-width: 1400px;
+    animation: sectionFadeIn 0.5s ease-out backwards;
+}
+
+.section-container:nth-of-type(2) {
+    animation-delay: 0.15s;
+}
+
+.section-container:nth-of-type(3) {
+    animation-delay: 0.25s;
+}
+
+@keyframes sectionFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .section-title {
@@ -403,6 +459,7 @@
     margin-bottom: 18px;
     padding-left: 12px;
     border-left: 3px solid var(--accent-primary);
+    font-family: var(--font-display);
 }
 
 /* No Missions State */
@@ -439,13 +496,14 @@
 }
 
 .add-btn {
-    background: linear-gradient(135deg, #a855f7, #c084fc) !important;
-    color: white !important;
-    box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4), 0 0 15px rgba(168, 85, 247, 0.3) !important;
+    background: var(--accent-primary) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 6px 20px rgba(111, 78, 55, 0.25) !important;
 }
 
 .add-btn:hover {
-    box-shadow: 0 8px 30px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.4) !important;
+    background: var(--accent-dark) !important;
+    box-shadow: 0 8px 30px rgba(111, 78, 55, 0.3) !important;
 }
 
 /* Dialog Styles */
@@ -455,7 +513,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.4);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -480,7 +538,7 @@
     border-radius: 20px;
     width: 90%;
     max-width: 480px;
-    box-shadow: var(--shadow-xl), 0 0 30px rgba(168, 85, 247, 0.15);
+    box-shadow: var(--shadow-xl);
     animation: slideUp 0.3s ease-out;
     overflow: hidden;
 }
@@ -503,7 +561,7 @@
     align-items: center;
     padding: 18px 22px;
     border-bottom: 1px solid var(--border-color);
-    background: linear-gradient(135deg, #a855f7 0%, #c084fc 100%);
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
 }
 
 .dialog-header h2 {
@@ -511,6 +569,7 @@
     font-size: 1.15rem;
     font-weight: 700;
     color: white;
+    font-family: var(--font-display);
 }
 
 .close-btn {
@@ -532,7 +591,7 @@
     justify-content: flex-end;
     gap: 10px;
     padding: 14px 22px;
-    background: var(--bg-tertiary);
+    background: var(--bg-secondary);
     border-top: 1px solid var(--border-color);
 }
 
@@ -541,8 +600,8 @@
 }
 
 .submit-btn {
-    background: linear-gradient(135deg, #a855f7, #c084fc) !important;
-    color: white !important;
+    background: var(--accent-primary) !important;
+    color: #FFFFFF !important;
     padding: 8px 22px !important;
     font-weight: 600 !important;
     border-radius: 10px !important;
@@ -555,16 +614,17 @@
 
 /* Edit Dialog Header */
 .dialog-header.edit {
-    background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+    background: linear-gradient(135deg, var(--accent-secondary), var(--accent-light));
 }
 
 .edit-btn {
-    background: linear-gradient(135deg, #10b981, #34d399) !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #FFFFFF !important;
 }
 
 /* Delete Dialog */
 .dialog-header.delete {
-    background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+    background: linear-gradient(135deg, var(--error), #C96B67);
 }
 
 .delete-confirm {
@@ -580,7 +640,7 @@
     font-size: 44px !important;
     width: 44px !important;
     height: 44px !important;
-    color: #f87171;
+    color: var(--error);
     margin-bottom: 14px;
 }
 
@@ -596,7 +656,7 @@
 }
 
 .delete-btn {
-    background: linear-gradient(135deg, #ef4444, #f87171) !important;
+    background: var(--error) !important;
     color: white !important;
     padding: 8px 22px !important;
     font-weight: 600 !important;
@@ -617,11 +677,41 @@
 
 @media (max-width: 600px) {
     .stats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 30px;
+    }
+
+    .stat-card {
+        padding: 16px 14px;
+        border-radius: 12px;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.65rem;
+        margin-bottom: 4px;
     }
 
     .manager-container {
-        padding: 30px 15px;
+        padding: 20px 12px;
+    }
+
+    .page-header {
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+    }
+
+    .page-title {
+        font-size: 2rem;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        margin-bottom: 12px;
     }
 }
 
@@ -631,14 +721,14 @@
 }
 
 .crew-count-link {
-    color: var(--accent-secondary);
+    color: var(--accent-primary);
     text-decoration: underline;
     text-decoration-style: dotted;
     transition: all 0.2s ease;
 }
 
 .crew-count-link:hover {
-    color: var(--accent-primary);
+    color: var(--accent-dark);
     text-decoration-style: solid;
 }
 
@@ -648,7 +738,7 @@
 }
 
 .dialog-header.crew {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
 }
 
 /* Dialog Form Layout Helper */
@@ -672,19 +762,17 @@
 
 /* Fix mat-suffix color */
 .mat-mdc-form-field-text-suffix {
-    color: var(--accent-primary) !important;
+    color: var(--text-secondary) !important;
     font-weight: 700 !important;
     padding-left: 4px;
 }
-
-
 
 .crew-mission-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
-    background: rgba(21, 21, 31, 0.6);
+    background: var(--bg-secondary);
     border-radius: 10px;
     margin-bottom: 16px;
 }
@@ -695,8 +783,8 @@
 }
 
 .crew-count-badge {
-    background: linear-gradient(135deg, #06b6d4, #22d3ee);
-    color: white;
+    background: var(--accent-primary);
+    color: #FFFFFF;
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 0.85rem;
@@ -748,13 +836,13 @@
     align-items: center;
     gap: 12px;
     padding: 12px 16px;
-    background: rgba(21, 21, 31, 0.4);
+    background: var(--bg-secondary);
     border-radius: 10px;
     transition: all 0.2s ease;
 }
 
 .crew-member-item:hover {
-    background: rgba(21, 21, 31, 0.7);
+    background: var(--bg-tertiary);
 }
 
 .member-avatar {
@@ -794,62 +882,4 @@
 .member-username {
     font-size: 0.8rem;
     color: var(--text-muted);
-}
-
-.kick-btn {
-    background: transparent;
-    border: none;
-    color: #ef4444;
-    cursor: pointer;
-    padding: 6px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    margin-left: auto;
-    opacity: 0.7;
-}
-
-.kick-btn:hover {
-    background: rgba(239, 68, 68, 0.15);
-    opacity: 1;
-}
-
-.kick-btn mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-}
-
-/* Status Text Styles (Ported from missions.css) */
-.status-text {
-    font-size: 0.85rem;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 6px;
-    background: rgba(255, 255, 255, 0.05);
-    display: inline-block;
-}
-
-.status-text.in-progress {
-    color: #fbbf24;
-    background: rgba(245, 158, 11, 0.1);
-}
-
-.status-text.completed {
-    color: #c084fc;
-    background: rgba(168, 85, 247, 0.1);
-}
-
-.status-text.failed {
-    color: #f87171;
-    background: rgba(239, 68, 68, 0.1);
-}
-
-.status-text.muted {
-    color: var(--text-muted);
-    font-style: italic;
-    background: transparent;
-    padding: 0;
 }

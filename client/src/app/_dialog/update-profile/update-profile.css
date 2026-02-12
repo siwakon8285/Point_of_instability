@@ -12,7 +12,8 @@ mat-form-field {
 h2 {
     margin-bottom: 0;
     font-weight: 600;
-    color: #1a1a2e;
+    color: var(--text-primary);
+    font-family: var(--font-display);
 }
 
 mat-dialog-actions {

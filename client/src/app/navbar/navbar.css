@@ -1,137 +1,131 @@
-/* Dark Cyberpunk Theme - Navbar */
+/* Transparent Navbar — Coffee Brown Text */
 .navbar {
-    background: rgba(10, 10, 15, 0.95) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    color: var(--text-primary) !important;
-    border: 1px solid var(--border-color) !important;
+    background: transparent !important;
+    color: var(--accent-primary) !important;
+    border: none !important;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 0 2rem;
     height: 64px;
     position: fixed;
-    top: 1rem;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    border-radius: 0;
+    box-shadow: none !important;
+    transition: all 0.3s ease;
+}
+
+/* Centered nav group */
+.nav-center {
+    position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    width: calc(100% - 3rem);
-    max-width: var(--layout-max-width);
-    z-index: 1000;
-    border-radius: 16px;
-    box-shadow: var(--shadow-md), 0 0 20px rgba(168, 85, 247, 0.1);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
 }
 
-.navbar:hover {
-    box-shadow: var(--shadow-lg), 0 0 30px rgba(168, 85, 247, 0.15);
-}
-
-.spacer {
-    flex: 1 1 auto !important;
-}
-
-/* Logo - Neon Purple Gradient */
+/* Logo - Elegant Serif */
 .home-btn {
     font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #a855f7 0%, #c084fc 50%, #22d3ee 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent-dark) !important;
+    -webkit-text-fill-color: var(--accent-dark);
     cursor: pointer;
     text-decoration: none;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.02em;
     padding: 8px 0;
     transition: all 0.3s ease;
 }
 
-.home-btn::before {
-    content: '⚡';
-    margin-right: 6px;
-    -webkit-text-fill-color: #a855f7;
-    font-size: 1.1rem;
-}
-
 .home-btn:hover {
-    filter: brightness(1.2);
-    transform: scale(1.02);
+    opacity: 0.7;
 }
 
-/* Nav Buttons */
+/* Nav Links — plain text, no background */
 .nav-btn {
     display: inline-flex !important;
     align-items: center !important;
-    gap: 8px !important;
-    color: white !important;
-    font-weight: 700 !important;
+    gap: 6px !important;
+    color: var(--accent-primary) !important;
+    font-weight: 600 !important;
     font-family: var(--font-body) !important;
-    border-radius: 12px !important;
-    padding: 0 1.25rem !important;
-    height: 40px !important;
-    background: linear-gradient(135deg, #a855f7 0%, #c084fc 100%) !important;
-    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4) !important;
+    font-size: 0.9rem !important;
+    border-radius: 8px !important;
+    padding: 6px 12px !important;
+    height: auto !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
     transition: all 0.3s ease !important;
-    margin-right: 12px !important;
+    letter-spacing: 0.01em;
 }
 
 .nav-btn mat-icon {
-    color: white !important;
+    color: var(--accent-primary) !important;
     font-size: 20px !important;
     width: 20px !important;
     height: 20px !important;
 }
 
 .nav-btn span {
-    color: white !important;
+    color: var(--accent-primary) !important;
     font-size: 0.9rem !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.02em !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+    font-weight: 600 !important;
 }
 
 .nav-btn:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5) !important;
+    background: rgba(111, 78, 55, 0.08) !important;
+    transform: none !important;
 }
 
 .nav-btn.active {
-    background: linear-gradient(135deg, #22d3ee 0%, #67e8f9 100%) !important;
-    box-shadow: 0 4px 15px rgba(34, 211, 238, 0.4) !important;
+    color: var(--accent-dark) !important;
+    font-weight: 700 !important;
 }
 
+.nav-btn.active mat-icon,
+.nav-btn.active span {
+    color: var(--accent-dark) !important;
+}
+
+/* Generic navbar buttons */
 .navbar button[mat-button] {
-    color: var(--text-secondary) !important;
+    color: var(--accent-primary) !important;
     font-weight: 600;
     font-family: var(--font-body);
-    border-radius: 12px;
-    padding: 0 1.25rem;
-    height: 44px;
+    border-radius: 8px;
+    padding: 0 1rem;
+    height: 38px;
     transition: all 0.3s ease;
 }
 
 .navbar button[mat-button]:hover {
-    background: var(--bg-hover) !important;
-    color: var(--accent-primary) !important;
+    background: rgba(111, 78, 55, 0.08) !important;
+    color: var(--accent-dark) !important;
 }
 
 /* Profile Button */
 .profile-btn {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 6px 10px 6px 14px !important;
-    border-radius: 16px !important;
+    gap: 10px;
+    padding: 5px 10px 5px 14px !important;
+    border-radius: 12px !important;
     border: 1px solid var(--border-color) !important;
-    background: var(--bg-secondary) !important;
-    color: var(--text-primary) !important;
-    box-shadow: var(--shadow-sm) !important;
+    background: transparent !important;
+    color: var(--accent-primary) !important;
+    box-shadow: none !important;
     transition: all 0.3s ease !important;
 }
 
 .profile-btn:hover {
-    border-color: var(--accent-primary) !important;
-    box-shadow: var(--shadow-md), 0 0 15px rgba(168, 85, 247, 0.2) !important;
-    transform: translateY(-2px);
+    background: rgba(111, 78, 55, 0.06) !important;
+    border-color: var(--border-strong) !important;
 }
 
 .display-name {
@@ -141,7 +135,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    color: var(--text-primary);
+    color: var(--accent-primary);
 }
 
 .avatar {
@@ -149,79 +143,21 @@
     height: 34px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--accent-primary);
-    box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+    border: 2px solid var(--border-strong);
     transition: all 0.3s ease;
 }
 
 .profile-btn:hover .avatar {
-    border-color: var(--accent-secondary);
-    box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
-    transform: scale(1.05);
+    border-color: var(--accent-primary);
 }
 
-/* Menu Customization */
+/* Menu Customization — kept as ::ng-deep for component scope reference */
 ::ng-deep .profile-menu {
-    border-radius: 16px !important;
-    background: var(--bg-tertiary) !important;
-    box-shadow: var(--shadow-lg), 0 0 20px rgba(168, 85, 247, 0.15) !important;
+    border-radius: 14px !important;
+    background: var(--bg-card) !important;
+    box-shadow: var(--shadow-lg) !important;
     border: 1px solid var(--border-color) !important;
     margin-top: 8px !important;
     padding: 8px !important;
     min-width: 200px !important;
-}
-
-::ng-deep .mat-mdc-menu-item {
-    border-radius: 8px !important;
-    color: var(--text-primary) !important;
-    margin-bottom: 2px;
-}
-
-::ng-deep .mat-mdc-menu-item:hover {
-    background: var(--bg-hover) !important;
-    color: var(--accent-primary) !important;
-}
-
-::ng-deep .mat-mdc-menu-item .mat-icon {
-    color: var(--text-muted);
-    margin-right: 12px;
-}
-
-::ng-deep .mat-mdc-menu-item:hover .mat-icon {
-    color: var(--accent-primary);
-}
-
-/* Primary Action Button - Neon Purple */
-.nav-btn {
-    background: linear-gradient(135deg, #a855f7 0%, #c084fc 100%) !important;
-    color: white !important;
-    border: none !important;
-    padding: 0 24px !important;
-    border-radius: 12px !important;
-    font-weight: 600 !important;
-    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4) !important;
-    margin-right: 12px !important;
-    transition: all 0.3s ease !important;
-}
-
-.nav-btn:hover {
-    background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.5) !important;
-}
-
-.nav-btn .mat-icon {
-    color: white !important;
-}
-
-.nav-btn mat-icon {
-    width: 20px !important;
-    height: 20px !important;
-    font-size: 20px !important;
-    margin-right: 6px;
-}
-
-/* Spacing */
-.navbar>*:not(.spacer):not(:first-child) {
-    margin-left: 8px;
 }

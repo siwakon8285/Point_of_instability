@@ -1,62 +1,60 @@
-/* Dark Cyberpunk Theme */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+/* ☕ Coffee Shop Theme */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
 @import "@angular/material/prebuilt-themes/purple-green.css";
 
 :root {
-    /* Dark Background Colors */
-    --bg-primary: #0a0a0f;
-    --bg-secondary: #12121a;
-    --bg-tertiary: #1a1a25;
-    --bg-card: #15151f;
-    --bg-hover: rgba(138, 99, 255, 0.15);
+    /* Warm Background Colors */
+    --bg-primary: #FAF6F1;
+    --bg-secondary: #F3EDE4;
+    --bg-tertiary: #EBE3D7;
+    --bg-card: #FFFFFF;
+    --bg-hover: rgba(111, 78, 55, 0.06);
 
-    /* Neon Purple Accent Colors */
-    --accent-primary: #a855f7;
-    --accent-secondary: #c084fc;
-    --accent-light: #d8b4fe;
-    --accent-dark: #9333ea;
-    --accent-pink: #f472b6;
-    --accent-cyan: #22d3ee;
-
-    /* Primary Colors */
-    --primary-400: #c084fc;
-    --primary-500: #a855f7;
-    --primary-600: #9333ea;
-    --primary-700: #7e22ce;
+    /* Coffee Brown Accent Colors */
+    --accent-primary: #6F4E37;
+    --accent-secondary: #8B6F47;
+    --accent-light: #C4A882;
+    --accent-dark: #4A3423;
+    --accent-warm: #D4A574;
+    --accent-cream: #F5E6D3;
 
     /* Text Colors */
-    --text-primary: #f5f5f7;
-    --text-secondary: #a1a1aa;
-    --text-muted: #71717a;
-    --text-light: #ffffff;
+    --text-primary: #2D1B0E;
+    --text-secondary: #6B5744;
+    --text-muted: #9C8B7A;
+    --text-light: #FFFFFF;
 
-    /* Status Colors */
-    --success: #10b981;
-    --warning: #f59e0b;
-    --error: #ef4444;
+    /* Status Colors — kept semantic */
+    --success: #5A8C5A;
+    --warning: #C49A3C;
+    --error: #B85450;
 
     /* Borders */
-    --border-color: rgba(138, 99, 255, 0.25);
-    --border-strong: rgba(138, 99, 255, 0.5);
+    --border-color: rgba(111, 78, 55, 0.15);
+    --border-strong: rgba(111, 78, 55, 0.3);
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, #a855f7 0%, #c084fc 50%, #f472b6 100%);
-    --gradient-button: linear-gradient(135deg, #a855f7 0%, #c084fc 100%);
-    --gradient-hero: linear-gradient(135deg, #9333ea 0%, #a855f7 50%, #22d3ee 100%);
-    --gradient-dark: linear-gradient(180deg, #0a0a0f 0%, #12121a 50%, #1a1a25 100%);
+    --gradient-primary: linear-gradient(135deg, #6F4E37 0%, #8B6F47 50%, #C4A882 100%);
+    --gradient-button: linear-gradient(135deg, #2D1B0E 0%, #4A3423 100%);
+    --gradient-hero: linear-gradient(135deg, #6F4E37 0%, #8B6F47 50%, #C4A882 100%);
+    --gradient-dark: linear-gradient(180deg, #2D1B0E 0%, #3D2B1A 50%, #4A3423 100%);
+
+    /* Navbar */
+    --navbar-bg: #1A1A1A;
+    --navbar-text: #FFFFFF;
 
     /* Layout */
     --layout-max-width: 1200px;
 
     /* Shadows */
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.5);
-    --shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.6);
-    --shadow-glow: 0 0 30px rgba(168, 85, 247, 0.3);
+    --shadow-sm: 0 2px 8px rgba(111, 78, 55, 0.08);
+    --shadow-md: 0 4px 20px rgba(111, 78, 55, 0.1);
+    --shadow-lg: 0 15px 35px rgba(111, 78, 55, 0.12);
+    --shadow-xl: 0 25px 50px rgba(111, 78, 55, 0.15);
+    --shadow-glow: 0 0 30px rgba(111, 78, 55, 0.06);
 
     /* Typography */
-    --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
     --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
     /* Animation Timings */
@@ -75,6 +73,8 @@ html {
     height: 100%;
     width: 100%;
     overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-gutter: auto;
 }
 
 body {
@@ -84,7 +84,7 @@ body {
     color: var(--text-primary);
     min-height: 100vh;
     width: 100%;
-    padding-top: 80px;
+    padding-top: 64px;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
     margin: 0;
@@ -94,7 +94,7 @@ body {
     background: var(--bg-primary);
 }
 
-/* Animated Background with Gradient and Grid */
+/* Subtle Grain Texture Overlay */
 body::before {
     content: "";
     position: fixed;
@@ -102,28 +102,8 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: -2;
-    background:
-        radial-gradient(ellipse at 20% 20%, rgba(147, 51, 234, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 80%, rgba(34, 211, 238, 0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(244, 114, 182, 0.08) 0%, transparent 60%),
-        var(--bg-primary);
-    pointer-events: none;
-}
-
-/* Subtle Grid Overlay */
-body::after {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
     z-index: -1;
-    background-image:
-        linear-gradient(rgba(168, 85, 247, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(168, 85, 247, 0.03) 1px, transparent 1px);
-    background-size: 50px 50px;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
     pointer-events: none;
 }
 
@@ -135,7 +115,7 @@ h5,
 h6 {
     font-family: var(--font-display);
     font-weight: 700;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.01em;
     color: var(--text-primary);
 }
 
@@ -143,7 +123,7 @@ h6 {
     flex: 1 1 auto;
 }
 
-/* Scrollbar Styling - Dark Theme */
+/* Scrollbar Styling */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -154,7 +134,7 @@ h6 {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--accent-dark);
+    background: var(--accent-light);
     border-radius: 4px;
 }
 
@@ -171,33 +151,35 @@ h6 {
     display: inline-block;
 }
 
-/* Dark Glass Panel */
+/* Glass Panel - Warm */
 .glass-panel {
-    background: rgba(21, 21, 31, 0.8) !important;
+    background: rgba(255, 255, 255, 0.85) !important;
     backdrop-filter: blur(12px) !important;
-    border: 1px solid rgba(168, 85, 247, 0.2) !important;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: var(--shadow-sm) !important;
     border-radius: 16px !important;
 }
 
-/* Material Override - Dark Theme */
+/* Material Override - Coffee Theme */
 .mat-mdc-snack-bar-container .mdc-snackbar__surface {
-    background: var(--bg-tertiary) !important;
-    border: 1px solid var(--border-color) !important;
+    background: var(--navbar-bg) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: 12px !important;
 }
 
 .mat-mdc-snack-bar-container .mdc-snackbar__label {
-    color: var(--text-primary) !important;
+    color: var(--text-light) !important;
     font-family: var(--font-body) !important;
     font-weight: 500 !important;
 }
 
 .mat-mdc-snack-bar-container .mat-mdc-snack-bar-action {
-    color: var(--accent-primary) !important;
+    color: var(--accent-warm) !important;
 }
 
-/* Material Form Fields - Dark Theme */
+/* ======= Angular Material Overrides — Kill all purple ======= */
+
+/* Form Fields */
 .mat-mdc-form-field {
     --mdc-filled-text-field-container-color: var(--bg-secondary);
     --mdc-outlined-text-field-outline-color: var(--border-color);
@@ -207,6 +189,11 @@ h6 {
     --mdc-outlined-text-field-input-text-color: var(--text-primary);
     --mdc-filled-text-field-label-text-color: var(--text-secondary);
     --mdc-outlined-text-field-label-text-color: var(--text-secondary);
+    --mdc-filled-text-field-focus-label-text-color: var(--accent-primary);
+    --mdc-filled-text-field-focus-active-indicator-color: var(--accent-primary);
+    --mdc-filled-text-field-active-indicator-color: var(--border-color);
+    --mdc-filled-text-field-hover-active-indicator-color: var(--accent-secondary);
+    --mat-form-field-focus-select-arrow-color: var(--accent-primary);
 }
 
 .mat-mdc-text-field-wrapper {
@@ -214,9 +201,19 @@ h6 {
     border-radius: 12px !important;
 }
 
-/* Material Select - Dark Theme */
+/* Focus ring & label color — kill purple */
+.mdc-text-field--focused .mdc-floating-label,
+.mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+    color: var(--accent-primary) !important;
+}
+
+.mdc-text-field--focused .mdc-line-ripple::after {
+    border-bottom-color: var(--accent-primary) !important;
+}
+
+/* Select */
 .mat-mdc-select-panel {
-    background: var(--bg-tertiary) !important;
+    background: var(--bg-card) !important;
     border: 1px solid var(--border-color) !important;
     border-radius: 12px !important;
 }
@@ -230,10 +227,71 @@ h6 {
 }
 
 .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) {
-    background: rgba(168, 85, 247, 0.2) !important;
+    background: rgba(111, 78, 55, 0.1) !important;
+    color: var(--accent-primary) !important;
 }
 
-/* Material Dialog - Dark Theme */
+/* Select arrow / indicator */
+.mat-mdc-select-arrow {
+    color: var(--accent-primary) !important;
+}
+
+.mat-mdc-select-value-text {
+    color: var(--text-primary) !important;
+}
+
+/* Checkbox, Radio, Slide Toggle — override purple */
+.mat-mdc-checkbox .mdc-checkbox__native-control:checked~.mdc-checkbox__background {
+    background-color: var(--accent-primary) !important;
+    border-color: var(--accent-primary) !important;
+}
+
+.mat-mdc-radio-button .mdc-radio__native-control:checked+.mdc-radio__background .mdc-radio__outer-circle {
+    border-color: var(--accent-primary) !important;
+}
+
+.mat-mdc-radio-button .mdc-radio__native-control:checked+.mdc-radio__background .mdc-radio__inner-circle {
+    border-color: var(--accent-primary) !important;
+}
+
+.mat-mdc-slide-toggle .mdc-switch--selected .mdc-switch__track::after {
+    background: rgba(111, 78, 55, 0.5) !important;
+}
+
+.mat-mdc-slide-toggle .mdc-switch--selected .mdc-switch__handle::after {
+    background: var(--accent-primary) !important;
+}
+
+/* FAB & Button overrides */
+.mat-mdc-fab,
+.mat-mdc-mini-fab {
+    --mdc-fab-container-color: var(--accent-primary) !important;
+}
+
+/* Ripple */
+.mat-ripple-element {
+    background-color: rgba(111, 78, 55, 0.12) !important;
+}
+
+/* Progress bar / spinner */
+.mat-mdc-progress-bar {
+    --mdc-linear-progress-active-indicator-color: var(--accent-primary);
+}
+
+.mat-mdc-progress-spinner circle {
+    stroke: var(--accent-primary) !important;
+}
+
+/* Tabs */
+.mat-mdc-tab:not(.mat-mdc-tab-disabled) .mdc-tab-indicator__content--underline {
+    border-color: var(--accent-primary) !important;
+}
+
+.mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label {
+    color: var(--accent-primary) !important;
+}
+
+/* Material Dialog */
 .mat-mdc-dialog-container {
     --mdc-dialog-container-color: var(--bg-card);
 }
@@ -242,6 +300,95 @@ h6 {
     background: var(--bg-card) !important;
     border: 1px solid var(--border-color) !important;
     border-radius: 20px !important;
+}
+
+/* Material Menu */
+.mat-mdc-menu-panel {
+    background: var(--bg-card) !important;
+}
+
+/* Profile dropdown — rendered in CDK overlay, so must be global */
+.profile-menu.mat-mdc-menu-panel {
+    border-radius: 14px !important;
+    background: var(--bg-card) !important;
+    box-shadow: var(--shadow-lg) !important;
+    border: 1px solid var(--border-color) !important;
+    margin-top: 8px !important;
+    padding: 8px !important;
+    min-width: 200px !important;
+}
+
+.profile-menu .mat-mdc-menu-item {
+    border-radius: 8px !important;
+    color: var(--text-primary) !important;
+}
+
+.profile-menu .mat-mdc-menu-item span {
+    color: var(--text-primary) !important;
+}
+
+.profile-menu .mat-mdc-menu-item .mat-icon {
+    color: var(--text-muted) !important;
+    margin-right: 12px;
+}
+
+.profile-menu .mat-mdc-menu-item:hover {
+    background: var(--bg-hover) !important;
+}
+
+.profile-menu .mat-mdc-menu-item:hover,
+.profile-menu .mat-mdc-menu-item:hover span,
+.profile-menu .mat-mdc-menu-item:hover .mat-icon {
+    color: var(--accent-primary) !important;
+}
+
+/* Material Toolbar — force light text on dark navbar only; default to light bg */
+.mat-toolbar {
+    --mat-toolbar-container-background-color: var(--bg-card);
+    --mat-toolbar-container-text-color: var(--text-primary);
+}
+
+/* Material Card — force white bg */
+.mat-mdc-card {
+    --mdc-elevated-card-container-color: var(--bg-card);
+    --mdc-outlined-card-container-color: var(--bg-card);
+    background: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 16px !important;
+}
+
+/* Material Table — force light */
+.mat-mdc-table {
+    background: var(--bg-card) !important;
+}
+
+.mat-mdc-header-row {
+    background: var(--bg-secondary) !important;
+}
+
+.mat-mdc-row {
+    background: var(--bg-card) !important;
+}
+
+.mat-mdc-cell,
+.mat-mdc-header-cell {
+    color: var(--text-primary) !important;
+    border-bottom-color: var(--border-color) !important;
+}
+
+/* Generic button accent — kill purple */
+.mat-mdc-button.mat-primary,
+.mat-mdc-raised-button.mat-primary,
+.mat-mdc-flat-button.mat-primary,
+.mat-mdc-unelevated-button.mat-primary {
+    --mdc-filled-button-container-color: var(--accent-primary);
+    --mdc-filled-button-label-text-color: #FFFFFF;
+}
+
+.mat-mdc-outlined-button.mat-primary {
+    --mdc-outlined-button-label-text-color: var(--accent-primary);
+    --mdc-outlined-button-outline-color: var(--accent-primary);
 }
 
 /* Utility Animations */
@@ -254,18 +401,6 @@ h6 {
     to {
         opacity: 1;
         transform: translateY(0);
-    }
-}
-
-@keyframes glow {
-
-    0%,
-    100% {
-        box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
-    }
-
-    50% {
-        box-shadow: 0 0 40px rgba(168, 85, 247, 0.5);
     }
 }
 
@@ -285,17 +420,13 @@ h6 {
     animation: fadeInUp 0.6s ease-out forwards;
 }
 
-.animate-glow {
-    animation: glow 3s ease-in-out infinite;
-}
-
 .hover-lift {
     transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
 .hover-lift:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-lg), var(--shadow-glow);
+    box-shadow: var(--shadow-lg);
 }
 
 .hover-scale {
@@ -304,10 +435,4 @@ h6 {
 
 .hover-scale:hover {
     transform: scale(1.02);
-}
-
-/* Neon Border Utility */
-.neon-border {
-    border: 1px solid var(--accent-primary);
-    box-shadow: 0 0 10px rgba(168, 85, 247, 0.3), inset 0 0 10px rgba(168, 85, 247, 0.1);
 }

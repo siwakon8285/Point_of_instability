@@ -46,7 +46,7 @@ COPY frontend ./frontend
 COPY statics ./statics
 
 # Expose port
-EXPOSE 80
+EXPOSE 8000
 
 # Run the server
 CMD ["./server"]

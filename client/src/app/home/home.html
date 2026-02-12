@@ -20,7 +20,7 @@
     <div class="guest-view">
         <div class="hero-section">
             <div class="hero-content">
-                <h1 class="hero-title">Point of <span class="accent">Instability</span></h1>
+                <h1 class="hero-title">The<span class="accent">MissionDoor</span></h1>
                 <p class="hero-subtitle">Join the elite force of brawlers and embark on high-stakes missions across the
                     multiverse.</p>
                 <button mat-flat-button class="cta-button" (click)="goToLogin()">
@@ -105,34 +105,35 @@
         <div class="welcome-header">
             <h1 class="welcome-title">Welcome back, <span class="accent">{{ displayName() }}</span>!</h1>
             <p class="welcome-subtitle">Here's your mission status overview</p>
+            <div class="divider-line"></div>
         </div>
 
         <!-- User Stats Panel -->
         @if (userDashboard()) {
         <div class="user-stats-section">
             <div class="stats-grid user-stats">
-                <div class="stat-card glass-panel highlight">
+                <div class="stat-card glass-panel highlight" style="animation-delay: 0.1s;">
                     <div class="stat-icon owned-icon">
                         <mat-icon>military_tech</mat-icon>
                     </div>
                     <div class="stat-value">{{ userDashboard()?.stats?.my_missions_count }}</div>
                     <div class="stat-label">Leading</div>
                 </div>
-                <div class="stat-card glass-panel">
+                <div class="stat-card glass-panel" style="animation-delay: 0.2s;">
                     <div class="stat-icon joined-icon">
                         <mat-icon>handshake</mat-icon>
                     </div>
                     <div class="stat-value">{{ userDashboard()?.stats?.joined_missions_count }}</div>
                     <div class="stat-label">Joined</div>
                 </div>
-                <div class="stat-card glass-panel">
+                <div class="stat-card glass-panel" style="animation-delay: 0.3s;">
                     <div class="stat-icon success-icon">
                         <mat-icon>emoji_events</mat-icon>
                     </div>
                     <div class="stat-value">{{ userDashboard()?.stats?.success_count }}</div>
                     <div class="stat-label">Completed</div>
                 </div>
-                <div class="stat-card glass-panel">
+                <div class="stat-card glass-panel" style="animation-delay: 0.4s;">
                     <div class="stat-icon rate-icon">
                         <mat-icon>trending_up</mat-icon>
                     </div>
@@ -142,90 +143,9 @@
             </div>
         </div>
 
-        <!-- My Active Missions -->
-        <div class="missions-panel">
-            <div class="panel-header">
-                <h2 class="section-title">
-                    <mat-icon>rocket_launch</mat-icon>
-                    My Active Missions
-                </h2>
-                <button mat-button class="see-all-btn" (click)="goToMyMissions()">
-                    See All <mat-icon>chevron_right</mat-icon>
-                </button>
-            </div>
-            @if (userDashboard()?.active_missions?.length) {
-            <div class="missions-horizontal">
-                @for (mission of userDashboard()?.active_missions; track mission.id) {
-                <div class="mission-card glass-panel compact">
-                    <div class="mission-header">
-                        <span class="mission-name">{{ mission.name }}</span>
-                        <span class="status-badge" [class]="mission.status.toLowerCase()">
-                            {{ mission.status }}
-                        </span>
-                    </div>
-                    <div class="mission-meta">
-                        <span><mat-icon>group</mat-icon> {{ mission.crew_count }}/3</span>
-                    </div>
-                </div>
-                }
-            </div>
-            } @else {
-            <div class="empty-state">
-                <mat-icon>inbox</mat-icon>
-                <p>No active missions. Create one or join an open mission!</p>
-            </div>
-            }
-        </div>
-
-        <!-- Open Missions to Join -->
-        <div class="missions-panel">
-            <div class="panel-header">
-                <h2 class="section-title">
-                    <mat-icon>explore</mat-icon>
-                    Open Missions to Join
-                </h2>
-                <button mat-button class="see-all-btn" (click)="goToMissions()">
-                    Browse All <mat-icon>chevron_right</mat-icon>
-                </button>
-            </div>
-            @if (userDashboard()?.open_missions?.length) {
-            <div class="missions-horizontal">
-                @for (mission of userDashboard()?.open_missions; track mission.id) {
-                <div class="mission-card glass-panel compact joinable">
-                    <div class="mission-header">
-                        <span class="mission-name">{{ mission.name }}</span>
-                        <span class="status-badge open">Open</span>
-                    </div>
-                    <p class="mission-description short">{{ mission.description || 'No description' }}</p>
-                    <div class="mission-footer">
-                        <span class="chief-info"><mat-icon>person</mat-icon> {{ mission.chief_display_name }}</span>
-                        <button mat-flat-button class="join-btn" (click)="joinMission(mission.id)">
-                            <mat-icon>add</mat-icon> Join
-                        </button>
-                    </div>
-                </div>
-                }
-            </div>
-            } @else {
-            <div class="empty-state">
-                <mat-icon>check_circle</mat-icon>
-                <p>All caught up! No open missions available right now.</p>
-            </div>
-            }
-        </div>
         }
 
-        <!-- Quick Actions -->
-        <div class="quick-actions">
-            <button mat-flat-button class="action-btn primary" (click)="goToMyMissions()">
-                <mat-icon>add_circle</mat-icon>
-                Create Mission
-            </button>
-            <button mat-stroked-button class="action-btn secondary" (click)="goToMissions()">
-                <mat-icon>search</mat-icon>
-                Browse Missions
-            </button>
-        </div>
+
     </div>
     }
     }

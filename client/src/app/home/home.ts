@@ -99,8 +99,16 @@ export class Home implements OnInit, OnDestroy {
   async joinMission(missionId: number) {
     try {
       await this._missionService.join(missionId);
-      // Reload dashboard after joining
-      await this.loadData();
+      // Remove joined mission from open list immediately
+      const dashboard = this.userDashboard();
+      if (dashboard) {
+        this.userDashboard.set({
+          ...dashboard,
+          open_missions: dashboard.open_missions.filter(m => m.id !== missionId)
+        });
+      }
+      // Navigate to My Missions page
+      this._router.navigate(['/chief']);
     } catch (error) {
       console.error('Failed to join mission', error);
     }

@@ -21,8 +21,8 @@ input[type="file"] {
     margin: 1rem 0;
     border-radius: 16px;
     overflow: hidden;
-    border: 3px solid rgba(124, 58, 237, 0.2);
-    box-shadow: 0 10px 30px rgba(124, 58, 237, 0.15);
+    border: 2px solid var(--border-color);
+    box-shadow: var(--shadow-md);
 }
 
 .image-preview img {
@@ -33,10 +33,10 @@ input[type="file"] {
 
 /* Error Message */
 .error-msg {
-    color: #dc2626;
+    color: var(--error);
     font-size: 0.9rem;
     font-weight: 500;
-    background: rgba(239, 68, 68, 0.1);
+    background: rgba(184, 84, 80, 0.08);
     padding: 10px 16px;
     border-radius: 8px;
     margin-top: 1rem;
@@ -66,46 +66,47 @@ mat-dialog-actions button {
 }
 
 mat-dialog-actions button:first-child {
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(192, 38, 211, 0.1) 100%) !important;
-    color: #7c3aed !important;
-    border: 2px solid rgba(124, 58, 237, 0.2) !important;
+    background: var(--bg-secondary) !important;
+    color: var(--text-secondary) !important;
+    border: 1px solid var(--border-color) !important;
 }
 
 mat-dialog-actions button:first-child:hover {
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(192, 38, 211, 0.15) 100%) !important;
-    border-color: rgba(124, 58, 237, 0.4) !important;
+    background: var(--bg-tertiary) !important;
+    border-color: var(--border-strong) !important;
     transform: translateY(-2px);
 }
 
 mat-dialog-actions button:last-child {
-    background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%) !important;
-    color: white !important;
+    background: var(--accent-primary) !important;
+    color: #FFFFFF !important;
     border: none !important;
-    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(111, 78, 55, 0.2) !important;
 }
 
 mat-dialog-actions button:last-child:hover {
-    background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%) !important;
+    background: var(--accent-dark) !important;
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4) !important;
+    box-shadow: 0 8px 25px rgba(111, 78, 55, 0.25) !important;
 }
 
-/* Dialog Header Title Styling (via global) */
+/* Dialog Header Title Styling */
 ::ng-deep .mat-mdc-dialog-title {
-    background: linear-gradient(135deg, #7c3aed 0%, #c026d3 100%) !important;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)) !important;
     color: white !important;
     padding: 1.5rem 2rem !important;
     margin: 0 !important;
     font-size: 1.25rem !important;
     font-weight: 700 !important;
+    font-family: var(--font-display) !important;
     border-radius: 20px 20px 0 0;
 }
 
 ::ng-deep .mat-mdc-dialog-container {
     border-radius: 20px !important;
     overflow: hidden !important;
-    border: 2px solid rgba(124, 58, 237, 0.15) !important;
-    box-shadow: 0 25px 60px -15px rgba(124, 58, 237, 0.25) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: var(--shadow-xl) !important;
 }
 
 ::ng-deep .mat-mdc-dialog-surface {

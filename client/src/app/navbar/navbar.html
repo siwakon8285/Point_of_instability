@@ -1,27 +1,27 @@
 <mat-toolbar class="navbar">
     <!-- Home button -->
     <span class="home-btn" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        Point of Instability
+        TheMissionDoor
     </span>
 
-    <span class="spacer"></span>
-
-    <!-- Navigation Links - only show when logged in -->
-    @if(display_name()){
-    <button mat-button class="nav-btn" routerLink="/" routerLinkActive="active"
-        [routerLinkActiveOptions]="{exact: true}">
-        <mat-icon>home</mat-icon>
-        <span> Home</span>
-    </button>
-    <button mat-button class="nav-btn" routerLink="/missions" routerLinkActive="active">
-        <mat-icon>search</mat-icon>
-        <span> Browse</span>
-    </button>
-    <button mat-button class="nav-btn" routerLink="/chief" routerLinkActive="active">
-        <mat-icon>assignment_ind</mat-icon>
-        <span> My Missions</span>
-    </button>
-    }
+    <!-- Navigation Links - centered -->
+    <div class="nav-center">
+        @if(display_name()){
+        <button mat-button class="nav-btn" routerLink="/" routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}">
+            <mat-icon>home</mat-icon>
+            <span> Home</span>
+        </button>
+        <button mat-button class="nav-btn" routerLink="/missions" routerLinkActive="active">
+            <mat-icon>search</mat-icon>
+            <span> Browse</span>
+        </button>
+        <button mat-button class="nav-btn" routerLink="/chief" routerLinkActive="active">
+            <mat-icon>assignment_ind</mat-icon>
+            <span> My Missions</span>
+        </button>
+        }
+    </div>
 
     <!-- Profile section -->
     @if (display_name() === undefined) {

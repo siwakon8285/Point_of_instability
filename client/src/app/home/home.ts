@@ -39,14 +39,10 @@ export class Home implements OnInit, OnDestroy {
 
   async ngOnInit() {
     await this.loadData();
-    // Auto-refresh every 10 seconds
-    this._autoRefreshSub = interval(10000).subscribe(() => {
-      this.loadData();
-    });
   }
 
   ngOnDestroy() {
-    this._autoRefreshSub?.unsubscribe();
+    // cleanup if needed
   }
 
   private async loadData() {

@@ -1,4 +1,4 @@
-/* ☕ Coffee Shop Theme - Missions Page */
+/* 🌌 Space Theme - Missions Page */
 .missions-container {
     padding: 2rem;
     min-height: calc(100vh - 64px);
@@ -49,8 +49,9 @@
     transform: translateX(-50%);
     width: 60px;
     height: 3px;
-    background: linear-gradient(90deg, var(--accent-primary), var(--accent-light));
+    background: var(--gradient-primary);
     border-radius: 2px;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
 }
 
 .page-title {
@@ -58,7 +59,7 @@
     font-weight: 800;
     margin-bottom: 0.5rem;
     color: var(--text-primary);
-    letter-spacing: -0.02em;
+    letter-spacing: 0.02em;
     font-family: var(--font-display);
 }
 
@@ -70,7 +71,8 @@
 
 /* Filter Card */
 .filter-card {
-    background: var(--bg-card) !important;
+    background: rgba(15, 23, 42, 0.85) !important;
+    backdrop-filter: blur(16px) !important;
     border: 1px solid var(--border-color) !important;
     border-radius: 16px !important;
     box-shadow: var(--shadow-sm) !important;
@@ -106,7 +108,7 @@
 
 .search-icon {
     color: var(--accent-primary);
-    background: rgba(111, 78, 55, 0.08);
+    background: rgba(0, 212, 255, 0.08);
     padding: 8px;
     border-radius: 10px;
     width: 40px;
@@ -138,25 +140,26 @@
 /* Search Button */
 .search-btn {
     background: var(--accent-primary) !important;
-    color: #FFFFFF !important;
+    color: #0a0e17 !important;
     height: 56px !important;
     padding: 0 28px !important;
     border-radius: 12px !important;
     font-weight: 600 !important;
     font-size: 1rem !important;
-    box-shadow: 0 4px 15px rgba(111, 78, 55, 0.2) !important;
+    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2) !important;
     transition: all 0.3s ease !important;
 }
 
 .search-btn:hover {
-    background: var(--accent-dark) !important;
+    background: #33ddff !important;
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(111, 78, 55, 0.25) !important;
+    box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3) !important;
 }
 
 /* Table Styling */
 .mission-table-container {
-    background: var(--bg-card);
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(16px);
     border-radius: 16px;
     overflow: hidden;
     box-shadow: var(--shadow-md);
@@ -183,7 +186,7 @@
 
 .mission-table td {
     padding: 20px 22px;
-    border-bottom: 1px solid rgba(111, 78, 55, 0.06);
+    border-bottom: 1px solid rgba(0, 212, 255, 0.04);
     color: var(--text-secondary);
     vertical-align: middle;
     transition: all 0.3s ease;
@@ -238,7 +241,7 @@
 }
 
 .mission-table tr:hover {
-    background: var(--bg-hover);
+    background: rgba(0, 212, 255, 0.04);
 }
 
 .mission-table tr:hover td {
@@ -258,7 +261,7 @@
 }
 
 .status-badge.open {
-    background: rgba(90, 140, 90, 0.12);
+    background: rgba(52, 211, 153, 0.12);
     color: var(--success);
 }
 
@@ -284,17 +287,17 @@
 }
 
 .status-badge.inprogress {
-    background: rgba(196, 154, 60, 0.12);
+    background: rgba(251, 191, 36, 0.12);
     color: var(--warning);
 }
 
 .status-badge.completed {
-    background: rgba(111, 78, 55, 0.1);
+    background: rgba(0, 212, 255, 0.1);
     color: var(--accent-primary);
 }
 
 .status-badge.failed {
-    background: rgba(184, 84, 80, 0.12);
+    background: rgba(248, 113, 113, 0.12);
     color: var(--error);
 }
 
@@ -305,7 +308,7 @@
     text-decoration: none;
     padding: 8px 18px;
     border-radius: 10px;
-    background: rgba(111, 78, 55, 0.08);
+    background: rgba(0, 212, 255, 0.08);
     transition: all 0.3s ease;
     cursor: pointer;
     display: inline-block;
@@ -313,9 +316,9 @@
 
 .join-link:hover {
     background: var(--accent-primary);
-    color: #FFFFFF;
+    color: #0a0e17;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(111, 78, 55, 0.2);
+    box-shadow: 0 6px 20px rgba(0, 212, 255, 0.25);
 }
 
 .owned-label {
@@ -440,7 +443,7 @@
 }
 
 .crew-count-link:hover {
-    color: var(--accent-dark);
+    color: #33ddff;
     text-decoration-style: solid;
 }
 
@@ -451,8 +454,8 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -471,26 +474,14 @@
 }
 
 .dialog-container {
-    background: var(--bg-card);
+    background: var(--bg-tertiary);
     border-radius: 16px;
     width: 90%;
     max-width: 450px;
     overflow: hidden;
-    box-shadow: var(--shadow-xl);
+    box-shadow: var(--shadow-xl), 0 0 30px rgba(0, 212, 255, 0.05);
     animation: slideUp 0.3s ease;
     border: 1px solid var(--border-color);
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 .dialog-header {
@@ -510,10 +501,11 @@
     font-size: 1.3rem;
     font-weight: 600;
     font-family: var(--font-display);
+    color: #0a0e17;
 }
 
 .close-btn {
-    color: white !important;
+    color: #0a0e17 !important;
 }
 
 .dialog-content {
@@ -537,7 +529,7 @@
 
 .crew-count-badge {
     background: var(--accent-primary);
-    color: #FFFFFF;
+    color: #0a0e17;
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 0.85rem;
@@ -596,6 +588,7 @@
 
 .crew-member-item:hover {
     background: var(--bg-tertiary);
+    border: 1px solid rgba(0, 212, 255, 0.1);
 }
 
 .member-avatar {
@@ -683,17 +676,17 @@
 
 .status-text.in-progress {
     color: var(--warning);
-    background: rgba(196, 154, 60, 0.1);
+    background: rgba(251, 191, 36, 0.1);
 }
 
 .status-text.completed {
     color: var(--accent-primary);
-    background: rgba(111, 78, 55, 0.08);
+    background: rgba(0, 212, 255, 0.08);
 }
 
 .status-text.failed {
     color: var(--error);
-    background: rgba(184, 84, 80, 0.1);
+    background: rgba(248, 113, 113, 0.1);
 }
 
 .status-text.muted {

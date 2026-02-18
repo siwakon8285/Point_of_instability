@@ -1,4 +1,4 @@
-/* ☕ Coffee Shop Theme - Server Error Page */
+/* 🌌 Space Theme - Server Error Page */
 .server-error-container {
     min-height: calc(100vh - 64px);
     display: flex;
@@ -25,7 +25,7 @@
 .server-error-container h1 {
     font-size: 2rem;
     font-weight: 800;
-    color: var(--error, #B85450);
+    color: var(--error, #f87171);
     margin-bottom: 1.5rem;
     font-family: var(--font-display);
     animation: headShake 0.6s ease-out 0.3s backwards;
@@ -58,14 +58,15 @@
 }
 
 .error-content {
-    background: var(--bg-card, #FFFFFF);
-    border: 1px solid rgba(184, 84, 80, 0.2);
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(248, 113, 113, 0.2);
     border-radius: 16px;
     padding: 1.5rem 2rem;
     max-width: 600px;
     width: 100%;
     margin-bottom: 2rem;
-    box-shadow: 0 4px 20px rgba(184, 84, 80, 0.08);
+    box-shadow: 0 4px 20px rgba(248, 113, 113, 0.08);
     animation: slideUp 0.5s ease-out 0.2s backwards;
 }
 
@@ -84,7 +85,7 @@
 .error-content pre {
     text-align: left;
     font-size: 0.85rem;
-    color: var(--text-secondary, #6B5744);
+    color: var(--text-secondary, #94a3b8);
     white-space: pre-wrap;
     word-break: break-word;
     margin: 0;
@@ -92,21 +93,21 @@
 }
 
 .server-error-container p {
-    color: var(--text-muted, #9C8B7A);
+    color: var(--text-muted, #64748b);
     font-size: 1.1rem;
     margin-bottom: 2rem;
 }
 
 .server-error-container button {
-    background: var(--accent-primary, #6F4E37);
-    color: #FFFFFF;
+    background: var(--accent-primary, #00d4ff);
+    color: #0a0e17;
     border: none;
     padding: 14px 32px;
     font-size: 1rem;
     font-weight: 600;
     border-radius: 14px;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(111, 78, 55, 0.2);
+    box-shadow: 0 6px 20px rgba(0, 212, 255, 0.2);
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
@@ -114,7 +115,7 @@
 }
 
 .server-error-container button:hover {
-    background: var(--accent-dark, #4A3423);
+    background: #33ddff;
     transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(111, 78, 55, 0.25);
+    box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
 }

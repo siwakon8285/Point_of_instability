@@ -86,14 +86,11 @@ export class Missions implements OnInit, OnDestroy {
   });
 
   async ngOnInit(): Promise<void> {
-    // Auto-refresh every 10 seconds to sync with other users' changes
-    this._autoRefreshSub = interval(10000).subscribe(() => {
-      this._missionService.triggerRefresh();
-    });
+    // Data loads reactively via toSignal — no auto-refresh needed
   }
 
   ngOnDestroy(): void {
-    this._autoRefreshSub?.unsubscribe();
+    // cleanup if needed
   }
 
   updateFilter(updates: Partial<MissionFilter>): void {

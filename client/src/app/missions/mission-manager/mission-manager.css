@@ -1,4 +1,4 @@
-/* ☕ Coffee Shop Theme - Mission Manager */
+/* 🌌 Space Theme - Mission Manager */
 .manager-container {
     padding: 50px 30px;
     min-height: 100vh;
@@ -34,8 +34,9 @@
     left: 0;
     width: 60px;
     height: 3px;
-    background: linear-gradient(90deg, var(--accent-primary), var(--accent-light));
+    background: var(--gradient-primary);
     border-radius: 2px;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
 }
 
 /* Stats Summary */
@@ -49,7 +50,8 @@
 }
 
 .stat-card {
-    background: var(--bg-card);
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(16px);
     border: 1px solid var(--border-color);
     padding: 28px 24px;
     border-radius: 16px;
@@ -88,7 +90,8 @@
 
 .stat-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-lg), 0 0 20px rgba(0, 212, 255, 0.05);
+    border-color: rgba(0, 212, 255, 0.15);
 }
 
 .stat-card.leading {
@@ -135,14 +138,15 @@
     font-size: 3rem;
     font-weight: 800;
     margin-bottom: 14px;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.02em;
     color: var(--text-primary);
     font-family: var(--font-display);
 }
 
 /* Table Styling */
 .mission-table-container {
-    background: var(--bg-card);
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(16px);
     border-radius: 16px;
     overflow: hidden;
     border: 1px solid var(--border-color);
@@ -220,14 +224,14 @@
 
 .mission-table td {
     padding: 20px 24px;
-    border-bottom: 1px solid rgba(111, 78, 55, 0.06);
+    border-bottom: 1px solid rgba(0, 212, 255, 0.04);
     color: var(--text-secondary);
     font-size: 0.95rem;
     vertical-align: middle;
 }
 
 .mission-table tr:hover {
-    background-color: var(--bg-hover);
+    background-color: rgba(0, 212, 255, 0.04);
 }
 
 .name-cell {
@@ -257,13 +261,13 @@
 }
 
 .countdown.urgent {
-    background: rgba(196, 154, 60, 0.15);
+    background: rgba(251, 191, 36, 0.15);
     color: var(--warning);
     animation: pulse-urgent 1.5s infinite;
 }
 
 .countdown.expired {
-    background: rgba(184, 84, 80, 0.12);
+    background: rgba(248, 113, 113, 0.12);
     color: var(--error);
 }
 
@@ -295,22 +299,22 @@
 }
 
 .status-badge.open {
-    background: rgba(90, 140, 90, 0.12);
+    background: rgba(52, 211, 153, 0.12);
     color: var(--success);
 }
 
 .status-badge.inprogress {
-    background: rgba(196, 154, 60, 0.12);
+    background: rgba(251, 191, 36, 0.12);
     color: var(--warning);
 }
 
 .status-badge.completed {
-    background: rgba(111, 78, 55, 0.1);
+    background: rgba(0, 212, 255, 0.1);
     color: var(--accent-primary);
 }
 
 .status-badge.failed {
-    background: rgba(184, 84, 80, 0.12);
+    background: rgba(248, 113, 113, 0.12);
     color: var(--error);
 }
 
@@ -336,32 +340,32 @@
 }
 
 .status-btn.start {
-    background: rgba(90, 140, 90, 0.15);
+    background: rgba(52, 211, 153, 0.15);
     color: var(--success);
 }
 
 .status-btn.start:hover {
-    background: rgba(90, 140, 90, 0.3);
+    background: rgba(52, 211, 153, 0.3);
     transform: scale(1.1);
 }
 
 .status-btn.complete {
-    background: rgba(111, 78, 55, 0.1);
+    background: rgba(0, 212, 255, 0.1);
     color: var(--accent-primary);
 }
 
 .status-btn.complete:hover {
-    background: rgba(111, 78, 55, 0.2);
+    background: rgba(0, 212, 255, 0.2);
     transform: scale(1.1);
 }
 
 .status-btn.fail {
-    background: rgba(184, 84, 80, 0.12);
+    background: rgba(248, 113, 113, 0.12);
     color: var(--error);
 }
 
 .status-btn.fail:hover {
-    background: rgba(184, 84, 80, 0.25);
+    background: rgba(248, 113, 113, 0.25);
     transform: scale(1.1);
 }
 
@@ -460,6 +464,7 @@
     padding-left: 12px;
     border-left: 3px solid var(--accent-primary);
     font-family: var(--font-display);
+    letter-spacing: 0.02em;
 }
 
 /* No Missions State */
@@ -497,13 +502,13 @@
 
 .add-btn {
     background: var(--accent-primary) !important;
-    color: #FFFFFF !important;
-    box-shadow: 0 6px 20px rgba(111, 78, 55, 0.25) !important;
+    color: #0a0e17 !important;
+    box-shadow: 0 6px 20px rgba(0, 212, 255, 0.25) !important;
 }
 
 .add-btn:hover {
-    background: var(--accent-dark) !important;
-    box-shadow: 0 8px 30px rgba(111, 78, 55, 0.3) !important;
+    background: #33ddff !important;
+    box-shadow: 0 8px 30px rgba(0, 212, 255, 0.35) !important;
 }
 
 /* Dialog Styles */
@@ -513,13 +518,13 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
     animation: fadeIn 0.2s ease-out;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(6px);
 }
 
 @keyframes fadeIn {
@@ -533,12 +538,12 @@
 }
 
 .dialog-container {
-    background: var(--bg-card);
+    background: var(--bg-tertiary);
     border: 1px solid var(--border-color);
     border-radius: 20px;
     width: 90%;
     max-width: 480px;
-    box-shadow: var(--shadow-xl);
+    box-shadow: var(--shadow-xl), 0 0 30px rgba(0, 212, 255, 0.05);
     animation: slideUp 0.3s ease-out;
     overflow: hidden;
 }
@@ -568,17 +573,17 @@
     margin: 0;
     font-size: 1.15rem;
     font-weight: 700;
-    color: white;
+    color: #0a0e17;
     font-family: var(--font-display);
 }
 
 .close-btn {
-    color: white !important;
+    color: #0a0e17 !important;
 }
 
 .dialog-content {
     padding: 22px;
-    background: var(--bg-card);
+    background: var(--bg-tertiary);
 }
 
 .dialog-content .full-width {
@@ -601,7 +606,7 @@
 
 .submit-btn {
     background: var(--accent-primary) !important;
-    color: #FFFFFF !important;
+    color: #0a0e17 !important;
     padding: 8px 22px !important;
     font-weight: 600 !important;
     border-radius: 10px !important;
@@ -624,7 +629,15 @@
 
 /* Delete Dialog */
 .dialog-header.delete {
-    background: linear-gradient(135deg, var(--error), #C96B67);
+    background: linear-gradient(135deg, var(--error), #fb7185);
+}
+
+.dialog-header.delete h2 {
+    color: #FFFFFF;
+}
+
+.dialog-header.delete .close-btn {
+    color: #FFFFFF !important;
 }
 
 .delete-confirm {
@@ -728,7 +741,7 @@
 }
 
 .crew-count-link:hover {
-    color: var(--accent-dark);
+    color: #33ddff;
     text-decoration-style: solid;
 }
 
@@ -784,7 +797,7 @@
 
 .crew-count-badge {
     background: var(--accent-primary);
-    color: #FFFFFF;
+    color: #0a0e17;
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 0.85rem;

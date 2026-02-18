@@ -160,14 +160,11 @@ export class MissionManager implements OnInit, OnDestroy {
   _autoRefreshSub?: Subscription;
 
   async ngOnInit(): Promise<void> {
-    // Auto-refresh every 10 seconds to sync status changes
-    this._autoRefreshSub = interval(10000).subscribe(() => {
-      this._missionService.triggerRefresh();
-    });
+    // Data loads reactively via toSignal — no auto-refresh needed
   }
 
   ngOnDestroy(): void {
-    this._autoRefreshSub?.unsubscribe();
+    // cleanup if needed
   }
 
   // Create Mission Dialog

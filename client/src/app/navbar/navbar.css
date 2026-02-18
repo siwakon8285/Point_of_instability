@@ -1,8 +1,10 @@
-/* Transparent Navbar — Coffee Brown Text */
+/* 🌌 Space Theme - Transparent Navbar */
 .navbar {
-    background: transparent !important;
-    color: var(--accent-primary) !important;
+    background: rgba(10, 14, 23, 0.6) !important;
+    backdrop-filter: blur(12px) !important;
+    color: var(--text-primary) !important;
     border: none !important;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.08) !important;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -14,7 +16,7 @@
     width: 100%;
     z-index: 1000;
     border-radius: 0;
-    box-shadow: none !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
     transition: all 0.3s ease;
 }
 
@@ -28,30 +30,32 @@
     gap: 2rem;
 }
 
-/* Logo - Elegant Serif */
+/* Logo — Space Font */
 .home-btn {
     font-family: var(--font-display);
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 700;
-    color: var(--accent-dark) !important;
-    -webkit-text-fill-color: var(--accent-dark);
+    color: var(--accent-primary) !important;
+    -webkit-text-fill-color: var(--accent-primary);
     cursor: pointer;
     text-decoration: none;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.05em;
     padding: 8px 0;
     transition: all 0.3s ease;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
 }
 
 .home-btn:hover {
-    opacity: 0.7;
+    opacity: 0.8;
+    text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
 }
 
-/* Nav Links — plain text, no background */
+/* Nav Links */
 .nav-btn {
     display: inline-flex !important;
     align-items: center !important;
     gap: 6px !important;
-    color: var(--accent-primary) !important;
+    color: var(--text-secondary) !important;
     font-weight: 600 !important;
     font-family: var(--font-body) !important;
     font-size: 0.9rem !important;
@@ -66,36 +70,43 @@
 }
 
 .nav-btn mat-icon {
-    color: var(--accent-primary) !important;
+    color: var(--text-secondary) !important;
     font-size: 20px !important;
     width: 20px !important;
     height: 20px !important;
+    transition: color 0.3s ease;
 }
 
 .nav-btn span {
-    color: var(--accent-primary) !important;
+    color: var(--text-secondary) !important;
     font-size: 0.9rem !important;
     font-weight: 600 !important;
+    transition: color 0.3s ease;
 }
 
 .nav-btn:hover {
-    background: rgba(111, 78, 55, 0.08) !important;
+    background: rgba(0, 212, 255, 0.08) !important;
     transform: none !important;
 }
 
+.nav-btn:hover mat-icon,
+.nav-btn:hover span {
+    color: var(--accent-primary) !important;
+}
+
 .nav-btn.active {
-    color: var(--accent-dark) !important;
+    color: var(--accent-primary) !important;
     font-weight: 700 !important;
 }
 
 .nav-btn.active mat-icon,
 .nav-btn.active span {
-    color: var(--accent-dark) !important;
+    color: var(--accent-primary) !important;
 }
 
 /* Generic navbar buttons */
 .navbar button[mat-button] {
-    color: var(--accent-primary) !important;
+    color: var(--text-secondary) !important;
     font-weight: 600;
     font-family: var(--font-body);
     border-radius: 8px;
@@ -105,8 +116,8 @@
 }
 
 .navbar button[mat-button]:hover {
-    background: rgba(111, 78, 55, 0.08) !important;
-    color: var(--accent-dark) !important;
+    background: rgba(0, 212, 255, 0.08) !important;
+    color: var(--accent-primary) !important;
 }
 
 /* Profile Button */
@@ -117,15 +128,15 @@
     padding: 5px 10px 5px 14px !important;
     border-radius: 12px !important;
     border: 1px solid var(--border-color) !important;
-    background: transparent !important;
-    color: var(--accent-primary) !important;
+    background: rgba(15, 23, 42, 0.5) !important;
+    color: var(--text-primary) !important;
     box-shadow: none !important;
     transition: all 0.3s ease !important;
 }
 
 .profile-btn:hover {
-    background: rgba(111, 78, 55, 0.06) !important;
-    border-color: var(--border-strong) !important;
+    background: rgba(0, 212, 255, 0.06) !important;
+    border-color: rgba(0, 212, 255, 0.25) !important;
 }
 
 .display-name {
@@ -135,7 +146,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    color: var(--accent-primary);
+    color: var(--text-primary);
 }
 
 .avatar {
@@ -143,21 +154,91 @@
     height: 34px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--border-strong);
+    border: 2px solid rgba(0, 212, 255, 0.3);
     transition: all 0.3s ease;
 }
 
 .profile-btn:hover .avatar {
     border-color: var(--accent-primary);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
 }
 
-/* Menu Customization — kept as ::ng-deep for component scope reference */
+/* Menu Customization */
 ::ng-deep .profile-menu {
     border-radius: 14px !important;
-    background: var(--bg-card) !important;
+    background: var(--bg-tertiary) !important;
     box-shadow: var(--shadow-lg) !important;
     border: 1px solid var(--border-color) !important;
     margin-top: 8px !important;
     padding: 8px !important;
     min-width: 200px !important;
+}
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0 0.8rem;
+        height: 56px;
+    }
+
+    .home-btn {
+        font-size: 1rem;
+        letter-spacing: 0.02em;
+    }
+
+    .nav-center {
+        gap: 0.5rem;
+    }
+
+    .nav-btn span {
+        display: none !important;
+    }
+
+    .nav-btn {
+        min-width: 40px !important;
+        padding: 0 8px !important;
+    }
+
+    .nav-btn mat-icon {
+        margin-right: 0 !important;
+    }
+
+    .display-name {
+        display: none;
+    }
+
+    .profile-btn {
+        padding: 4px 6px !important;
+        gap: 0 !important;
+    }
+
+    .avatar {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 0 0.5rem;
+        height: 50px;
+    }
+
+    .home-btn {
+        font-size: 0.85rem;
+    }
+
+    .nav-center {
+        gap: 0.2rem;
+    }
+
+    .nav-btn {
+        min-width: 36px !important;
+        padding: 0 6px !important;
+    }
+
+    .avatar {
+        width: 26px;
+        height: 26px;
+    }
 }

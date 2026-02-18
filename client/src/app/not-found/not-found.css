@@ -1,95 +1,102 @@
-/* 404 Page Styles */
+/* 🌌 Space Theme - Not Found Page */
 .container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  min-height: calc(100vh - 150px);
+  justify-content: center;
+  min-height: calc(100vh - 64px);
   padding: 2rem;
-  animation: bounceAppear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: center;
+  animation: notFoundReveal 0.6s ease-out;
 }
 
-@keyframes bounceAppear {
-  0% {
-    opacity: 0;
-    transform: scale(0.8) translateY(30px);
-  }
-
-  60% {
-    opacity: 1;
-    transform: scale(1.03) translateY(-5px);
-  }
-
-  100% {
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes fadeIn {
+@keyframes notFoundReveal {
   from {
     opacity: 0;
+    transform: scale(0.9);
   }
 
   to {
     opacity: 1;
+    transform: scale(1);
   }
 }
 
-.container a {
-  display: block;
-  transition: transform 0.3s ease;
+h1 {
+  font-size: 8rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #00d4ff, #3b82f6, #7c3aed);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientDrift 4s ease infinite;
+  font-family: var(--font-display);
+  line-height: 1;
+  margin-bottom: 1rem;
 }
 
-.container a:hover {
-  transform: scale(1.02);
-}
+@keyframes gradientDrift {
 
-
-#handboy {
-  animation: swing ease-in-out 1.3s infinite alternate;
-  transform-origin: 98% 98%;
-  transform-box: fill-box;
-
-}
-
-
-#girllight {
-  animation: swing ease-in-out 1.3s infinite alternate;
-  transform-origin: 0% 97%;
-  transform-box: fill-box;
-}
-
-#hairgirl {
-  animation: swinghair ease-in-out 1.3s infinite alternate;
-  transform-origin: 60% 0%;
-  transform-box: fill-box;
-
-}
-
-#zero {
-  transform-origin: bottom;
-  transform-box: fill-box;
-
-}
-
-/*************swing************/
-@keyframes swing {
-  0% {
-    transform: rotate(10deg);
-  }
-
+  0%,
   100% {
-    transform: rotate(-10deg);
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
   }
 }
 
+h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary, #e2e8f0);
+  margin-bottom: 1rem;
+  font-family: var(--font-display);
+}
 
-/*************swing hair************/
-@keyframes swinghair {
-  0% {
-    transform: rotate(6deg);
+p {
+  color: var(--text-secondary, #94a3b8);
+  font-size: 1.05rem;
+  margin-bottom: 2rem;
+  max-width: 400px;
+}
+
+button {
+  background: var(--accent-primary, #00d4ff);
+  color: #0a0e17;
+  border: none;
+  padding: 14px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.2);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+button:hover {
+  background: #33ddff;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+}
+
+.bounce {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
   }
 
-  100% {
-    transform: rotate(-6deg);
+  50% {
+    transform: translateY(-15px);
   }
 }

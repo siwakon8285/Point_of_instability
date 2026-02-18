@@ -1,17 +1,16 @@
 <div class="home-container">
-    <!-- Abstract Background Elements -->
-    <div class="bg-shape shape-1"></div>
-    <div class="bg-blobs">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
+    <!-- Animated Stars Background -->
+    <div class="stars-container">
+        <div class="stars stars-1"></div>
+        <div class="stars stars-2"></div>
+        <div class="stars stars-3"></div>
     </div>
 
     <!-- Loading State -->
     @if (isLoading()) {
     <div class="loading-container">
         <div class="spinner"></div>
-        <p>Loading...</p>
+        <p>Initializing systems...</p>
     </div>
     } @else {
 
@@ -101,51 +100,62 @@
     <!-- AUTHENTICATED VIEW -->
     @if (isLoggedIn()) {
     <div class="authenticated-view">
-        <!-- Welcome Header -->
-        <div class="welcome-header">
-            <h1 class="welcome-title">Welcome back, <span class="accent">{{ displayName() }}</span>!</h1>
-            <p class="welcome-subtitle">Here's your mission status overview</p>
-            <div class="divider-line"></div>
-        </div>
+        <!-- Left Panel: Welcome + Stats -->
+        <div class="left-panel">
+            <div class="welcome-header">
+                <h1 class="welcome-title">Welcome back, <span class="accent">{{ displayName() }}</span>!</h1>
+                <p class="welcome-subtitle">Here's your mission status overview</p>
+                <div class="divider-line"></div>
+            </div>
 
-        <!-- User Stats Panel -->
-        @if (userDashboard()) {
-        <div class="user-stats-section">
-            <div class="stats-grid user-stats">
-                <div class="stat-card glass-panel highlight" style="animation-delay: 0.1s;">
-                    <div class="stat-icon owned-icon">
-                        <mat-icon>military_tech</mat-icon>
+            <!-- User Stats Panel -->
+            @if (userDashboard()) {
+            <div class="user-stats-section">
+                <div class="stats-grid user-stats">
+                    <div class="stat-card glass-panel highlight" style="animation-delay: 0.1s;">
+                        <div class="stat-icon owned-icon">
+                            <mat-icon>military_tech</mat-icon>
+                        </div>
+                        <div class="stat-value">{{ userDashboard()?.stats?.my_missions_count }}</div>
+                        <div class="stat-label">Leading</div>
                     </div>
-                    <div class="stat-value">{{ userDashboard()?.stats?.my_missions_count }}</div>
-                    <div class="stat-label">Leading</div>
-                </div>
-                <div class="stat-card glass-panel" style="animation-delay: 0.2s;">
-                    <div class="stat-icon joined-icon">
-                        <mat-icon>handshake</mat-icon>
+                    <div class="stat-card glass-panel" style="animation-delay: 0.2s;">
+                        <div class="stat-icon joined-icon">
+                            <mat-icon>handshake</mat-icon>
+                        </div>
+                        <div class="stat-value">{{ userDashboard()?.stats?.joined_missions_count }}</div>
+                        <div class="stat-label">Joined</div>
                     </div>
-                    <div class="stat-value">{{ userDashboard()?.stats?.joined_missions_count }}</div>
-                    <div class="stat-label">Joined</div>
-                </div>
-                <div class="stat-card glass-panel" style="animation-delay: 0.3s;">
-                    <div class="stat-icon success-icon">
-                        <mat-icon>emoji_events</mat-icon>
+                    <div class="stat-card glass-panel" style="animation-delay: 0.3s;">
+                        <div class="stat-icon success-icon">
+                            <mat-icon>emoji_events</mat-icon>
+                        </div>
+                        <div class="stat-value">{{ userDashboard()?.stats?.success_count }}</div>
+                        <div class="stat-label">Completed</div>
                     </div>
-                    <div class="stat-value">{{ userDashboard()?.stats?.success_count }}</div>
-                    <div class="stat-label">Completed</div>
-                </div>
-                <div class="stat-card glass-panel" style="animation-delay: 0.4s;">
-                    <div class="stat-icon rate-icon">
-                        <mat-icon>trending_up</mat-icon>
+                    <div class="stat-card glass-panel" style="animation-delay: 0.4s;">
+                        <div class="stat-icon rate-icon">
+                            <mat-icon>trending_up</mat-icon>
+                        </div>
+                        <div class="stat-value">{{ successRate() }}%</div>
+                        <div class="stat-label">Success Rate</div>
                     </div>
-                    <div class="stat-value">{{ successRate() }}%</div>
-                    <div class="stat-label">Success Rate</div>
                 </div>
             </div>
+            }
         </div>
 
-        }
-
-
+        <!-- Right Panel: 3D Earth Globe -->
+        <div class="right-panel">
+            <div class="globe-container">
+                <div class="globe-glow"></div>
+                <div class="globe">
+                    <div class="globe-inner"></div>
+                </div>
+                <div class="orbit-ring orbit-ring-1"></div>
+                <div class="orbit-ring orbit-ring-2"></div>
+            </div>
+        </div>
     </div>
     }
     }

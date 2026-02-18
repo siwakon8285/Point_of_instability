@@ -17,83 +17,99 @@
     <!-- GUEST VIEW -->
     @if (!isLoggedIn()) {
     <div class="guest-view">
-        <div class="hero-section">
-            <div class="hero-content">
-                <h1 class="hero-title">The<span class="accent">MissionDoor</span></h1>
-                <p class="hero-subtitle">Join the elite force of brawlers and embark on high-stakes missions across the
-                    multiverse.</p>
-                <button mat-flat-button class="cta-button" (click)="goToLogin()">
-                    <mat-icon>rocket_launch</mat-icon>
-                    Start Your Journey
-                </button>
+        <!-- Left Panel: Hero + Recent Missions -->
+        <div class="left-panel">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h1 class="hero-title">The<span class="accent">MissionDoor</span></h1>
+                    <p class="hero-subtitle">Join the elite force of brawlers and embark on high-stakes missions across
+                        the
+                        multiverse.</p>
+                    <button mat-flat-button class="cta-button" (click)="goToLogin()">
+                        <mat-icon>rocket_launch</mat-icon>
+                        Start Your Journey
+                    </button>
+                </div>
             </div>
+
+            <!-- Recent Missions Section -->
+            @if (recentMissions().length > 0) {
+            <div class="recent-missions-section">
+                <div class="section-title-row">
+                    <h2 class="section-title">Recent Missions</h2>
+                    <button mat-stroked-button class="view-all-btn view-all-btn-sm" (click)="goToLogin()">
+                        View All Missions
+                        <mat-icon>arrow_forward</mat-icon>
+                    </button>
+                </div>
+                <div class="missions-list">
+                    @for (mission of recentMissions(); track mission.id) {
+                    <div class="mission-card glass-panel">
+                        <div class="mission-header">
+                            <span class="mission-name">{{ mission.name }}</span>
+                            <span class="status-badge" [class]="mission.status.toLowerCase()">
+                                {{ mission.status }}
+                            </span>
+                        </div>
+                        <p class="mission-description">{{ mission.description || 'No description' }}</p>
+                        <div class="mission-meta">
+                            <span><mat-icon>person</mat-icon> {{ mission.chief_display_name }}</span>
+                            <span><mat-icon>group</mat-icon> {{ mission.crew_count }}/3</span>
+                            <span><mat-icon>schedule</mat-icon> {{ mission.created_at | date:'short' }}</span>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+            }
         </div>
 
-        <!-- Live Stats Section -->
-        @if (publicStats()) {
-        <div class="stats-section">
-            <h2 class="section-title">Live Statistics</h2>
-            <div class="stats-grid">
-                <div class="stat-card glass-panel">
-                    <div class="stat-icon missions-icon">
-                        <mat-icon>assignment</mat-icon>
-                    </div>
-                    <div class="stat-value">{{ publicStats()?.total_missions }}</div>
-                    <div class="stat-label">Total Missions</div>
+        <!-- Right Panel: 3D Earth Globe -->
+        <div class="right-panel">
+            <div class="globe-container">
+                <div class="globe-glow"></div>
+                <div class="globe">
+                    <div class="globe-inner"></div>
                 </div>
-                <div class="stat-card glass-panel">
-                    <div class="stat-icon brawlers-icon">
-                        <mat-icon>groups</mat-icon>
-                    </div>
-                    <div class="stat-value">{{ publicStats()?.total_brawlers }}</div>
-                    <div class="stat-label">Active Brawlers</div>
-                </div>
-                <div class="stat-card glass-panel">
-                    <div class="stat-icon open-icon">
-                        <mat-icon>door_open</mat-icon>
-                    </div>
-                    <div class="stat-value">{{ publicStats()?.open_missions }}</div>
-                    <div class="stat-label">Open Missions</div>
-                </div>
-                <div class="stat-card glass-panel">
-                    <div class="stat-icon active-icon">
-                        <mat-icon>pending_actions</mat-icon>
-                    </div>
-                    <div class="stat-value">{{ publicStats()?.active_missions }}</div>
-                    <div class="stat-label">In Progress</div>
-                </div>
-            </div>
-        </div>
-        }
+                <div class="orbit-ring orbit-ring-1"></div>
+                <div class="orbit-ring orbit-ring-2"></div>
 
-        <!-- Recent Missions Section -->
-        @if (recentMissions().length > 0) {
-        <div class="recent-missions-section">
-            <h2 class="section-title">Recent Missions</h2>
-            <div class="missions-list">
-                @for (mission of recentMissions(); track mission.id) {
-                <div class="mission-card glass-panel">
-                    <div class="mission-header">
-                        <span class="mission-name">{{ mission.name }}</span>
-                        <span class="status-badge" [class]="mission.status.toLowerCase()">
-                            {{ mission.status }}
-                        </span>
-                    </div>
-                    <p class="mission-description">{{ mission.description || 'No description' }}</p>
-                    <div class="mission-meta">
-                        <span><mat-icon>person</mat-icon> {{ mission.chief_display_name }}</span>
-                        <span><mat-icon>group</mat-icon> {{ mission.crew_count }}/3</span>
-                        <span><mat-icon>schedule</mat-icon> {{ mission.created_at | date:'short' }}</span>
+                <!-- Floating Profile Avatars with Connector Lines -->
+                <svg class="connector-lines" viewBox="0 0 520 520">
+                    <line class="connector-line" x1="260" y1="260" x2="80" y2="60" />
+                    <line class="connector-line" x1="260" y1="260" x2="450" y2="90" />
+                    <line class="connector-line" x1="260" y1="260" x2="470" y2="400" />
+                    <line class="connector-line" x1="260" y1="260" x2="50" y2="420" />
+                    <line class="connector-line" x1="260" y1="260" x2="130" y2="240" />
+                </svg>
+
+                <div class="float-avatar avatar-1">
+                    <div class="avatar-ring">
+                        <mat-icon>person</mat-icon>
                     </div>
                 </div>
-                }
+                <div class="float-avatar avatar-2">
+                    <div class="avatar-ring">
+                        <mat-icon>person</mat-icon>
+                    </div>
+                </div>
+                <div class="float-avatar avatar-3">
+                    <div class="avatar-ring">
+                        <mat-icon>person</mat-icon>
+                    </div>
+                </div>
+                <div class="float-avatar avatar-4">
+                    <div class="avatar-ring">
+                        <mat-icon>person</mat-icon>
+                    </div>
+                </div>
+                <div class="float-avatar avatar-5">
+                    <div class="avatar-ring">
+                        <mat-icon>person</mat-icon>
+                    </div>
+                </div>
             </div>
-            <button mat-stroked-button class="view-all-btn" (click)="goToMissions()">
-                View All Missions
-                <mat-icon>arrow_forward</mat-icon>
-            </button>
         </div>
-        }
     </div>
     }
 
@@ -154,6 +170,41 @@
                 </div>
                 <div class="orbit-ring orbit-ring-1"></div>
                 <div class="orbit-ring orbit-ring-2"></div>
+
+                <!-- Floating Profile Avatars with Connector Lines -->
+                <svg class="connector-lines" viewBox="0 0 520 520">
+                    <line class="connector-line" x1="260" y1="260" x2="80" y2="60" />
+                    <line class="connector-line" x1="260" y1="260" x2="450" y2="90" />
+                    <line class="connector-line" x1="260" y1="260" x2="470" y2="400" />
+                    <line class="connector-line" x1="260" y1="260" x2="50" y2="420" />
+                    <line class="connector-line" x1="260" y1="260" x2="130" y2="240" />
+                </svg>
+
+                <div class="float-avatar avatar-1">
+                    <div class="avatar-ring">
+                        <mat-icon>person</mat-icon>
+                    </div>
+                </div>
+                <div class="float-avatar avatar-2">
+                    <div class="avatar-ring">
+                        <mat-icon>person</mat-icon>
+                    </div>
+                </div>
+                <div class="float-avatar avatar-3">
+                    <div class="avatar-ring">
+                        <mat-icon>person</mat-icon>
+                    </div>
+                </div>
+                <div class="float-avatar avatar-4">
+                    <div class="avatar-ring">
+                        <mat-icon>person</mat-icon>
+                    </div>
+                </div>
+                <div class="float-avatar avatar-5">
+                    <div class="avatar-ring">
+                        <mat-icon>person</mat-icon>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -172,18 +172,9 @@ where
         // Actually, if status is InProgress, kicking might be bad?
         // User asked "Kick member who joined". Usually before start.
         // But let's check leave condition: Open, Failed, Completed(!?).
-        let kickable_condition = mission.status == MissionStatuses::Open.to_string()
-            || mission.status == MissionStatuses::Failed.to_string(); // Failed might mean Full here?
-
-        if !kickable_condition {
-            // If InProgress, maybe allow?
-            // But existing leave logic allows Completed?? (See line 117).
-            // Let's emulate leave condition but restricted to Chief actions.
-            // Wait, if status is 'Completed', kicking makes no sense.
-            // If 'InProgress', kicking might be needed.
-            // I'll stick to safe default: Open or Failed (Full).
+        if mission.status == MissionStatuses::InProgress.to_string() {
             return Err(anyhow::anyhow!(
-                "Cannot kick member in current mission status"
+                "Cannot kick member while mission is In Progress"
             ));
         }
 

@@ -63,7 +63,9 @@ export class Home implements OnInit, OnDestroy {
           this._dashboardService.getRecentMissions()
         ]);
         this.publicStats.set(stats);
-        this.recentMissions.set(missions);
+        // Shuffle and pick up to 4 random missions
+        const shuffled = [...missions].sort(() => Math.random() - 0.5);
+        this.recentMissions.set(shuffled.slice(0, 3));
       }
     } catch (error) {
       console.error('Failed to load dashboard data', error);

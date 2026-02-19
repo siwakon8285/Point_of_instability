@@ -82,4 +82,24 @@ impl MissionOperationRepository for MissionOperationPostgres {
             .await?;
         Ok(result)
     }
+
+    async fn to_open(&self, mission_id: i32, _chief_id: i32) -> Result<i32> {
+        let db_pool = Arc::clone(&self.db_pool);
+        let id = tokio::task::spawn_blocking(move || -> Result<i32> {
+            let mut conn = db_pool.get()?;
+            let result = diesel::update(missions::table)
+                .filter(missions::id.eq(mission_id))
+                .filter(missions::deleted_at.is_null())
+                .set((
+                    missions::status.eq(MissionStatuses::Open.to_string()),
+                    missions::deadline.eq(None::<chrono::NaiveDateTime>),
+                ))
+                .returning(missions::id)
+                .get_result::<i32>(&mut conn)
+                .map_err(|e| anyhow::anyhow!(e))?;
+            Ok(result)
+        })
+        .await??;
+        Ok(id)
+    }
 }

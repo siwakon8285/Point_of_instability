@@ -57,7 +57,8 @@ impl DashboardRepository for DashboardPostgres {
                 m.deadline,
                 m.duration,
                 m.created_at,
-                m.updated_at
+                m.updated_at,
+                CAST(NULL AS TIMESTAMP) AS joined_at
             FROM missions m
             INNER JOIN brawlers b ON b.id = m.chief_id
             WHERE m.deleted_at IS NULL
@@ -117,7 +118,8 @@ impl DashboardRepository for DashboardPostgres {
                 m.deadline,
                 m.duration,
                 m.created_at,
-                m.updated_at
+                m.updated_at,
+                CAST(NULL AS TIMESTAMP) AS joined_at
             FROM missions m
             INNER JOIN brawlers b ON b.id = m.chief_id
             WHERE m.deleted_at IS NULL
@@ -159,7 +161,8 @@ impl DashboardRepository for DashboardPostgres {
                 m.deadline,
                 m.duration,
                 m.created_at,
-                m.updated_at
+                m.updated_at,
+                CAST(NULL AS TIMESTAMP) AS joined_at
             FROM missions m
             INNER JOIN brawlers b ON b.id = m.chief_id
             WHERE m.deleted_at IS NULL

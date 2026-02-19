@@ -70,6 +70,21 @@ where
     }
 }
 
+pub async fn to_open<T1, T2>(
+    State(use_case): State<Arc<MissionOperationUseCase<T1, T2>>>,
+    Extension(user_id): Extension<i32>,
+    Path(mission_id): Path<i32>,
+) -> impl IntoResponse
+where
+    T1: MissionOperationRepository + Send + Sync + 'static,
+    T2: MissionViewingRepository + Send + Sync,
+{
+    match use_case.to_open(mission_id, user_id).await {
+        Ok(id) => (StatusCode::OK, format!("Mission {} reopened", id)).into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+    }
+}
+
 pub fn routes(db_pool: Arc<PgPoolSquad>) -> Router {
     let operation_repository = MissionOperationPostgres::new(db_pool.clone());
     let viewing_repository = MissionViewingPostgres::new(db_pool);
@@ -80,6 +95,7 @@ pub fn routes(db_pool: Arc<PgPoolSquad>) -> Router {
         .route("/in-progress/{mission_id}", patch(in_progress))
         .route("/to-completed/{mission_id}", patch(to_completed))
         .route("/to-failed/{mission_id}", patch(to_failed))
+        .route("/to-open/{mission_id}", patch(to_open))
         .route_layer(middleware::from_fn(authorization))
         .with_state(Arc::new(use_case))
 }

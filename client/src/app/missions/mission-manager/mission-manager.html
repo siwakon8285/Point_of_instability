@@ -96,6 +96,12 @@
                                 <mat-icon>cancel</mat-icon>
                             </button>
                             }
+                            @if (mission.status === 'Completed' || mission.status === 'Failed') {
+                            <button class="status-btn reopen" (click)="reopenMission(mission.id)"
+                                title="Reopen Mission">
+                                <mat-icon>replay</mat-icon>
+                            </button>
+                            }
                             <mat-icon class="action-icon" (click)="openEditDialog(mission)">edit</mat-icon>
                             <mat-icon class="action-icon delete" (click)="openDeleteConfirm(mission)">delete</mat-icon>
                         </td>
@@ -170,7 +176,7 @@
                             <span class="status-text failed">Failed</span>
                             }
                         </td>
-                        <td class="nowrap-cell">{{ mission.created_at | date:'MM/dd/yy, h:mm a' }}</td>
+                        <td class="nowrap-cell">{{ mission.joined_at | date:'MM/dd/yy, h:mm a' }}</td>
                         <td class="action-cell">
                             <a class="leave-link" (click)="onLeave(mission.id)">Leave</a>
                         </td>

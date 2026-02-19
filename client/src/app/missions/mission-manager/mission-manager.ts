@@ -396,6 +396,17 @@ export class MissionManager implements OnInit, OnDestroy {
     }
   }
 
+  async reopenMission(missionId: number): Promise<void> {
+    try {
+      await this._missionService.setOpen(missionId);
+      this._snackBar.open('Mission reopened!', 'OK', { duration: 3000 });
+      this._missionService.triggerRefresh();
+    } catch (error: any) {
+      const errorMsg = error.error || error.message || 'Failed to reopen mission';
+      this._snackBar.open(errorMsg, 'OK', { duration: 5000, panelClass: ['error-snackbar'] });
+    }
+  }
+
   // Crew Members Dialog
   async openCrewDialog(mission: Mission): Promise<void> {
     this.crewDialogMission.set(mission);

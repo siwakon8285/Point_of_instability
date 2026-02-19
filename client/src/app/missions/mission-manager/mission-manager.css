@@ -369,6 +369,16 @@
     transform: scale(1.1);
 }
 
+.status-btn.reopen {
+    background: rgba(168, 85, 247, 0.15);
+    color: #a855f7;
+}
+
+.status-btn.reopen:hover {
+    background: rgba(168, 85, 247, 0.3);
+    transform: scale(1.1);
+}
+
 /* Action Icons */
 .action-header {
     text-align: right;

@@ -132,7 +132,9 @@ impl BrawlerRepository for BrawlerPostgres {
                 m.deadline,
                 m.duration,
                 m.created_at,
-                m.updated_at
+                m.updated_at,
+                (SELECT cm_user.joined_at FROM crew_memberships cm_user
+                 WHERE cm_user.mission_id = m.id AND cm_user.brawler_id = $1 LIMIT 1) AS joined_at
             FROM missions m
             INNER JOIN brawlers b ON b.id = m.chief_id
             WHERE (m.chief_id = $1 OR EXISTS (

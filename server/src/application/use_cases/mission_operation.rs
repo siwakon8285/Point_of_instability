@@ -68,6 +68,12 @@ where
             return Err(anyhow::anyhow!("Mission crew is full"));
         }
 
+        if crew_count < 1 {
+            return Err(anyhow::anyhow!(
+                "At least 1 member must join the mission before starting"
+            ));
+        }
+
         if mission.chief_id != chief_id {
             return Err(anyhow::anyhow!(
                 "Only the mission chief can start the mission"
@@ -134,6 +140,34 @@ where
         let result = self
             .mission_operation_repository
             .to_failed(mission_id, chief_id)
+            .await?;
+        Ok(result)
+    }
+
+    pub async fn to_open(&self, mission_id: i32, chief_id: i32) -> Result<i32> {
+        let mission = self
+            .mission_viewing_repository
+            .view_detail(mission_id)
+            .await?;
+
+        let is_completed_or_failed = mission.status == MissionStatuses::Completed.to_string()
+            || mission.status == MissionStatuses::Failed.to_string();
+
+        if !is_completed_or_failed {
+            return Err(anyhow::anyhow!(
+                "Only Completed or Failed missions can be reopened"
+            ));
+        }
+
+        if mission.chief_id != chief_id {
+            return Err(anyhow::anyhow!(
+                "Only the mission chief can reopen the mission"
+            ));
+        }
+
+        let result = self
+            .mission_operation_repository
+            .to_open(mission_id, chief_id)
             .await?;
         Ok(result)
     }

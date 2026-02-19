@@ -11,4 +11,5 @@ export interface Mission {
     duration?: number;
     created_at: Date;
     updated_at: Date;
+    joined_at?: string;
 }

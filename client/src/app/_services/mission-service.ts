@@ -112,6 +112,12 @@ export class MissionService {
     await firstValueFrom(observable);
   }
 
+  async setOpen(missionId: number): Promise<void> {
+    const url = `${this._api_url}/mission-operation/to-open/${missionId}`;
+    const observable = this._http.patch(url, {}, { responseType: 'text' });
+    await firstValueFrom(observable);
+  }
+
   // Crew Management
   async getCrewMembers(missionId: number): Promise<CrewMember[]> {
     const url = `${this._api_url}/brawlers/missions/${missionId}/brawlers`;

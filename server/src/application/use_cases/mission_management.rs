@@ -28,7 +28,7 @@ where
     ) -> Self {
         Self {
             mission_management_repository,
-            mission_viewing_repository,
+            mission_viewing_repository, 
         }
     }
 

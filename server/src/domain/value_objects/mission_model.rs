@@ -35,6 +35,8 @@ pub struct MissionModel {
     pub created_at: NaiveDateTime,
     #[diesel(sql_type = Timestamp)]
     pub updated_at: NaiveDateTime,
+    #[diesel(sql_type = Nullable<Timestamp>)]
+    pub joined_at: Option<NaiveDateTime>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
